@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas | RENAMU 2021 - 2024 /INEI</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-logo">
+                <div class="navbar-logo-icon">INEI</div>
+                RENAMU
+            </a>
+            <ul class="navbar-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="datos.html">Datos</a></li>
+                <li><a href="estadisticas.html" class="active">Estadísticas</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Estadísticas</h1>
+            <p>Equipamiento, conectividad y transparencia municipal · <span id="anioLabel">2025</span></p>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <div class="filter-bar tech-frame reveal" style="margin-bottom:32px;max-width:280px;">
+                <div class="filter-group">
+                    <label>Año RENAMU</label>
+                    <select class="filter-select" id="filtroAnio"></select>
+                </div>
+            </div>
+
+            <div class="stats-grid reveal" style="margin-bottom:40px;">
+                <div class="stat-item">
+                    <div class="stat-item-icon">🏛️</div>
+                    <div class="stat-item-number" id="totalMuni">0</div>
+                    <div class="stat-item-label">Municipalidades</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-icon">💻</div>
+                    <div class="stat-item-number" id="totalPCs">0</div>
+                    <div class="stat-item-label">PCs operativas (total)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-icon">📶</div>
+                    <div class="stat-item-number" id="pctInternet">0%</div>
+                    <div class="stat-item-label">Con acceso a internet</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-icon">🔗</div>
+                    <div class="stat-item-number" id="pctPortal">0%</div>
+                    <div class="stat-item-label">Con portal de transparencia</div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card tech-frame reveal">
+                    <h3>📊 Municipalidades por Departamento</h3>
+                    <div class="bar-chart" id="chartDeptos"></div>
+                </div>
+                <div class="chart-card tech-frame reveal reveal-delay-1">
+                    <h3>💻 PCs Operativas por Departamento</h3>
+                    <div class="bar-chart" id="chartPCs"></div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card tech-frame reveal">
+                    <h3>📋 Distribución por Tipo</h3>
+                    <div class="summary-grid" id="resumenTipos"></div>
+                </div>
+                <div class="chart-card tech-frame reveal reveal-delay-1">
+                    <h3>🔝 Top 5 · Más PCs Operativas</h3>
+                    <div class="top-list" id="topPCs"></div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card tech-frame reveal">
+                    <h3>🌐 Tipo de Conexión a Internet</h3>
+                    <div class="top-list" id="tiposConexion"></div>
+                </div>
+                <div class="chart-card tech-frame reveal reveal-delay-1">
+                    <h3>👤 Sexo del Alcalde</h3>
+                    <div class="summary-grid" id="resumenSexo"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div><h4>INEI - RENAMU</h4><p>Instituto Nacional de Estadística</p></div>
+                <div><h4>Navegación</h4><ul class="footer-links"><li><a href="index.html">Inicio</a></li><li><a href="dashboard.html">Dashboard</a></li></ul></div>
+                <div><h4>Recursos</h4><ul class="footer-links"><li><a href="datos.html">API</a></li></ul></div>
+                <div><h4>Contacto</h4><ul class="footer-links"><li><a href="contacto.html">Formulario</a></li></ul></div>
+            </div>
+            <div class="footer-bottom">© 2024 INEI</div>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast">
+        <span class="material-icons toast-icon">check_circle</span>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="data/municipios_2021.js"></script>
+    <script src="data/municipios_2022.js"></script>
+    <script src="data/municipios_2023.js"></script>
+    <script src="data/municipios_2024.js"></script>
+    <script src="data/municipios_2025.js"></script>
+    <script src="data/municipios.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            poblarSelectorAnio();
+            renderTodo();
+            document.getElementById('filtroAnio').addEventListener('change', (e) => {
+                window.RENAMU.setAnio(e.target.value);
+                renderTodo();
+            });
+        });
+
+        function poblarSelectorAnio() {
+            const select = document.getElementById('filtroAnio');
+            select.innerHTML = window.RENAMU.anios.map(a =>
+                `<option value="${a}" ${a === window.RENAMU.anioActual ? 'selected' : ''}>${a}</option>`
+            ).join('');
+        }
+
+        function renderTodo() {
+            document.getElementById('anioLabel').textContent = window.RENAMU.anioActual;
+            actualizarEstadisticas();
+            crearGraficoDepartamentos();
+            crearGraficoPCs();
+            crearResumenTipos();
+            crearTopPCs();
+            crearTiposConexion();
+            crearResumenSexo();
+        }
+
+        function actualizarEstadisticas() {
+            const datos = window.RENAMU.datos();
+            document.getElementById('totalMuni').textContent = datos.length.toLocaleString('es-PE');
+
+            const totalPCs = datos.reduce((s, d) => s + (Number(d.pc_total_operativas) || 0), 0);
+            document.getElementById('totalPCs').textContent = totalPCs.toLocaleString('es-PE');
+
+            const conInternet = datos.filter(d => Number(d.pc_con_acceso_internet) > 0).length;
+            document.getElementById('pctInternet').textContent = Math.round((conInternet / datos.length) * 100) + '%';
+
+            const conPortal = datos.filter(d => d.tiene_portal_transparencia === 'Si').length;
+            document.getElementById('pctPortal').textContent = Math.round((conPortal / datos.length) * 100) + '%';
+        }
+
+        function crearGraficoDepartamentos() {
+            const datos = window.RENAMU.datos();
+            const deptos = {};
+            datos.forEach(d => { deptos[d.departamento] = (deptos[d.departamento] || 0) + 1; });
+
+            const sorted = Object.entries(deptos).sort((a, b) => b[1] - a[1]).slice(0, 8);
+            const max = sorted[0][1];
+
+            document.getElementById('chartDeptos').innerHTML = sorted.map(([nombre, valor]) => `
+                <div class="bar-item">
+                    <div class="bar" style="height:${(valor / max) * 170}px;" title="${nombre}: ${valor}"></div>
+                    <div class="bar-label">${nombre.substring(0, 3)}.</div>
+                </div>
+            `).join('');
+        }
+
+        function crearGraficoPCs() {
+            const datos = window.RENAMU.datos();
+            const deptos = {};
+            datos.forEach(d => { deptos[d.departamento] = (deptos[d.departamento] || 0) + (Number(d.pc_total_operativas) || 0); });
+
+            const sorted = Object.entries(deptos).sort((a, b) => b[1] - a[1]).slice(0, 8);
+            const max = sorted[0][1];
+
+            document.getElementById('chartPCs').innerHTML = sorted.map(([nombre, valor]) => `
+                <div class="bar-item">
+                    <div class="bar" style="height:${(valor / max) * 170}px;" title="${nombre}: ${valor}"></div>
+                    <div class="bar-label">${nombre.substring(0, 3)}.</div>
+                </div>
+            `).join('');
+        }
+
+        function crearResumenTipos() {
+            const datos = window.RENAMU.datos();
+            const provinciales = datos.filter(d => Number(d.tipo_municipalidad) === 1).length;
+            const distritales = datos.filter(d => Number(d.tipo_municipalidad) === 2).length;
+
+            document.getElementById('resumenTipos').innerHTML = `
+                <div class="summary-item">
+                    <div class="label">Provinciales</div>
+                    <div class="value">${provinciales}</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Distritales</div>
+                    <div class="value">${distritales}</div>
+                </div>
+            `;
+        }
+
+        function crearTopPCs() {
+            const datos = window.RENAMU.datos();
+            const sorted = [...datos].sort((a, b) => (Number(b.pc_total_operativas) || 0) - (Number(a.pc_total_operativas) || 0)).slice(0, 5);
+            const ranks = ['gold', 'silver', 'bronze', '', ''];
+
+            document.getElementById('topPCs').innerHTML = sorted.map((d, i) => `
+                <div class="top-item">
+                    <div style="display:flex;align-items:center;">
+                        <div class="top-rank ${ranks[i]}">${i + 1}</div>
+                        <div>
+                            <div style="font-weight:600;">${d.distrito}</div>
+                            <div style="font-size:0.8rem;color:var(--gray-500);">${d.provincia}, ${d.departamento}</div>
+                        </div>
+                    </div>
+                    <div style="font-weight:700;">${d.pc_total_operativas || 0} PCs</div>
+                </div>
+            `).join('');
+        }
+
+        function crearTiposConexion() {
+            const datos = window.RENAMU.datos();
+            const tipos = {};
+            datos.forEach(d => {
+                const t = d.tipo_conexion_internet || 'No especifica';
+                tipos[t] = (tipos[t] || 0) + 1;
+            });
+            const sorted = Object.entries(tipos).sort((a, b) => b[1] - a[1]).slice(0, 6);
+
+            document.getElementById('tiposConexion').innerHTML = sorted.map(([nombre, valor], i) => `
+                <div class="top-item">
+                    <div style="display:flex;align-items:center;">
+                        <div class="top-rank ${i < 3 ? ['gold','silver','bronze'][i] : ''}">${i + 1}</div>
+                        <div style="font-weight:600;">${nombre}</div>
+                    </div>
+                    <div style="font-weight:700;">${valor}</div>
+                </div>
+            `).join('');
+        }
+
+        function crearResumenSexo() {
+            const datos = window.RENAMU.datos();
+            const hombres = datos.filter(d => d.sexo_alcalde === 'Hombre').length;
+            const mujeres = datos.filter(d => d.sexo_alcalde === 'Mujer').length;
+
+            document.getElementById('resumenSexo').innerHTML = `
+                <div class="summary-item">
+                    <div class="label">Alcaldes (Hombre)</div>
+                    <div class="value">${hombres}</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Alcaldesas (Mujer)</div>
+                    <div class="value">${mujeres}</div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

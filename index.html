@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RENAMU 2024 | INEI - Inicio</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-logo">
+                <div class="navbar-logo-icon">INEI</div>
+                RENAMU
+            </a>
+            <ul class="navbar-links">
+                <li><a href="index.html" class="active">Inicio</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="datos.html">Datos</a></li>
+                <li><a href="estadisticas.html">Estadísticas</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="dashboard.html" class="navbar-cta">Explorar Datos</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-frame"></div>
+        <div class="container">
+            <div class="hero-copy">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    Nuevo · Ejercicio Fiscal 2024
+                </div>
+                <h1>
+                    Registro Nacional<br>
+                    de <span class="accent">Municipalidades</span>
+                </h1>
+                <p>
+                    El sistema oficial de información estadística del INEI que impulsa
+                    la transparencia y eficiencia en la gestión pública municipal.
+                </p>
+                <div class="hero-actions">
+                    <a href="dashboard.html" class="btn btn-primary">
+                        <span class="material-icons" style="font-size: 18px;">rocket_launch</span>
+                        Ver Dashboard
+                    </a>
+                    <a href="datos.html" class="btn btn-outline">
+                        <span class="material-icons" style="font-size: 18px;">table_chart</span>
+                        Explorar Datos
+                    </a>
+                </div>
+            </div>
+
+            <!-- Signature graphic: lectura técnica del territorio que cubre el registro -->
+            <div class="hero-map">
+                <svg viewBox="0 0 420 440" xmlns="http://www.w3.org/2000/svg">
+                    <path class="contour contour--soft" d="M40 60 C 110 40, 170 90, 210 70 S 320 30, 380 55"/>
+                    <path class="contour contour--soft" d="M30 100 C 100 80, 160 130, 205 110 S 315 75, 390 100"/>
+                    <path class="contour contour--mid" d="M25 145 C 95 120, 155 175, 200 150 S 310 115, 395 140"/>
+                    <path class="contour contour--mid" d="M20 190 C 90 165, 150 220, 195 195 S 305 160, 400 185"/>
+                    <path class="contour contour--strong" d="M20 235 C 90 210, 150 265, 195 240 S 305 205, 400 230"/>
+                    <path class="contour contour--mid" d="M25 280 C 95 258, 150 305, 200 282 S 310 250, 395 272"/>
+                    <path class="contour contour--mid" d="M30 322 C 100 302, 158 345, 205 322 S 315 292, 390 312"/>
+                    <path class="contour contour--soft" d="M35 362 C 105 344, 160 382, 208 362 S 318 335, 385 352"/>
+
+                    <circle class="pin-ring" cx="150" cy="120" r="9"/>
+                    <circle class="pin" cx="150" cy="120" r="3.2"/>
+                    <line class="leader" x1="159" y1="120" x2="200" y2="112"/>
+                    <text class="pin-label" x="203" y="108">Lima</text>
+                    <text class="pin-value" x="203" y="124">43 distr.</text>
+
+                    <circle class="pin-ring" cx="230" cy="245" r="9"/>
+                    <circle class="pin" cx="230" cy="245" r="3.2"/>
+                    <line class="leader" x1="239" y1="245" x2="285" y2="256"/>
+                    <text class="pin-label" x="288" y="253">Cusco</text>
+                    <text class="pin-value" x="288" y="269">108 distr.</text>
+
+                    <circle class="pin-ring" cx="120" cy="330" r="9"/>
+                    <circle class="pin" cx="120" cy="330" r="3.2"/>
+                    <line class="leader" x1="112" y1="336" x2="70" y2="360"/>
+                    <text class="pin-label" x="30" y="378" text-anchor="middle">Arequipa</text>
+                    <text class="pin-value" x="30" y="394" text-anchor="middle">109 distr.</text>
+
+                    <circle class="pin-ring" cx="290" cy="150" r="9"/>
+                    <circle class="pin" cx="290" cy="150" r="3.2"/>
+                    <line class="leader" x1="298" y1="144" x2="330" y2="120"/>
+                    <text class="pin-label" x="333" y="116">Loreto</text>
+                    <text class="pin-value" x="333" y="132">53 distr.</text>
+
+                    <g class="compass" transform="translate(370, 30)">
+                        <line x1="0" y1="-12" x2="0" y2="12"/>
+                        <line x1="-12" y1="0" x2="12" y2="0"/>
+                    </g>
+                    <text class="compass-label" x="370" y="52" text-anchor="middle">N</text>
+
+                    <text class="caption" x="0" y="425">LEVANTAMIENTO NACIONAL — 25 DEPARTAMENTOS</text>
+                    <text class="caption" x="420" y="425" text-anchor="end">RENAMU 2024</text>
+                </svg>
+            </div>
+        </div>
+        <div class="hero-strip">
+            <div class="container">
+                <span>ESC. 1:1,874 MUNICIPALIDADES</span>
+                <span>SISTEMA RENAMU / INEI</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-eyebrow">¿Qué ofrecemos?</div>
+                <h2 class="section-title">Información municipal<br>al alcance de todos</h2>
+                <p class="section-subtitle">
+                    Datos actualizados, confiables y accesibles para la toma de decisiones
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card reveal" data-code="REG—01 / DASHBOARD">
+                    <div class="feature-icon">📊</div>
+                    <h3>Dashboard Interactivo</h3>
+                    <p>Visualiza indicadores clave con gráficos dinámicos y filtros avanzados</p>
+                </div>
+                <div class="feature-card reveal reveal-delay-1" data-code="REG—02 / BÚSQUEDA">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Búsqueda Avanzada</h3>
+                    <p>Encuentra cualquier municipalidad por departamento, provincia o distrito</p>
+                </div>
+                <div class="feature-card reveal reveal-delay-2" data-code="REG—03 / EXPORTACIÓN">
+                    <div class="feature-icon">📥</div>
+                    <h3>Exportación de Datos</h3>
+                    <p>Descarga la información en formatos compatibles para tus análisis</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="section section-light">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-eyebrow">Cobertura</div>
+                <h2 class="section-title">RENAMU en cifras</h2>
+            </div>
+            <div class="stats-grid reveal">
+                <div class="stat-item">
+                    <div class="stat-item-icon">🏛️</div>
+                    <div class="stat-item-number">1,874</div>
+                    <div class="stat-item-label">Municipalidades</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-icon">👥</div>
+                    <div class="stat-item-number">33.7M</div>
+                    <div class="stat-item-label">Población cubierta</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-icon">💰</div>
+                    <div class="stat-item-number">S/ 42.8B</div>
+                    <div class="stat-item-label">Presupuesto total</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-icon">🗺️</div>
+                    <div class="stat-item-number">25</div>
+                    <div class="stat-item-label">Departamentos</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>INEI - RENAMU</h4>
+                    <p>
+                        Instituto Nacional de Estadística e Informática<br>
+                        Registro Nacional de Municipalidades<br>
+                        Av. General Garzón 654-658, Jesús María
+                    </p>
+                </div>
+                <div>
+                    <h4>Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="datos.html">Datos</a></li>
+                        <li><a href="estadisticas.html">Estadísticas</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Recursos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">API RENAMU</a></li>
+                        <li><a href="datos.html">Documentación</a></li>
+                        <li><a href="datos.html">Descargas</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contacto</h4>
+                    <ul class="footer-links">
+                        <li><a href="contacto.html">Formulario</a></li>
+                        <li><a href="#">renamu@inei.gob.pe</a></li>
+                        <li><a href="#">(01) 652-0000</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                Copyright © 2024 INEI. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span class="material-icons toast-icon">check_circle</span>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

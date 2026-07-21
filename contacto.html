@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | RENAMU 2024 - INEI</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-logo">
+                <div class="navbar-logo-icon">INEI</div>
+                RENAMU
+            </a>
+            <ul class="navbar-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="datos.html">Datos</a></li>
+                <li><a href="estadisticas.html">Estadísticas</a></li>
+                <li><a href="contacto.html" class="active">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Contacto</h1>
+            <p>Escríbenos si tienes dudas sobre el registro, los datos o el uso del sistema</p>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info reveal">
+                    <h3>Instituto Nacional de Estadística e Informática</h3>
+                    <p>El equipo de RENAMU responde consultas técnicas, solicitudes de datos y reportes de incidencias del sistema.</p>
+                    <ul class="contact-details">
+                        <li>
+                            <span class="material-icons">location_on</span>
+                            Av. General Garzón 654-658, Jesús María, Lima
+                        </li>
+                        <li>
+                            <span class="material-icons">mail</span>
+                            renamu@inei.gob.pe
+                        </li>
+                        <li>
+                            <span class="material-icons">call</span>
+                            (01) 652-0000
+                        </li>
+                        <li>
+                            <span class="material-icons">schedule</span>
+                            Lunes a viernes, 8:30 a.m. – 4:45 p.m.
+                        </li>
+                    </ul>
+                </div>
+
+                <form class="contact-form tech-frame reveal reveal-delay-1" id="formContacto">
+                    <div class="form-group">
+                        <label>Nombre completo</label>
+                        <input type="text" class="form-control" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Correo electrónico</label>
+                        <input type="email" class="form-control" placeholder="tucorreo@ejemplo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Asunto</label>
+                        <select class="form-control">
+                            <option>Consulta sobre datos</option>
+                            <option>Reporte de un error</option>
+                            <option>Solicitud de acceso a la API</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje</label>
+                        <textarea class="form-control" placeholder="Cuéntanos en qué podemos ayudarte" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                        <span class="material-icons" style="font-size:18px;">send</span>
+                        Enviar mensaje
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>INEI - RENAMU</h4>
+                    <p>Instituto Nacional de Estadística e Informática</p>
+                </div>
+                <div>
+                    <h4>Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="datos.html">Datos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Recursos</h4>
+                    <ul class="footer-links">
+                        <li><a href="datos.html">API RENAMU</a></li>
+                        <li><a href="datos.html">Documentación</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contacto</h4>
+                    <ul class="footer-links">
+                        <li><a href="contacto.html">Formulario</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">© 2024 INEI</div>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast">
+        <span class="material-icons toast-icon">check_circle</span>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('formContacto').addEventListener('submit', (e) => {
+            e.preventDefault();
+            mostrarToast('Mensaje enviado. Te responderemos pronto.', 'check_circle');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>

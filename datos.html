@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos | RENAMU 2024 - INEI</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .dict-table { width: 100%; border-collapse: collapse; }
+        .dict-table th {
+            text-align: left;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--ink-soft);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+        }
+        .dict-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 0.9rem;
+            vertical-align: top;
+        }
+        .dict-table td:first-child {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--blue-deep);
+            white-space: nowrap;
+        }
+        .download-card { display: flex; flex-direction: column; height: 100%; }
+        .download-card .format-tag {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.4px;
+            color: var(--blue);
+            margin-bottom: 14px;
+        }
+        .download-card .btn { margin-top: auto; align-self: flex-start; }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-logo">
+                <div class="navbar-logo-icon">INEI</div>
+                RENAMU
+            </a>
+            <ul class="navbar-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="datos.html" class="active">Datos</a></li>
+                <li><a href="estadisticas.html">Estadísticas</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Datos</h1>
+            <p>Descarga el registro completo y consulta el diccionario de campos utilizado por RENAMU</p>
+        </div>
+    </div>
+
+    <!-- Downloads -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-eyebrow">Descargas</div>
+                <h2 class="section-title">Lleva los datos<br>a tu propio análisis</h2>
+                <p class="section-subtitle">Mismo dataset del Dashboard, en el formato que necesites.</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card download-card tech-frame reveal">
+                    <div class="card-icon blue"><span class="material-icons">description</span></div>
+                    <div class="format-tag">.CSV — TABLA PLANA</div>
+                    <h3>Registro completo</h3>
+                    <p>Todas las municipalidades con sus 10 campos, listas para Excel o Google Sheets.</p>
+                    <button class="btn btn-outline btn-sm" onclick="descargar('CSV')">
+                        <span class="material-icons" style="font-size:16px;">download</span> Descargar CSV
+                    </button>
+                </div>
+                <div class="card download-card tech-frame reveal reveal-delay-1">
+                    <div class="card-icon blue"><span class="material-icons">data_object</span></div>
+                    <div class="format-tag">.JSON — ESTRUCTURADO</div>
+                    <h3>Registro completo</h3>
+                    <p>Ideal para integrarlo en tus propias aplicaciones o scripts.</p>
+                    <button class="btn btn-outline btn-sm" onclick="descargar('JSON')">
+                        <span class="material-icons" style="font-size:16px;">download</span> Descargar JSON
+                    </button>
+                </div>
+                <div class="card download-card tech-frame reveal reveal-delay-2">
+                    <div class="card-icon blue"><span class="material-icons">api</span></div>
+                    <div class="format-tag">API — LECTURA EN VIVO</div>
+                    <h3>Endpoint de consulta</h3>
+                    <p>Consulta el registro por departamento, provincia o distrito vía HTTP.</p>
+                    <button class="btn btn-outline btn-sm" onclick="descargar('API')">
+                        <span class="material-icons" style="font-size:16px;">content_copy</span> Copiar endpoint
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data dictionary -->
+    <section class="section section-light">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-eyebrow">Diccionario de datos</div>
+                <h2 class="section-title">Qué significa cada campo</h2>
+            </div>
+            <div class="table-container tech-frame reveal">
+                <div class="table-scroll" style="max-height:none;">
+                    <table class="dict-table">
+                        <thead>
+                            <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>ubigeo</td><td>Texto (6 dígitos)</td><td>Código único de ubicación geográfica del INEI.</td></tr>
+                            <tr><td>departamento</td><td>Texto</td><td>Uno de los 25 departamentos del Perú.</td></tr>
+                            <tr><td>provincia</td><td>Texto</td><td>Provincia a la que pertenece la municipalidad.</td></tr>
+                            <tr><td>distrito</td><td>Texto</td><td>Distrito administrado por la municipalidad.</td></tr>
+                            <tr><td>tipo_municipalidad</td><td>Enum (1/2)</td><td><code>1</code> Provincial, <code>2</code> Distrital.</td></tr>
+                            <tr><td>nombre_alcalde / sexo_alcalde</td><td>Texto</td><td>Autoridad electa a cargo y su sexo.</td></tr>
+                            <tr><td>correo_municipalidad / pagina_web_municipalidad</td><td>Texto</td><td>Canales oficiales de contacto reportados.</td></tr>
+                            <tr><td>pc_total_operativas / pc_con_acceso_internet</td><td>Numérico</td><td>Equipos de cómputo operativos y con internet.</td></tr>
+                            <tr><td>tipo_conexion_internet</td><td>Texto</td><td>Tecnología de conexión (fibra, satelital, Wi-Fi, etc).</td></tr>
+                            <tr><td>tiene_portal_transparencia / url_portal_transparencia</td><td>Enum / URL</td><td>Si la municipalidad reporta portal de transparencia y su enlace.</td></tr>
+                            <tr><td>auto_camioneta_operativos, volquete_operativos, excavadora_operativos…</td><td>Numérico</td><td>Inventario de vehículos y maquinaria pesada operativa (Módulo II).</td></tr>
+                            <tr><td>anio</td><td>Numérico</td><td>Año del levantamiento RENAMU (2021–2025).</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <p style="margin-top:16px;font-size:0.85rem;color:var(--ink-soft);">
+                Datos del Módulo I (datos generales) y Módulo II (equipamiento y TIC) de RENAMU, años 2021–2025. Selecciona el año en el Dashboard o Estadísticas para comparar entre ejercicios.
+            </p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>INEI - RENAMU</h4>
+                    <p>Instituto Nacional de Estadística e Informática</p>
+                </div>
+                <div>
+                    <h4>Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="estadisticas.html">Estadísticas</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Recursos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">API RENAMU</a></li>
+                        <li><a href="datos.html">Documentación</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contacto</h4>
+                    <ul class="footer-links">
+                        <li><a href="contacto.html">Formulario</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">© 2024 INEI</div>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast">
+        <span class="material-icons toast-icon">check_circle</span>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        function descargar(formato) {
+            if (formato === 'API') {
+                mostrarToast('Endpoint copiado al portapapeles', 'content_copy');
+            } else {
+                mostrarToast(`Preparando descarga en ${formato}…`, 'download_done');
+            }
+        }
+    </script>
+</body>
+</html>
