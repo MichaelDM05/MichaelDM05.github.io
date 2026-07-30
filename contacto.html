@@ -131,10 +131,45 @@
 
     <script src="js/main.js"></script>
     <script>
-        document.getElementById('formContacto').addEventListener('submit', (e) => {
+        // Pega aquí la URL de "Aplicación web" que te da Apps Script al desplegar
+        const CONTACTO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgK9K1XXOFR6PTEWHLTkMLGPEYmpRMdBw5wjlobkd4b9mDYKXrXsID7_pqMbx86pbF/exec';
+
+        document.getElementById('formContacto').addEventListener('submit', async (e) => {
             e.preventDefault();
-            mostrarToast('Mensaje enviado. Te responderemos pronto.', 'check_circle');
-            e.target.reset();
+            const form = e.target;
+            const boton = form.querySelector('button[type="submit"]');
+            const inputs = form.querySelectorAll('input, select, textarea');
+
+            const datos = {
+                nombre: inputs[0].value,
+                correo: inputs[1].value,
+                asunto: inputs[2].value,
+                mensaje: inputs[3].value
+            };
+
+            boton.disabled = true;
+            boton.style.opacity = '0.6';
+
+            try {
+                const resp = await fetch(CONTACTO_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(datos)
+                });
+                const data = await resp.json();
+
+                if (data.ok) {
+                    mostrarToast('Mensaje enviado. Te responderemos pronto.', 'check_circle');
+                    form.reset();
+                } else {
+                    mostrarToast('No se pudo enviar. Intenta de nuevo.', 'error');
+                }
+            } catch (err) {
+                mostrarToast('No se pudo enviar. Revisa tu conexión.', 'error');
+            } finally {
+                boton.disabled = false;
+                boton.style.opacity = '1';
+            }
         });
     </script>
 </body>
