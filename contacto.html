@@ -3,21 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacto | RENAMU 2024 - INEI</title>
+    <title>Contacto | RENAMU - INEI</title>
+    <meta name="description" content="Contacta al equipo del Registro Nacional de Municipalidades del INEI: consultas técnicas, solicitudes de datos y reportes de incidencias.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A2A43'/%3E%3Cpath d='M8 22V13l8-5 8 5v9' fill='none' stroke='%234FC3E8' stroke-width='2.2'/%3E%3Cpath d='M6 22h20' stroke='%234FC3E8' stroke-width='2.2'/%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.google.com/recaptcha/api.js?hl=es" async defer></script>
 </head>
 <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
     <nav class="navbar" id="navbar">
         <div class="navbar-inner">
             <a href="index.html" class="navbar-logo">
-                <div class="navbar-logo-icon">INEI</div>
+                <div class="navbar-logo-icon" aria-hidden="true">INEI</div>
                 RENAMU
             </a>
-            <ul class="navbar-links">
+            <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir menú de navegación">
+                <span class="material-icons icon-open" aria-hidden="true">menu</span>
+                <span class="material-icons icon-close" aria-hidden="true">close</span>
+            </button>
+            <ul class="navbar-links" id="navLinks">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="dashboard.html">Dashboard</a></li>
                 <li><a href="datos.html">Datos</a></li>
@@ -34,6 +43,7 @@
         </div>
     </div>
 
+    <main id="contenido">
     <section class="section">
         <div class="container">
             <div class="contact-grid">
@@ -42,54 +52,71 @@
                     <p>El equipo de RENAMU responde consultas técnicas, solicitudes de datos y reportes de incidencias del sistema.</p>
                     <ul class="contact-details">
                         <li>
-                            <span class="material-icons">location_on</span>
+                            <span class="material-icons" aria-hidden="true">location_on</span>
                             Av. General Garzón 654-658, Jesús María, Lima
                         </li>
                         <li>
-                            <span class="material-icons">mail</span>
-                            renamu@inei.gob.pe
+                            <span class="material-icons" aria-hidden="true">mail</span>
+                            <a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a>
                         </li>
                         <li>
-                            <span class="material-icons">call</span>
-                            (01) 652-0000
+                            <span class="material-icons" aria-hidden="true">call</span>
+                            <a href="tel:+5116520000">(01) 652-0000</a>
                         </li>
                         <li>
-                            <span class="material-icons">schedule</span>
+                            <span class="material-icons" aria-hidden="true">schedule</span>
                             Lunes a viernes, 8:30 a.m. – 4:45 p.m.
                         </li>
                     </ul>
                 </div>
 
-                <form class="contact-form tech-frame reveal reveal-delay-1" id="formContacto">
+                <form class="contact-form tech-frame reveal reveal-delay-1" id="formContacto" novalidate>
                     <div class="form-group">
-                        <label>Nombre completo</label>
-                        <input type="text" class="form-control" placeholder="Tu nombre" required>
+                        <label for="campoNombre">Nombre completo</label>
+                        <input type="text" id="campoNombre" name="nombre" class="form-control" placeholder="Tu nombre" autocomplete="name" required>
                     </div>
                     <div class="form-group">
-                        <label>Correo electrónico</label>
-                        <input type="email" class="form-control" placeholder="tucorreo@ejemplo.com" required>
+                        <label for="campoCorreo">Correo electrónico</label>
+                        <input type="email" id="campoCorreo" name="correo" class="form-control" placeholder="tucorreo@ejemplo.com" autocomplete="email" required>
                     </div>
                     <div class="form-group">
-                        <label>Asunto</label>
-                        <select class="form-control">
+                        <label for="campoAsunto">Asunto</label>
+                        <select class="form-control" id="campoAsunto" name="asunto">
                             <option>Consulta sobre datos</option>
                             <option>Reporte de un error</option>
-                            <option>Solicitud de acceso a la API</option>
+                            <option>Solicitud de información adicional</option>
                             <option>Otro</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Mensaje</label>
-                        <textarea class="form-control" placeholder="Cuéntanos en qué podemos ayudarte" required></textarea>
+                        <label for="campoMensaje">Mensaje</label>
+                        <textarea class="form-control" id="campoMensaje" name="mensaje" placeholder="Cuéntanos en qué podemos ayudarte" required></textarea>
                     </div>
+
+                    <!-- Campo trampa: invisible para personas, los bots de formularios suelen rellenarlo -->
+                    <div class="hp-field" aria-hidden="true">
+                        <label for="campoWeb">Deja este campo vacío</label>
+                        <input type="text" id="campoWeb" name="sitio_web" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    <!-- reCAPTCHA de Google (gratuito). Cambia el data-sitekey por el tuyo:
+                         1. Entra a https://www.google.com/recaptcha/admin/create con tu cuenta Google
+                         2. Elige reCAPTCHA v2 → "Casilla de verificación no soy un robot"
+                         3. Agrega tu dominio (y "localhost" si quieres probarlo en tu equipo)
+                         4. Pega aquí la "clave del sitio" (la "clave secreta" va en el Apps Script, no aquí) -->
+                    <div class="form-group">
+                        <div class="g-recaptcha" data-sitekey="TU_CLAVE_DE_SITIO_RECAPTCHA"></div>
+                    </div>
+
                     <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
-                        <span class="material-icons" style="font-size:18px;">send</span>
+                        <span class="material-icons" style="font-size:18px;" aria-hidden="true">send</span>
                         Enviar mensaje
                     </button>
                 </form>
             </div>
         </div>
     </section>
+    </main>
 
     <footer class="footer">
         <div class="container">
@@ -109,8 +136,8 @@
                 <div>
                     <h4>Recursos</h4>
                     <ul class="footer-links">
-                        <li><a href="datos.html">API RENAMU</a></li>
-                        <li><a href="datos.html">Documentación</a></li>
+                        <li><a href="datos.html#descargas">Descargas</a></li>
+                        <li><a href="datos.html#diccionario">Diccionario de datos</a></li>
                     </ul>
                 </div>
                 <div>
@@ -120,12 +147,12 @@
                     </ul>
                 </div>
             </div>
-            <div class="footer-bottom">© 2024 INEI</div>
+            <div class="footer-bottom">Copyright © 2026 INEI · Datos RENAMU 2021–2025</div>
         </div>
     </footer>
 
-    <div class="toast" id="toast">
-        <span class="material-icons toast-icon">check_circle</span>
+    <div class="toast" id="toast" role="status" aria-live="polite">
+        <span class="material-icons toast-icon" aria-hidden="true">check_circle</span>
         <span id="toastMessage"></span>
     </div>
 
@@ -138,17 +165,37 @@
             e.preventDefault();
             const form = e.target;
             const boton = form.querySelector('button[type="submit"]');
-            const inputs = form.querySelectorAll('input, select, textarea');
 
-            const datos = {
-                nombre: inputs[0].value,
-                correo: inputs[1].value,
-                asunto: inputs[2].value,
-                mensaje: inputs[3].value
-            };
+            const datos = Object.fromEntries(new FormData(form).entries());
+
+            // Honeypot: una persona nunca ve ni llena este campo. Si viene con contenido
+            // es un bot; simulamos éxito para no darle pistas de que fue detectado.
+            if (datos.sitio_web) {
+                form.reset();
+                if (window.grecaptcha) grecaptcha.reset();
+                mostrarToast('Mensaje enviado. Te responderemos pronto.', 'check_circle');
+                return;
+            }
+
+            // Validación propia: así el aviso usa el mismo toast que el resto del sitio
+            if (!datos.nombre.trim() || !datos.mensaje.trim()) {
+                mostrarToast('Completa tu nombre y el mensaje.', 'error');
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(datos.correo.trim())) {
+                mostrarToast('Revisa el correo electrónico.', 'error');
+                form.querySelector('#campoCorreo').focus();
+                return;
+            }
+            if (!window.grecaptcha || !grecaptcha.getResponse()) {
+                mostrarToast('Marca la casilla "No soy un robot" antes de enviar.', 'error');
+                return;
+            }
+
+            delete datos.sitio_web;
 
             boton.disabled = true;
-            boton.style.opacity = '0.6';
+            boton.classList.add('is-busy');
 
             try {
                 const resp = await fetch(CONTACTO_SCRIPT_URL, {
@@ -164,11 +211,12 @@
                 } else {
                     mostrarToast('No se pudo enviar. Intenta de nuevo.', 'error');
                 }
+                grecaptcha.reset();
             } catch (err) {
                 mostrarToast('No se pudo enviar. Revisa tu conexión.', 'error');
             } finally {
                 boton.disabled = false;
-                boton.style.opacity = '1';
+                boton.classList.remove('is-busy');
             }
         });
     </script>

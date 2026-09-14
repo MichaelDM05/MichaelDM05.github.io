@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RENAMU 2024 | INEI - Inicio</title>
+    <title>RENAMU 2021–2025 | INEI - Inicio</title>
+    <meta name="description" content="Registro Nacional de Municipalidades (RENAMU) del INEI: 1,891 municipalidades del Perú con datos de gestión, equipamiento y transparencia, 2021–2025.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A2A43'/%3E%3Cpath d='M8 22V13l8-5 8 5v9' fill='none' stroke='%234FC3E8' stroke-width='2.2'/%3E%3Cpath d='M6 22h20' stroke='%234FC3E8' stroke-width='2.2'/%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,14 +13,20 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <div class="navbar-inner">
             <a href="index.html" class="navbar-logo">
-                <div class="navbar-logo-icon">INEI</div>
+                <div class="navbar-logo-icon" aria-hidden="true">INEI</div>
                 RENAMU
             </a>
-            <ul class="navbar-links">
+            <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir menú de navegación">
+                <span class="material-icons icon-open" aria-hidden="true">menu</span>
+                <span class="material-icons icon-close" aria-hidden="true">close</span>
+            </button>
+            <ul class="navbar-links" id="navLinks">
                 <li><a href="index.html" class="active">Inicio</a></li>
                 <li><a href="dashboard.html">Dashboard</a></li>
                 <li><a href="datos.html">Datos</a></li>
@@ -30,13 +38,14 @@
     </nav>
 
     <!-- Hero -->
+    <main id="contenido">
     <section class="hero">
         <div class="hero-frame"></div>
         <div class="container">
             <div class="hero-copy">
                 <div class="hero-badge">
                     <span class="hero-badge-dot"></span>
-                    Nuevo · Ejercicio Fiscal 2024
+                    Actualizado · Levantamiento 2025
                 </div>
                 <h1>
                     Registro Nacional<br>
@@ -74,25 +83,25 @@
                     <circle class="pin" cx="150" cy="120" r="3.2"/>
                     <line class="leader" x1="159" y1="120" x2="200" y2="112"/>
                     <text class="pin-label" x="203" y="108">Lima</text>
-                    <text class="pin-value" x="203" y="124">43 distr.</text>
+                    <text class="pin-value" x="203" y="124">171 munic.</text>
 
                     <circle class="pin-ring" cx="230" cy="245" r="9"/>
                     <circle class="pin" cx="230" cy="245" r="3.2"/>
                     <line class="leader" x1="239" y1="245" x2="285" y2="256"/>
                     <text class="pin-label" x="288" y="253">Cusco</text>
-                    <text class="pin-value" x="288" y="269">108 distr.</text>
+                    <text class="pin-value" x="288" y="269">116 munic.</text>
 
                     <circle class="pin-ring" cx="120" cy="330" r="9"/>
                     <circle class="pin" cx="120" cy="330" r="3.2"/>
                     <line class="leader" x1="112" y1="336" x2="70" y2="360"/>
                     <text class="pin-label" x="30" y="378" text-anchor="middle">Arequipa</text>
-                    <text class="pin-value" x="30" y="394" text-anchor="middle">109 distr.</text>
+                    <text class="pin-value" x="30" y="394" text-anchor="middle">109 munic.</text>
 
                     <circle class="pin-ring" cx="290" cy="150" r="9"/>
                     <circle class="pin" cx="290" cy="150" r="3.2"/>
                     <line class="leader" x1="298" y1="144" x2="330" y2="120"/>
                     <text class="pin-label" x="333" y="116">Loreto</text>
-                    <text class="pin-value" x="333" y="132">53 distr.</text>
+                    <text class="pin-value" x="333" y="132">53 munic.</text>
 
                     <g class="compass" transform="translate(370, 30)">
                         <line x1="0" y1="-12" x2="0" y2="12"/>
@@ -101,13 +110,13 @@
                     <text class="compass-label" x="370" y="52" text-anchor="middle">N</text>
 
                     <text class="caption" x="0" y="425">LEVANTAMIENTO NACIONAL — 25 DEPARTAMENTOS</text>
-                    <text class="caption" x="420" y="425" text-anchor="end">RENAMU 2024</text>
+                    <text class="caption" x="420" y="425" text-anchor="end">RENAMU 2025</text>
                 </svg>
             </div>
         </div>
         <div class="hero-strip">
             <div class="container">
-                <span>ESC. 1:1,874 MUNICIPALIDADES</span>
+                <span>ESC. 1:1,891 MUNICIPALIDADES</span>
                 <span>SISTEMA RENAMU / INEI</span>
             </div>
         </div>
@@ -149,31 +158,34 @@
             <div class="section-header reveal">
                 <div class="section-eyebrow">Cobertura</div>
                 <h2 class="section-title">RENAMU en cifras</h2>
+                <p class="section-subtitle">Resultados del levantamiento 2025, el más reciente publicado.</p>
             </div>
             <div class="stats-grid reveal">
                 <div class="stat-item">
                     <div class="stat-item-icon">🏛️</div>
-                    <div class="stat-item-number">1,874</div>
+                    <div class="stat-item-number">1,891</div>
                     <div class="stat-item-label">Municipalidades</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-item-icon">👥</div>
-                    <div class="stat-item-number">33.7M</div>
-                    <div class="stat-item-label">Población cubierta</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-item-icon">💰</div>
-                    <div class="stat-item-number">S/ 42.8B</div>
-                    <div class="stat-item-label">Presupuesto total</div>
-                </div>
-                <div class="stat-item">
                     <div class="stat-item-icon">🗺️</div>
-                    <div class="stat-item-number">25</div>
-                    <div class="stat-item-label">Departamentos</div>
+                    <div class="stat-item-number">196</div>
+                    <div class="stat-item-label">Provincias</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-icon">💻</div>
+                    <div class="stat-item-number">107,681</div>
+                    <div class="stat-item-label">PCs operativas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-icon">🔗</div>
+                    <div class="stat-item-number">56%</div>
+                    <div class="stat-item-label">Con portal de transparencia</div>
                 </div>
             </div>
+            <p class="filter-hint">FUENTE: RENAMU 2025 · MÓDULOS I Y II · INEI</p>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -199,22 +211,22 @@
                 <div>
                     <h4>Recursos</h4>
                     <ul class="footer-links">
-                        <li><a href="#">API RENAMU</a></li>
-                        <li><a href="datos.html">Documentación</a></li>
-                        <li><a href="datos.html">Descargas</a></li>
+                        <li><a href="datos.html#descargas">Descargas</a></li>
+                        <li><a href="datos.html#diccionario">Diccionario de datos</a></li>
+                        <li><a href="estadisticas.html">Estadísticas</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4>Contacto</h4>
                     <ul class="footer-links">
                         <li><a href="contacto.html">Formulario</a></li>
-                        <li><a href="#">renamu@inei.gob.pe</a></li>
-                        <li><a href="#">(01) 652-0000</a></li>
+                        <li><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a></li>
+                        <li><a href="tel:+5116520000">(01) 652-0000</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                Copyright © 2024 INEI. Todos los derechos reservados.
+                Copyright © 2026 INEI · Registro Nacional de Municipalidades · Datos 2021–2025
             </div>
         </div>
     </footer>

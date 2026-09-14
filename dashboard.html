@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | RENAMU 2024 - INEI</title>
+    <title>Dashboard | RENAMU - INEI</title>
+    <meta name="description" content="Panel interactivo del RENAMU: reporte Power BI y buscador de las municipalidades del Perú por departamento, tipo y portal de transparencia, 2021–2025.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A2A43'/%3E%3Cpath d='M8 22V13l8-5 8 5v9' fill='none' stroke='%234FC3E8' stroke-width='2.2'/%3E%3Cpath d='M6 22h20' stroke='%234FC3E8' stroke-width='2.2'/%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,14 +13,20 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <div class="navbar-inner">
             <a href="index.html" class="navbar-logo">
-                <div class="navbar-logo-icon">INEI</div>
+                <div class="navbar-logo-icon" aria-hidden="true">INEI</div>
                 RENAMU
             </a>
-            <ul class="navbar-links">
+            <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir menú de navegación">
+                <span class="material-icons icon-open" aria-hidden="true">menu</span>
+                <span class="material-icons icon-close" aria-hidden="true">close</span>
+            </button>
+            <ul class="navbar-links" id="navLinks">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="dashboard.html" class="active">Dashboard</a></li>
                 <li><a href="datos.html">Datos</a></li>
@@ -36,6 +44,7 @@
         </div>
     </div>
 
+    <main id="contenido">
     <!-- Stats -->
     <section class="section">
         <div class="container">
@@ -70,18 +79,18 @@
             <div class="powerbi-card tech-frame reveal">
                 <div class="powerbi-header">
                     <div class="powerbi-header-title">
-                        <span class="powerbi-live-dot"></span>
+                        <span class="powerbi-live-dot" aria-hidden="true"></span>
                         <div>
                             <h3>RENAMU · Reporte Power BI</h3>
                             <div class="powerbi-subtitle">ACCESO PÚBLICO · PUBLICADO EN LA WEB</div>
                         </div>
                     </div>
                     <div class="powerbi-header-actions">
-                        <button class="powerbi-icon-btn" title="Recargar" onclick="recargarPowerBI()">
-                            <span class="material-icons">refresh</span>
+                        <button class="powerbi-icon-btn" title="Recargar reporte" aria-label="Recargar reporte" onclick="recargarPowerBI()">
+                            <span class="material-icons" aria-hidden="true">refresh</span>
                         </button>
-                        <button class="powerbi-icon-btn" title="Pantalla completa" onclick="pantallaCompletaPowerBI()">
-                            <span class="material-icons">fullscreen</span>
+                        <button class="powerbi-icon-btn" title="Pantalla completa" aria-label="Ver en pantalla completa" onclick="pantallaCompletaPowerBI()">
+                            <span class="material-icons" aria-hidden="true">fullscreen</span>
                         </button>
                     </div>
                 </div>
@@ -95,8 +104,9 @@
                         title="RENAMU - Reporte Power BI"
                         src="https://app.powerbi.com/view?r=eyJrIjoiYjE5NmI0MzMtMzUyZC00ZDg5LTgxZDktM2QxZTk1NGM3NjdjIiwidCI6IjA0ZjdkYzQ5LTY3YTAtNDJmYi1iYmRjLTUxOTlmMTliMTA0ZCIsImMiOjR9"
                         frameborder="0"
-                        allowFullScreen="true"
-                        onload="document.getElementById('powerbiLoading').style.display='none';">
+                        allowfullscreen
+                        loading="lazy"
+                        onload="if (window.powerBICargado) powerBICargado(); else this.previousElementSibling.style.display='none';">
                     </iframe>
                 </div>
             </div>
@@ -109,28 +119,43 @@
             <div class="filter-bar tech-frame reveal">
                 <div class="filter-grid">
                     <div class="filter-group">
-                        <label>Año RENAMU</label>
+                        <label for="filtroAnio">Año RENAMU</label>
                         <select class="filter-select" id="filtroAnio"></select>
                     </div>
                     <div class="filter-group">
-                        <label>Departamento</label>
-                        <select class="filter-select" id="filtroDepto" onchange="aplicarFiltros()">
+                        <label for="filtroDepto">Departamento</label>
+                        <select class="filter-select" id="filtroDepto">
                             <option value="">Todos</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label>Tipo</label>
-                        <select class="filter-select" id="filtroTipo" onchange="aplicarFiltros()">
+                        <label for="filtroTipo">Tipo</label>
+                        <select class="filter-select" id="filtroTipo">
                             <option value="">Todos</option>
                             <option value="1">Provincial</option>
                             <option value="2">Distrital</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label>Buscar</label>
-                        <input type="text" class="filter-input" id="busqueda" placeholder="Distrito, provincia o alcalde..." oninput="aplicarFiltros()">
+                        <label for="filtroPortal">Portal de transparencia</label>
+                        <select class="filter-select" id="filtroPortal">
+                            <option value="">Todos</option>
+                            <option value="Si">Sí reporta</option>
+                            <option value="No">No reporta</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="busqueda">Buscar</label>
+                        <input type="search" class="filter-input" id="busqueda" placeholder="Distrito, provincia, alcalde o ubigeo…">
+                    </div>
+                    <div class="filter-group filter-actions">
+                        <button class="btn btn-ghost btn-sm" id="limpiarFiltros" type="button">
+                            <span class="material-icons" style="font-size:16px;" aria-hidden="true">restart_alt</span>
+                            Limpiar filtros
+                        </button>
                     </div>
                 </div>
+                <p class="filter-hint">CONSEJO · HAZ CLIC EN UNA CABECERA DE LA TABLA PARA ORDENARLA</p>
             </div>
         </div>
     </section>
@@ -141,27 +166,28 @@
             <div class="table-container tech-frame reveal">
                 <div class="table-top-bar">
                     <h3>Resultados</h3>
-                    <span class="table-count" id="resultadosCount"></span>
+                    <span class="table-count" id="resultadosCount" aria-live="polite"></span>
                 </div>
                 <div class="table-scroll">
                     <table class="data-table">
+                        <caption class="sr-only">Municipalidades del registro RENAMU según los filtros aplicados</caption>
                         <thead>
                             <tr>
-                                <th>Ubigeo</th>
-                                <th>Departamento</th>
-                                <th>Provincia</th>
-                                <th>Distrito</th>
-                                <th>Tipo</th>
-                                <th>Alcalde</th>
-                                <th>PCs Operativas</th>
-                                <th>Portal Transparencia</th>
+                                <th data-campo="ubigeo" tabindex="0" aria-sort="none">Ubigeo</th>
+                                <th data-campo="departamento" tabindex="0" aria-sort="none">Departamento</th>
+                                <th data-campo="provincia" tabindex="0" aria-sort="none">Provincia</th>
+                                <th data-campo="distrito" tabindex="0" aria-sort="none">Distrito</th>
+                                <th data-campo="tipo_municipalidad" tabindex="0" aria-sort="none">Tipo</th>
+                                <th data-campo="nombre_alcalde" tabindex="0" aria-sort="none">Alcalde</th>
+                                <th data-campo="pc_total_operativas" tabindex="0" aria-sort="none">PCs operativas</th>
+                                <th data-campo="tiene_portal_transparencia" tabindex="0" aria-sort="none">Portal transparencia</th>
                             </tr>
                         </thead>
                         <tbody id="tablaBody">
                             <tr>
-                                <td colspan="8" style="text-align:center;padding:60px;">
-                                    <span class="material-icons" style="font-size:3rem;display:block;margin-bottom:16px;color:var(--gray-400);">hourglass_empty</span>
-                                    Cargando datos...
+                                <td colspan="8" class="table-state">
+                                    <span class="table-state-spinner" aria-hidden="true"></span>
+                                    Cargando datos…
                                 </td>
                             </tr>
                         </tbody>
@@ -169,11 +195,12 @@
                 </div>
                 <div class="pagination-wrapper">
                     <div class="pagination-info" id="paginationInfo"></div>
-                    <div class="pagination" id="paginacion"></div>
+                    <nav class="pagination" id="paginacion" aria-label="Paginación de resultados"></nav>
                 </div>
             </div>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -181,7 +208,7 @@
             <div class="footer-grid">
                 <div>
                     <h4>INEI - RENAMU</h4>
-                    <p>Instituto Nacional de Estadística e Informática</p>
+                    <p>Instituto Nacional de Estadística e Informática<br>Registro Nacional de Municipalidades</p>
                 </div>
                 <div>
                     <h4>Navegación</h4>
@@ -189,36 +216,33 @@
                         <li><a href="index.html">Inicio</a></li>
                         <li><a href="dashboard.html">Dashboard</a></li>
                         <li><a href="datos.html">Datos</a></li>
+                        <li><a href="estadisticas.html">Estadísticas</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4>Recursos</h4>
                     <ul class="footer-links">
-                        <li><a href="#">API</a></li>
-                        <li><a href="datos.html">Documentación</a></li>
+                        <li><a href="datos.html#descargas">Descargas</a></li>
+                        <li><a href="datos.html#diccionario">Diccionario de datos</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4>Contacto</h4>
                     <ul class="footer-links">
                         <li><a href="contacto.html">Formulario</a></li>
+                        <li><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="footer-bottom">© 2024 INEI</div>
+            <div class="footer-bottom">Copyright © 2026 INEI · Datos RENAMU 2021–2025</div>
         </div>
     </footer>
 
-    <div class="toast" id="toast">
-        <span class="material-icons toast-icon">check_circle</span>
+    <div class="toast" id="toast" role="status" aria-live="polite">
+        <span class="material-icons toast-icon" aria-hidden="true">check_circle</span>
         <span id="toastMessage"></span>
     </div>
 
-    <script src="data/municipios_2021.js"></script>
-    <script src="data/municipios_2022.js"></script>
-    <script src="data/municipios_2023.js"></script>
-    <script src="data/municipios_2024.js"></script>
-    <script src="data/municipios_2025.js"></script>
     <script src="data/municipios.js"></script>
     <script src="js/main.js"></script>
     <script src="js/dashboard.js"></script>
