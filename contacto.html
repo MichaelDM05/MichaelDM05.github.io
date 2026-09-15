@@ -105,7 +105,7 @@
                          3. Agrega tu dominio (y "localhost" si quieres probarlo en tu equipo)
                          4. Pega aquí la "clave del sitio" (la "clave secreta" va en el Apps Script, no aquí) -->
                     <div class="form-group">
-                        <div class="g-recaptcha" data-sitekey="TU_CLAVE_DE_SITIO_RECAPTCHA"></div>
+                        <div class="g-recaptcha" data-sitekey="6LebOLwtAAAAAPQ7DgobFla3BMppZMZ6vdKw2L6N"></div>
                     </div>
 
                     <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
@@ -159,7 +159,7 @@
     <script src="js/main.js"></script>
     <script>
         // Pega aquí la URL de "Aplicación web" que te da Apps Script al desplegar
-        const CONTACTO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgK9K1XXOFR6PTEWHLTkMLGPEYmpRMdBw5wjlobkd4b9mDYKXrXsID7_pqMbx86pbF/exec';
+        const CONTACTO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLxcUoli-31oCjJt3QjDMd1rqMRSzAivv-VTES13lE3-F7271gOcx26fGA3aiBCJzM/exec';
 
         document.getElementById('formContacto').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -192,6 +192,8 @@
                 return;
             }
 
+            datos.captchaToken = grecaptcha.getResponse();
+            delete datos['g-recaptcha-response'];
             delete datos.sitio_web;
 
             boton.disabled = true;
