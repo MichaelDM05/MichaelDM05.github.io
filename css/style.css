@@ -610,28 +610,6 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 .pill-blue { background: var(--blue-light); color: var(--blue-deep); }
 .pill-green { background: #E3F3EA; color: #1D7A45; }
 
-.pagination-wrapper { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid var(--line); }
-.pagination-info { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-soft); }
-.pagination { display: flex; gap: 4px; }
-
-.pagination button {
-    width: 34px;
-    height: 34px;
-    border: 1px solid transparent;
-    background: transparent;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--ink-soft);
-    transition: var(--transition);
-}
-
-.pagination button:hover { background: var(--gray-100); color: var(--ink); }
-.pagination button.active { background: var(--blue); color: var(--white); }
-.pagination button:disabled { opacity: 0.35; cursor: not-allowed; }
-
 /* ============================================================
    Estadísticas — charts
    ============================================================ */
@@ -763,12 +741,16 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     overflow: hidden;
 }
 
-/* El widget de reCAPTCHA mide ~304px fijos: en pantallas angostas lo encogemos
-   en vez de dejar que desborde el formulario. */
-.g-recaptcha { transform-origin: 0 0; }
+.captcha-group label { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; }
 
-@media (max-width: 360px) {
-    .g-recaptcha { transform: scale(0.87); }
+.captcha-question {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--navy);
+    background: var(--blue-light);
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
 }
 
 .contact-form { position: relative; background: var(--white); border: 1px solid var(--line); border-radius: 4px; padding: 36px; }
@@ -1137,21 +1119,25 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 .pill-muted { background: var(--gray-200); color: var(--ink-soft); }
 .pill-soft { background: var(--gray-100); color: var(--gray-600); }
 
-/* Cabeceras ordenables */
+/* Cabeceras ordenables. El indicador es un triángulo dibujado en CSS (no un ícono
+   de fuente): así nunca puede aparecer como texto suelto si una fuente no carga. */
 .data-table th[data-campo] { cursor: pointer; user-select: none; }
 .data-table th[data-campo]:hover { color: var(--white); }
 
 .data-table th[data-campo]::after {
-    content: 'unfold_more';
-    font-family: 'Material Icons';
-    font-size: 14px;
-    vertical-align: -3px;
+    content: '';
+    display: inline-block;
     margin-left: 6px;
-    opacity: 0.4;
+    vertical-align: middle;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+    opacity: 0.35;
+    transform: translateY(-1px);
 }
 
-.data-table th.sorted::after { content: 'arrow_upward'; opacity: 1; color: var(--cyan); }
-.data-table th.sorted.desc::after { content: 'arrow_downward'; }
+.data-table th.sorted::after { opacity: 1; color: var(--cyan); }
+.data-table th.sorted.desc::after { transform: translateY(-1px) rotate(180deg); }
 
 .filter-actions { display: flex; align-items: flex-end; }
 .filter-hint { margin-top: 14px; font-size: 0.78rem; color: var(--ink-soft); font-family: var(--font-mono); }
