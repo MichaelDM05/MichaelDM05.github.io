@@ -1,9 +1,13 @@
 // RENAMU · Dashboard (datos reales, Módulo I y II)
 
-const PAGE_SIZE = 15;
-let paginaActual = 1;
 let datosFiltrados = [];
 let orden = { campo: null, asc: true };
+
+// ubigeo/id_municipalidad pierden el cero inicial en departamentos 1-9 (se guardan
+// como número); esto lo restaura para mostrar y filtrar con el formato oficial de 6 dígitos.
+function ubigeoPadded(d) {
+    return String(d.ubigeo).padStart(6, '0');
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     poblarSelectorAnio();
@@ -15,7 +19,7 @@ function conectarEventos() {
     document.getElementById('filtroAnio').addEventListener('change', (e) => cambiarAnio(e.target.value));
     document.getElementById('filtroDepto').addEventListener('change', aplicarFiltros);
     document.getElementById('filtroTipo').addEventListener('change', aplicarFiltros);
-    document.getElementById('filtroPortal').addEventListener('change', aplicarFiltros);
+    document.getElementById('filtroUbigeo').addEventListener('input', debounce(aplicarFiltros, 200));
     document.getElementById('busqueda').addEventListener('input', debounce(aplicarFiltros, 200));
     document.getElementById('limpiarFiltros').addEventListener('click', limpiarFiltros);
 
@@ -50,8 +54,6 @@ function mostrarCargando() {
             Cargando el registro del año ${escaparHtml(window.RENAMU.anioActual)}…
         </td></tr>`;
     document.getElementById('resultadosCount').textContent = '';
-    document.getElementById('paginationInfo').textContent = '';
-    document.getElementById('paginacion').innerHTML = '';
     document.querySelectorAll('.stat-item-number').forEach((el) => el.classList.add('is-loading'));
 }
 
@@ -112,7 +114,7 @@ function poblarFiltroDepartamento() {
 function limpiarFiltros() {
     document.getElementById('filtroDepto').value = '';
     document.getElementById('filtroTipo').value = '';
-    document.getElementById('filtroPortal').value = '';
+    document.getElementById('filtroUbigeo').value = '';
     document.getElementById('busqueda').value = '';
     aplicarFiltros();
 }
@@ -121,29 +123,27 @@ function aplicarFiltros() {
     const datos = window.RENAMU.datos();
     const depto = document.getElementById('filtroDepto').value;
     const tipo = document.getElementById('filtroTipo').value;
-    const portal = document.getElementById('filtroPortal').value;
+    const ubigeo = document.getElementById('filtroUbigeo').value.trim().replace(/\s+/g, '');
     const busqueda = document.getElementById('busqueda').value.trim().toLowerCase();
 
     datosFiltrados = datos.filter((d) => {
         if (depto && d.departamento !== depto) return false;
         if (tipo && String(d.tipo_municipalidad) !== tipo) return false;
-        if (portal && d.tiene_portal_transparencia !== portal) return false;
+        if (ubigeo && !ubigeoPadded(d).startsWith(ubigeo)) return false;
         if (busqueda) {
-            const texto = `${d.distrito} ${d.provincia} ${d.departamento} ${d.nombre_alcalde || ''} ${d.ubigeo}`.toLowerCase();
+            const texto = `${d.distrito} ${d.provincia} ${d.departamento} ${d.nombre_alcalde || ''}`.toLowerCase();
             if (!texto.includes(busqueda)) return false;
         }
         return true;
     });
 
     aplicarOrden();
-    paginaActual = 1;
     renderTabla();
 }
 
 function ordenarPor(campo) {
     orden = { campo: campo, asc: orden.campo === campo ? !orden.asc : true };
     aplicarOrden();
-    paginaActual = 1;
     renderTabla();
 }
 
@@ -151,7 +151,7 @@ function aplicarOrden() {
     if (!orden.campo) return;
     const campo = orden.campo;
     const dir = orden.asc ? 1 : -1;
-    const numerico = campo === 'pc_total_operativas' || campo === 'ubigeo' || campo === 'tipo_municipalidad';
+    const numerico = campo === 'ubigeo' || campo === 'tipo_municipalidad';
 
     datosFiltrados.sort((a, b) => {
         const va = a[campo], vb = b[campo];
@@ -167,84 +167,39 @@ function aplicarOrden() {
     });
 }
 
+// Sin paginación: las 1,891 municipalidades filtradas se renderizan de una vez
+// dentro del recuadro, que se desplaza internamente (.table-scroll).
 function renderTabla() {
     const tbody = document.getElementById('tablaBody');
     const total = datosFiltrados.length;
-    const totalPaginas = Math.max(1, Math.ceil(total / PAGE_SIZE));
-    paginaActual = Math.min(paginaActual, totalPaginas);
-
-    const inicio = (paginaActual - 1) * PAGE_SIZE;
-    const pagina = datosFiltrados.slice(inicio, inicio + PAGE_SIZE);
 
     document.getElementById('resultadosCount').textContent =
         `${numeroPE(total)} ${total === 1 ? 'resultado' : 'resultados'}`;
 
-    if (pagina.length === 0) {
+    if (total === 0) {
         tbody.innerHTML = `
             <tr><td colspan="8" class="table-state">
                 <span class="material-icons table-state-icon">search_off</span>
                 No se encontraron municipalidades con esos filtros.
             </td></tr>`;
-    } else {
-        tbody.innerHTML = pagina.map((d) => {
-            const esProvincial = Number(d.tipo_municipalidad) === 1;
-            const tipo = d.informante_etiqueta || (esProvincial ? 'Provincial' : 'Distrital');
-            const portal = d.tiene_portal_transparencia === 'Si'
-                ? '<span class="pill pill-green">Sí</span>'
-                : '<span class="pill pill-muted">No</span>';
-            return `
-            <tr>
-                <td class="mono">${escaparHtml(d.ubigeo)}</td>
-                <td>${escaparHtml(tituloCaso(d.departamento))}</td>
-                <td>${escaparHtml(tituloCaso(d.provincia))}</td>
-                <td class="cell-strong">${escaparHtml(tituloCaso(d.distrito))}</td>
-                <td><span class="pill ${esProvincial ? 'pill-blue' : 'pill-soft'}">${escaparHtml(tipo)}</span></td>
-                <td>${escaparHtml(tituloCaso(d.nombre_alcalde)) || '—'}</td>
-                <td class="mono num">${numeroPE(d.pc_total_operativas)}</td>
-                <td>${portal}</td>
-            </tr>`;
-        }).join('');
-    }
-
-    document.getElementById('paginationInfo').textContent =
-        total === 0 ? '' : `Página ${paginaActual} de ${totalPaginas}`;
-
-    renderPaginacion(totalPaginas);
-}
-
-function renderPaginacion(totalPaginas) {
-    const cont = document.getElementById('paginacion');
-
-    if (datosFiltrados.length === 0) {
-        cont.innerHTML = '';
         return;
     }
 
-    let html = `<button ${paginaActual === 1 ? 'disabled' : ''} aria-label="Página anterior" onclick="irAPagina(${paginaActual - 1})">
-        <span class="material-icons" aria-hidden="true">chevron_left</span>
-    </button>`;
-
-    const rango = 2;
-    for (let i = 1; i <= totalPaginas; i++) {
-        if (i === 1 || i === totalPaginas || (i >= paginaActual - rango && i <= paginaActual + rango)) {
-            html += `<button class="${i === paginaActual ? 'active' : ''}" aria-label="Página ${i}"
-                ${i === paginaActual ? 'aria-current="page"' : ''} onclick="irAPagina(${i})">${i}</button>`;
-        } else if (i === paginaActual - rango - 1 || i === paginaActual + rango + 1) {
-            html += `<button disabled aria-hidden="true">…</button>`;
-        }
-    }
-
-    html += `<button ${paginaActual === totalPaginas ? 'disabled' : ''} aria-label="Página siguiente" onclick="irAPagina(${paginaActual + 1})">
-        <span class="material-icons" aria-hidden="true">chevron_right</span>
-    </button>`;
-
-    cont.innerHTML = html;
-}
-
-function irAPagina(n) {
-    paginaActual = n;
-    renderTabla();
-    document.querySelector('.table-container').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    tbody.innerHTML = datosFiltrados.map((d) => {
+        const esProvincial = Number(d.tipo_municipalidad) === 1;
+        const tipo = d.informante_etiqueta || (esProvincial ? 'Provincial' : 'Distrital');
+        return `
+        <tr>
+            <td class="mono">${escaparHtml(ubigeoPadded(d))}</td>
+            <td>${escaparHtml(tituloCaso(d.departamento))}</td>
+            <td>${escaparHtml(tituloCaso(d.provincia))}</td>
+            <td class="cell-strong">${escaparHtml(tituloCaso(d.distrito))}</td>
+            <td><span class="pill ${esProvincial ? 'pill-blue' : 'pill-soft'}">${escaparHtml(tipo)}</span></td>
+            <td>${escaparHtml(tituloCaso(d.nombre_alcalde)) || '—'}</td>
+            <td>${escaparHtml(d.sexo_alcalde) || '—'}</td>
+            <td class="mono">${escaparHtml((d.correo_municipalidad || '').toLowerCase()) || '—'}</td>
+        </tr>`;
+    }).join('');
 }
 
 function recargarPowerBI() {
