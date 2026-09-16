@@ -5,18 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RENAMU 2021–2025 | INEI - Inicio</title>
     <meta name="description" content="Registro Nacional de Municipalidades (RENAMU) del INEI: 1,891 municipalidades del Perú con datos de gestión, equipamiento y transparencia, 2021–2025.">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A2A43'/%3E%3Cpath d='M8 22V13l8-5 8 5v9' fill='none' stroke='%234FC3E8' stroke-width='2.2'/%3E%3Cpath d='M6 22h20' stroke='%234FC3E8' stroke-width='2.2'/%3E%3C/svg%3E">
+    <meta name="theme-color" content="#0A2A43">
+    <!-- Si el sitio cambia de dominio, actualiza michaeldm05.github.io aquí y en el
+         resto de páginas, además de sitemap.xml y robots.txt. -->
+    <link rel="canonical" href="https://michaeldm05.github.io/index.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RENAMU · INEI">
+    <meta property="og:locale" content="es_PE">
+    <meta property="og:title" content="RENAMU 2021–2025 | Registro Nacional de Municipalidades">
+    <meta property="og:description" content="1,891 municipalidades del Perú con datos de gestión, equipamiento y transparencia, publicados por el INEI (2021–2025).">
+    <meta property="og:url" content="https://michaeldm05.github.io/index.html">
+    <meta property="og:image" content="https://michaeldm05.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RENAMU 2021–2025 | Registro Nacional de Municipalidades">
+    <meta name="twitter:description" content="1,891 municipalidades del Perú con datos de gestión, equipamiento y transparencia, publicados por el INEI.">
+    <meta name="twitter:image" content="https://michaeldm05.github.io/og-image.png">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "GovernmentOrganization",
+                "@id": "https://michaeldm05.github.io/#organizacion",
+                "name": "Instituto Nacional de Estadística e Informática (INEI)",
+                "alternateName": "INEI",
+                "url": "https://michaeldm05.github.io/",
+                "email": "renamu@inei.gob.pe",
+                "telephone": "+51-1-652-0000",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Av. General Garzón 654-658, Jesús María",
+                    "addressLocality": "Lima",
+                    "addressCountry": "PE"
+                }
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://michaeldm05.github.io/#sitio",
+                "url": "https://michaeldm05.github.io/",
+                "name": "RENAMU · INEI",
+                "inLanguage": "es-PE",
+                "publisher": { "@id": "https://michaeldm05.github.io/#organizacion" }
+            },
+            {
+                "@type": "Dataset",
+                "name": "Registro Nacional de Municipalidades (RENAMU) 2021–2025",
+                "description": "Datos generales, equipamiento y tecnologías de la información de las municipalidades del Perú, levantados anualmente por el INEI (Módulo I y II).",
+                "url": "https://michaeldm05.github.io/datos.html",
+                "license": "https://www.inei.gob.pe/",
+                "temporalCoverage": "2021/2025",
+                "spatialCoverage": {
+                    "@type": "Place",
+                    "name": "Perú"
+                },
+                "creator": { "@id": "https://michaeldm05.github.io/#organizacion" },
+                "publisher": { "@id": "https://michaeldm05.github.io/#organizacion" },
+                "distribution": [
+                    { "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://michaeldm05.github.io/datos.html" },
+                    { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://michaeldm05.github.io/datos.html" },
+                    { "@type": "DataDownload", "encodingFormat": "application/pdf", "contentUrl": "https://michaeldm05.github.io/docs/renamu_diccionario_2025.pdf" }
+                ]
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
     <!-- Navbar -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar" id="navbar" aria-label="Navegación principal">
         <div class="navbar-inner">
             <a href="index.html" class="navbar-logo">
                 <div class="navbar-logo-icon" aria-hidden="true">INEI</div>
@@ -27,7 +94,7 @@
                 <span class="material-icons icon-close" aria-hidden="true">close</span>
             </button>
             <ul class="navbar-links" id="navLinks">
-                <li><a href="index.html" class="active">Inicio</a></li>
+                <li><a href="index.html" class="active" aria-current="page">Inicio</a></li>
                 <li><a href="dashboard.html">Dashboard</a></li>
                 <li><a href="datos.html">Datos</a></li>
                 <li><a href="estadisticas.html">Estadísticas</a></li>
@@ -69,7 +136,7 @@
 
             <!-- Signature graphic: lectura técnica del territorio que cubre el registro -->
             <div class="hero-map">
-                <svg viewBox="0 0 420 440" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 420 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                     <path class="contour contour--soft" d="M40 60 C 110 40, 170 90, 210 70 S 320 30, 380 55"/>
                     <path class="contour contour--soft" d="M30 100 C 100 80, 160 130, 205 110 S 315 75, 390 100"/>
                     <path class="contour contour--mid" d="M25 145 C 95 120, 155 175, 200 150 S 310 115, 395 140"/>
@@ -133,21 +200,24 @@
                 </p>
             </div>
             <div class="features-grid">
-                <div class="feature-card reveal" data-code="REG—01 / DASHBOARD">
-                    <div class="feature-icon">📊</div>
+                <a href="dashboard.html" class="feature-card reveal" data-code="REG—01 / DASHBOARD">
+                    <div class="feature-icon" aria-hidden="true">📊</div>
                     <h3>Dashboard Interactivo</h3>
                     <p>Visualiza indicadores clave con gráficos dinámicos y filtros avanzados</p>
-                </div>
-                <div class="feature-card reveal reveal-delay-1" data-code="REG—02 / BÚSQUEDA">
-                    <div class="feature-icon">🔍</div>
+                    <span class="feature-card-cta">Ver Dashboard <span class="material-icons" aria-hidden="true">arrow_forward</span></span>
+                </a>
+                <a href="dashboard.html" class="feature-card reveal reveal-delay-1" data-code="REG—02 / BÚSQUEDA">
+                    <div class="feature-icon" aria-hidden="true">🔍</div>
                     <h3>Búsqueda Avanzada</h3>
-                    <p>Encuentra cualquier municipalidad por departamento, provincia o distrito</p>
-                </div>
-                <div class="feature-card reveal reveal-delay-2" data-code="REG—03 / EXPORTACIÓN">
-                    <div class="feature-icon">📥</div>
+                    <p>Encuentra cualquier municipalidad por ubigeo, departamento, provincia o distrito</p>
+                    <span class="feature-card-cta">Buscar municipalidad <span class="material-icons" aria-hidden="true">arrow_forward</span></span>
+                </a>
+                <a href="datos.html" class="feature-card reveal reveal-delay-2" data-code="REG—03 / EXPORTACIÓN">
+                    <div class="feature-icon" aria-hidden="true">📥</div>
                     <h3>Exportación de Datos</h3>
-                    <p>Descarga la información en formatos compatibles para tus análisis</p>
-                </div>
+                    <p>Descarga la información en CSV, JSON o el diccionario oficial en PDF</p>
+                    <span class="feature-card-cta">Ir a Datos <span class="material-icons" aria-hidden="true">arrow_forward</span></span>
+                </a>
             </div>
         </div>
     </section>
@@ -185,6 +255,28 @@
             <p class="filter-hint">FUENTE: RENAMU 2025 · MÓDULOS I Y II · INEI</p>
         </div>
     </section>
+
+    <!-- CTA final -->
+    <section class="section">
+        <div class="container">
+            <div class="cta-band reveal">
+                <div class="cta-band-copy">
+                    <h2>¿Tienes dudas sobre el registro?</h2>
+                    <p>Escríbenos si necesitas ayuda con los datos, un reporte de error o información adicional.</p>
+                </div>
+                <div class="cta-band-actions">
+                    <a href="contacto.html" class="btn btn-primary">
+                        <span class="material-icons" style="font-size:18px;" aria-hidden="true">mail</span>
+                        Contáctanos
+                    </a>
+                    <a href="datos.html#diccionario" class="btn btn-outline">
+                        <span class="material-icons" style="font-size:18px;" aria-hidden="true">menu_book</span>
+                        Ver diccionario de datos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
     </main>
 
     <!-- Footer -->
@@ -192,7 +284,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <h4>INEI - RENAMU</h4>
+                    <h2>INEI - RENAMU</h2>
                     <p>
                         Instituto Nacional de Estadística e Informática<br>
                         Registro Nacional de Municipalidades<br>
@@ -200,7 +292,7 @@
                     </p>
                 </div>
                 <div>
-                    <h4>Navegación</h4>
+                    <h2>Navegación</h2>
                     <ul class="footer-links">
                         <li><a href="index.html">Inicio</a></li>
                         <li><a href="dashboard.html">Dashboard</a></li>
@@ -209,7 +301,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h4>Recursos</h4>
+                    <h2>Recursos</h2>
                     <ul class="footer-links">
                         <li><a href="datos.html#descargas">Descargas</a></li>
                         <li><a href="datos.html#diccionario">Diccionario de datos</a></li>
@@ -217,7 +309,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h4>Contacto</h4>
+                    <h2>Contacto</h2>
                     <ul class="footer-links">
                         <li><a href="contacto.html">Formulario</a></li>
                         <li><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a></li>

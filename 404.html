@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada | RENAMU - INEI</title>
+    <meta name="description" content="La página que buscas no existe o cambió de dirección. Vuelve al inicio del Registro Nacional de Municipalidades (RENAMU) del INEI.">
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#0A2A43">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .error-plate {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 22px;
+            padding: 64px 0 96px;
+        }
+        .error-code {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            color: var(--blue);
+        }
+        .error-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <nav class="navbar" id="navbar" aria-label="Navegación principal">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-logo">
+                <div class="navbar-logo-icon" aria-hidden="true">INEI</div>
+                RENAMU
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir menú de navegación">
+                <span class="material-icons icon-open" aria-hidden="true">menu</span>
+                <span class="material-icons icon-close" aria-hidden="true">close</span>
+            </button>
+            <ul class="navbar-links" id="navLinks">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="datos.html">Datos</a></li>
+                <li><a href="estadisticas.html">Estadísticas</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="contenido">
+    <section class="section">
+        <div class="container">
+            <div class="error-plate">
+                <span class="error-code">ERROR 404 · PÁGINA NO ENCONTRADA</span>
+                <h1 class="section-title" style="margin-bottom:0;">Esta página no existe o cambió de dirección</h1>
+                <p class="section-subtitle" style="max-width:56ch;">
+                    Revisa la dirección o vuelve al inicio para llegar al Dashboard, las descargas de Datos
+                    o las Estadísticas del Registro Nacional de Municipalidades.
+                </p>
+                <div class="error-actions">
+                    <a href="index.html" class="btn btn-primary">
+                        <span class="material-icons" style="font-size:18px;" aria-hidden="true">home</span>
+                        Volver al inicio
+                    </a>
+                    <a href="dashboard.html" class="btn btn-outline">
+                        <span class="material-icons" style="font-size:18px;" aria-hidden="true">search</span>
+                        Buscar una municipalidad
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h2>INEI - RENAMU</h2>
+                    <p>Instituto Nacional de Estadística e Informática<br>Registro Nacional de Municipalidades</p>
+                </div>
+                <div>
+                    <h2>Navegación</h2>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="datos.html">Datos</a></li>
+                        <li><a href="estadisticas.html">Estadísticas</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Recursos</h2>
+                    <ul class="footer-links">
+                        <li><a href="datos.html#descargas">Descargas</a></li>
+                        <li><a href="datos.html#diccionario">Diccionario de datos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Contacto</h2>
+                    <ul class="footer-links">
+                        <li><a href="contacto.html">Formulario</a></li>
+                        <li><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">Copyright © 2026 INEI · Datos RENAMU 2021–2025</div>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">
+        <span class="material-icons toast-icon" aria-hidden="true">check_circle</span>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

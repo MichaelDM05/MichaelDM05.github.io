@@ -5,8 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | RENAMU - INEI</title>
     <meta name="description" content="Panel interactivo del RENAMU: reporte Power BI y buscador de las 1,891 municipalidades del Perú por ubigeo, departamento, tipo y alcalde, 2021–2025.">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A2A43'/%3E%3Cpath d='M8 22V13l8-5 8 5v9' fill='none' stroke='%234FC3E8' stroke-width='2.2'/%3E%3Cpath d='M6 22h20' stroke='%234FC3E8' stroke-width='2.2'/%3E%3C/svg%3E">
+    <meta name="theme-color" content="#0A2A43">
+    <link rel="canonical" href="https://michaeldm05.github.io/dashboard.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RENAMU · INEI">
+    <meta property="og:locale" content="es_PE">
+    <meta property="og:title" content="Dashboard | RENAMU - INEI">
+    <meta property="og:description" content="Reporte Power BI y buscador de las 1,891 municipalidades del Perú por ubigeo, departamento, tipo y alcalde.">
+    <meta property="og:url" content="https://michaeldm05.github.io/dashboard.html">
+    <meta property="og:image" content="https://michaeldm05.github.io/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Dashboard | RENAMU - INEI">
+    <meta name="twitter:image" content="https://michaeldm05.github.io/og-image.png">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://michaeldm05.github.io/index.html" },
+            { "@type": "ListItem", "position": 2, "name": "Dashboard", "item": "https://michaeldm05.github.io/dashboard.html" }
+        ]
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -16,7 +39,7 @@
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
     <!-- Navbar -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar" id="navbar" aria-label="Navegación principal">
         <div class="navbar-inner">
             <a href="index.html" class="navbar-logo">
                 <div class="navbar-logo-icon" aria-hidden="true">INEI</div>
@@ -28,7 +51,7 @@
             </button>
             <ul class="navbar-links" id="navLinks">
                 <li><a href="index.html">Inicio</a></li>
-                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="dashboard.html" class="active" aria-current="page">Dashboard</a></li>
                 <li><a href="datos.html">Datos</a></li>
                 <li><a href="estadisticas.html">Estadísticas</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
@@ -48,6 +71,7 @@
     <!-- Stats -->
     <section class="section">
         <div class="container">
+            <h2 class="sr-only">Indicadores clave</h2>
             <div class="stats-grid reveal">
                 <div class="stat-item">
                     <div class="stat-item-icon">🏛️</div>
@@ -116,6 +140,8 @@
     <!-- Filters -->
     <section class="section section-light" style="padding-top:0;">
         <div class="container">
+            <h2 class="subsection-title">Busca una municipalidad</h2>
+            <p class="subsection-subtitle">Filtra el registro por año, departamento, tipo o ubigeo, o escribe un distrito, provincia o alcalde.</p>
             <div class="filter-bar tech-frame reveal">
                 <div class="filter-grid">
                     <div class="filter-group">
@@ -199,11 +225,11 @@
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <h4>INEI - RENAMU</h4>
+                    <h2>INEI - RENAMU</h2>
                     <p>Instituto Nacional de Estadística e Informática<br>Registro Nacional de Municipalidades</p>
                 </div>
                 <div>
-                    <h4>Navegación</h4>
+                    <h2>Navegación</h2>
                     <ul class="footer-links">
                         <li><a href="index.html">Inicio</a></li>
                         <li><a href="dashboard.html">Dashboard</a></li>
@@ -212,14 +238,14 @@
                     </ul>
                 </div>
                 <div>
-                    <h4>Recursos</h4>
+                    <h2>Recursos</h2>
                     <ul class="footer-links">
                         <li><a href="datos.html#descargas">Descargas</a></li>
                         <li><a href="datos.html#diccionario">Diccionario de datos</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4>Contacto</h4>
+                    <h2>Contacto</h2>
                     <ul class="footer-links">
                         <li><a href="contacto.html">Formulario</a></li>
                         <li><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a></li>

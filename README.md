@@ -10,14 +10,15 @@ Módulo II — equipamiento y TIC).
 ```
 RENAMU_web/
 ├── index.html            Portada
-├── dashboard.html        Reporte Power BI + buscador con filtros y tabla paginada
+├── dashboard.html        Reporte Power BI + buscador con filtros y tabla (sin paginar)
 ├── estadisticas.html     Agregados por departamento, tipo, conectividad y autoridades
-├── datos.html            Descargas (CSV/JSON) y diccionario de campos
+├── datos.html            Descargas (CSV/JSON/PDF) y diccionario de campos
 ├── contacto.html         Formulario (se envía a Google Apps Script)
+├── 404.html              Página de error personalizada (la usa GitHub Pages automáticamente)
 ├── css/style.css         Toda la hoja de estilos del sitio
 ├── js/
 │   ├── main.js           Navbar, menú móvil, animación de entrada, toast y utilidades
-│   ├── dashboard.js      Filtros, orden, paginación y control del iframe de Power BI
+│   ├── dashboard.js      Filtros, orden y render de la tabla de municipalidades
 │   ├── estadisticas.js   Cálculo y render de los gráficos
 │   └── datos.js          Generación de los archivos CSV/JSON en el navegador
 ├── data/
@@ -25,6 +26,12 @@ RENAMU_web/
 │   └── municipios_YYYY.js    Un archivo por año (~6,9 MB, 121 campos por municipalidad)
 ├── docs/
 │   └── renamu_diccionario_YYYY.pdf   Diccionario oficial de variables del INEI (2022-2025)
+├── favicon.svg           Ícono del sitio (marca INEI/RENAMU)
+├── apple-touch-icon.png  Ícono para agregar el sitio a la pantalla de inicio (iOS)
+├── og-image.png          Imagen de vista previa al compartir el sitio (Open Graph/Twitter Card)
+├── robots.txt            Permite el rastreo completo y apunta al sitemap
+├── sitemap.xml           Listado de páginas para buscadores
+├── .nojekyll             Evita que GitHub Pages procese el sitio con Jekyll
 └── .vscode/              Configuración del editor
 ```
 
@@ -111,3 +118,49 @@ proveedor:
 Esto filtra bots de formularios genéricos, pero no es tan robusto como reCAPTCHA/hCaptcha
 frente a bots dirigidos. Si en el futuro se necesita más protección, la validación real
 tendría que moverse también al Apps Script (hoy sólo valida en el navegador).
+
+## Publicar en GitHub Pages
+
+El sitio es 100% estático (HTML/CSS/JS sin build), así que funciona en GitHub Pages sin
+configuración adicional: solo hay que servir el contenido de `RENAMU_web/` como raíz del
+repositorio (o como carpeta `/docs` de la rama que elijas en Settings → Pages).
+
+El dominio real ya está configurado: **`https://michaeldm05.github.io/`** (sitio servido
+en la raíz, no bajo `/RENAMU_web/`). Aparece en `<link rel="canonical">`, `og:url`,
+`og:image`, `twitter:image`, los bloques `<script type="application/ld+json">` de las 5
+páginas, `sitemap.xml` y `robots.txt`.
+
+Si en el futuro el sitio se muda a otro dominio o a un repositorio de proyecto (que en
+GitHub Pages sí añade el nombre del repo a la ruta, ej. `michaeldm05.github.io/otro-repo/`),
+hay que reemplazar `michaeldm05.github.io/` por la URL nueva en esos mismos archivos.
+`404.html` no necesita cambios (GitHub Pages lo sirve automáticamente para cualquier ruta
+que no exista).
+
+## SEO técnico y datos estructurados
+
+- **Metadatos por página**: título, `meta description`, `canonical`, Open Graph y Twitter
+  Card propios en cada una de las 5 páginas (no genéricos ni duplicados).
+- **`og-image.png`** (1200×630): se genera una sola vez a partir de una plantilla HTML con
+  la identidad del sitio; si cambian las cifras destacadas, regenera la imagen y vuelve a
+  copiarla (no hay un paso de build automático para esto).
+- **Datos estructurados (JSON-LD)**: `index.html` declara `GovernmentOrganization` (INEI),
+  `WebSite` y `Dataset` (RENAMU, con sus formatos de descarga); las otras 4 páginas
+  declaran `BreadcrumbList` para reforzar su posición en la navegación.
+- **Jerarquía de encabezados**: cada página tiene un único `<h1>` y no salta de nivel
+  (por ejemplo, los títulos del pie de página son `<h2>`, no `<h4>`, para no saltarse el
+  `<h3>` cuando corresponde). Los títulos de "Indicadores clave" en el Dashboard son
+  visualmente ocultos (`.sr-only`) sólo para mantener la jerarquía sin duplicar diseño.
+- **Favicon real**: `favicon.svg` + `apple-touch-icon.png`, en vez del `data:` URI inline
+  que traía la primera versión del sitio (más fácil de mantener y de cachear).
+
+## Accesibilidad y resiliencia frente a fuentes que no cargan
+
+- `.material-icons` limita su ancho (`max-width:1.6em; overflow:hidden`): si la fuente de
+  Material Icons no llega a cargar (red bloqueada, CDN caído), el navegador muestra el
+  nombre de la liga como texto (p. ej. "rocket_launch") y este límite evita que esa
+  palabra suelta rompa el diseño de botones y cabeceras.
+- El indicador de orden de las columnas del Dashboard es un triángulo dibujado en CSS
+  puro (no un ícono de fuente), así nunca puede aparecer como texto suelto.
+- Navegación por teclado: enlace "saltar al contenido", foco visible (`:focus-visible`),
+  `aria-current="page"` en el enlace activo (tanto estático en el HTML como reforzado por
+  `js/main.js`), `aria-label` en la navegación principal y en los botones sin texto.
