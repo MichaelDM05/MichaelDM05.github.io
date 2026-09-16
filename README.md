@@ -96,53 +96,18 @@ y añade su enlace en la lista "También disponible" de `datos.html`.
 en la constante `CONTACTO_SCRIPT_URL` dentro de esa página; si se vuelve a desplegar el
 script, hay que actualizarla ahí.
 
-### Anti-spam: reCAPTCHA de Google + honeypot
+### Captcha propio (sin servicios externos)
 
-El formulario combina dos mecanismos:
-
-- **reCAPTCHA v2** ("No soy un robot"): el widget se carga con
-  `<script src="https://www.google.com/recaptcha/api.js">` y se muestra con
-  `<div class="g-recaptcha" data-sitekey="...">` dentro de `contacto.html`. Es gratuito.
-  **Para activarlo hace falta una clave propia**, porque una clave de reCAPTCHA queda
-  registrada a un dominio concreto:
-  1. Entra a <https://www.google.com/recaptcha/admin/create> con una cuenta Google.
-  2. Elige **reCAPTCHA v2 → "Casilla de verificación no soy un robot"**.
-  3. Agrega el dominio donde vivirá el sitio (y `localhost` si quieres probarlo en tu equipo).
-  4. Copia la **clave del sitio** y reemplaza `TU_CLAVE_DE_SITIO_RECAPTCHA` en
-     `contacto.html` (buscar `data-sitekey`).
-  5. Guarda la **clave secreta** — no va en este repo, va en el Apps Script (ver abajo).
-
-  Mientras la clave sea la de ejemplo, Google muestra su propio aviso
-  ("ERROR para el propietario del sitio web: la clave del sitio web no es válida") en
-  vez del checkbox; el formulario sigue funcionando pero no deja enviar hasta tener una
-  clave real, porque el checkbox nunca llega a marcarse.
+El formulario usa dos mecanismos anti-spam que no requieren cuenta ni clave de ningún
+proveedor:
 
 - **Honeypot** (`#campoWeb` / `sitio_web`): un campo fuera de pantalla que una persona
-  nunca ve ni llena, complementario al de Google y sin costo. Si llega con contenido,
-  el envío se descarta silenciosamente (se simula éxito) sin llamar al Apps Script ni
-  gastar una verificación de reCAPTCHA.
+  nunca ve ni llena. Si llega con contenido, el envío se descarta silenciosamente (se
+  simula éxito) sin llamar al Apps Script.
+- **Reto matemático** (`#campoCaptcha` / `captcha_respuesta`): una suma de dos números
+  de un dígito generada en `generarCaptcha()`; se vuelve a generar tras cada intento
+  fallido o envío exitoso.
 
-**El checkbox solo no basta.** Verifica en el navegador que se marcó, pero un bot que
-llame directamente a la URL del Apps Script (sin pasar por esta página) puede mandar
-cualquier texto en `g-recaptcha-response`. La protección real ocurre cuando el Apps
-Script valida ese token contra Google antes de reenviar el correo. Snippet para pegar
-en el script (usando la *clave secreta* del paso 5, como `PropertiesService` o una
-constante):
-
-```javascript
-function esHumano(token) {
-  const secreto = 'TU_CLAVE_SECRETA_RECAPTCHA';
-  const resp = UrlFetchApp.fetch('https://www.google.com/recaptcha/api/siteverify', {
-    method: 'post',
-    payload: { secret: secreto, response: token }
-  });
-  return JSON.parse(resp.getContentText()).success === true;
-}
-
-// Al inicio de doPost(e), antes de procesar el resto del body:
-const datos = JSON.parse(e.postData.contents);
-if (!esHumano(datos['g-recaptcha-response'])) {
-  return ContentService.createTextOutput(JSON.stringify({ ok: false, error: 'captcha' }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-```
+Esto filtra bots de formularios genéricos, pero no es tan robusto como reCAPTCHA/hCaptcha
+frente a bots dirigidos. Si en el futuro se necesita más protección, la validación real
+tendría que moverse también al Apps Script (hoy sólo valida en el navegador).

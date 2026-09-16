@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | RENAMU - INEI</title>
-    <meta name="description" content="Panel interactivo del RENAMU: reporte Power BI y buscador de las municipalidades del Perú por departamento, tipo y portal de transparencia, 2021–2025.">
+    <meta name="description" content="Panel interactivo del RENAMU: reporte Power BI y buscador de las 1,891 municipalidades del Perú por ubigeo, departamento, tipo y alcalde, 2021–2025.">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A2A43'/%3E%3Cpath d='M8 22V13l8-5 8 5v9' fill='none' stroke='%234FC3E8' stroke-width='2.2'/%3E%3Cpath d='M6 22h20' stroke='%234FC3E8' stroke-width='2.2'/%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -137,16 +137,12 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="filtroPortal">Portal de transparencia</label>
-                        <select class="filter-select" id="filtroPortal">
-                            <option value="">Todos</option>
-                            <option value="Si">Sí reporta</option>
-                            <option value="No">No reporta</option>
-                        </select>
+                        <label for="filtroUbigeo">Ubigeo</label>
+                        <input type="text" inputmode="numeric" class="filter-input" id="filtroUbigeo" placeholder="Ej. 010101 o 15">
                     </div>
                     <div class="filter-group">
                         <label for="busqueda">Buscar</label>
-                        <input type="search" class="filter-input" id="busqueda" placeholder="Distrito, provincia, alcalde o ubigeo…">
+                        <input type="search" class="filter-input" id="busqueda" placeholder="Distrito, provincia o alcalde…">
                     </div>
                     <div class="filter-group filter-actions">
                         <button class="btn btn-ghost btn-sm" id="limpiarFiltros" type="button">
@@ -179,8 +175,8 @@
                                 <th data-campo="distrito" tabindex="0" aria-sort="none">Distrito</th>
                                 <th data-campo="tipo_municipalidad" tabindex="0" aria-sort="none">Tipo</th>
                                 <th data-campo="nombre_alcalde" tabindex="0" aria-sort="none">Alcalde</th>
-                                <th data-campo="pc_total_operativas" tabindex="0" aria-sort="none">PCs operativas</th>
-                                <th data-campo="tiene_portal_transparencia" tabindex="0" aria-sort="none">Portal transparencia</th>
+                                <th data-campo="sexo_alcalde" tabindex="0" aria-sort="none">Sexo</th>
+                                <th data-campo="correo_municipalidad" tabindex="0" aria-sort="none">Correo de la Municipalidad</th>
                             </tr>
                         </thead>
                         <tbody id="tablaBody">
@@ -192,10 +188,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="pagination-wrapper">
-                    <div class="pagination-info" id="paginationInfo"></div>
-                    <nav class="pagination" id="paginacion" aria-label="Paginación de resultados"></nav>
                 </div>
             </div>
         </div>

@@ -11,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://www.google.com/recaptcha/api.js?hl=es" async defer></script>
 </head>
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -99,13 +98,9 @@
                         <input type="text" id="campoWeb" name="sitio_web" tabindex="-1" autocomplete="off">
                     </div>
 
-                    <!-- reCAPTCHA de Google (gratuito). Cambia el data-sitekey por el tuyo:
-                         1. Entra a https://www.google.com/recaptcha/admin/create con tu cuenta Google
-                         2. Elige reCAPTCHA v2 → "Casilla de verificación no soy un robot"
-                         3. Agrega tu dominio (y "localhost" si quieres probarlo en tu equipo)
-                         4. Pega aquí la "clave del sitio" (la "clave secreta" va en el Apps Script, no aquí) -->
-                    <div class="form-group">
-                        <div class="g-recaptcha" data-sitekey="6LebOLwtAAAAAPQ7DgobFla3BMppZMZ6vdKw2L6N"></div>
+                    <div class="form-group captcha-group">
+                        <label for="campoCaptcha">Verificación: ¿cuánto es <span class="captcha-question" id="captchaPregunta">? + ?</span>?</label>
+                        <input type="text" inputmode="numeric" autocomplete="off" class="form-control" id="campoCaptcha" name="captcha_respuesta" placeholder="Escribe el resultado" required>
                     </div>
 
                     <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
@@ -159,7 +154,21 @@
     <script src="js/main.js"></script>
     <script>
         // Pega aquí la URL de "Aplicación web" que te da Apps Script al desplegar
-        const CONTACTO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLxcUoli-31oCjJt3QjDMd1rqMRSzAivv-VTES13lE3-F7271gOcx26fGA3aiBCJzM/exec';
+        const CONTACTO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgK9K1XXOFR6PTEWHLTkMLGPEYmpRMdBw5wjlobkd4b9mDYKXrXsID7_pqMbx86pbF/exec';
+
+        // Captcha propio: un reto matemático simple + un campo trampa (honeypot).
+        // No depende de ningún servicio externo ni de una clave de sitio.
+        let captchaResultado = 0;
+
+        function generarCaptcha() {
+            const a = 1 + Math.floor(Math.random() * 9);
+            const b = 1 + Math.floor(Math.random() * 9);
+            captchaResultado = a + b;
+            document.getElementById('captchaPregunta').textContent = `${a} + ${b}`;
+            document.getElementById('campoCaptcha').value = '';
+        }
+
+        generarCaptcha();
 
         document.getElementById('formContacto').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -172,7 +181,7 @@
             // es un bot; simulamos éxito para no darle pistas de que fue detectado.
             if (datos.sitio_web) {
                 form.reset();
-                if (window.grecaptcha) grecaptcha.reset();
+                generarCaptcha();
                 mostrarToast('Mensaje enviado. Te responderemos pronto.', 'check_circle');
                 return;
             }
@@ -187,14 +196,15 @@
                 form.querySelector('#campoCorreo').focus();
                 return;
             }
-            if (!window.grecaptcha || !grecaptcha.getResponse()) {
-                mostrarToast('Marca la casilla "No soy un robot" antes de enviar.', 'error');
+            if (Number(datos.captcha_respuesta) !== captchaResultado) {
+                mostrarToast('La verificación no es correcta. Intenta de nuevo.', 'error');
+                generarCaptcha();
+                form.querySelector('#campoCaptcha').focus();
                 return;
             }
 
-            datos.captchaToken = grecaptcha.getResponse();
-            delete datos['g-recaptcha-response'];
             delete datos.sitio_web;
+            delete datos.captcha_respuesta;
 
             boton.disabled = true;
             boton.classList.add('is-busy');
@@ -210,10 +220,11 @@
                 if (data.ok) {
                     mostrarToast('Mensaje enviado. Te responderemos pronto.', 'check_circle');
                     form.reset();
+                    generarCaptcha();
                 } else {
                     mostrarToast('No se pudo enviar. Intenta de nuevo.', 'error');
+                    generarCaptcha();
                 }
-                grecaptcha.reset();
             } catch (err) {
                 mostrarToast('No se pudo enviar. Revisa tu conexión.', 'error');
             } finally {
