@@ -1,27 +1,36 @@
 // RENAMU · Cargador de datos multi-año (carga diferida)
 //
 // Cada archivo municipios_YYYY.js pesa ~6.9 MB y define una constante global
-// (municipios2021 ... municipios2025) con el detalle de las municipalidades
-// encuestadas ese año (Módulo I: datos generales, Módulo II: equipamiento y TIC).
+// (municipios2021 ... municipios2025) con las 121 columnas de Módulo I y II de
+// las municipalidades encuestadas ese año. Ese registro completo solo hace
+// falta para las descargas de Datos (CSV/JSON), así que sigue cargándose bajo
+// demanda tal como antes.
 //
-// Las páginas muestran un año a la vez, así que aquí el año se descarga bajo
-// demanda inyectando su <script> sólo la primera vez que se pide. Se usa
-// inyección de <script> y no fetch() para que el sitio siga funcionando al
-// abrirlo directamente con file:// (fetch se bloquea por CORS en ese caso).
+// Dashboard y Estadísticas, en cambio, solo usan 13 de esos 121 campos. Para
+// evitar bajar ~6.9 MB apenas se abre la página, existe además una versión
+// "ligera" por año (municipios_YYYY_lite.js, ~730 KB, variable municipiosYYYYLite)
+// con solo esos 13 campos: eso es lo que consumen esas dos páginas.
+//
+// Ambas variantes se descargan inyectando un <script> (no fetch) para que el
+// sitio siga funcionando al abrirse directamente con file:// (fetch se bloquea
+// por CORS en ese caso).
 
 (function () {
     const ANIOS = [2021, 2022, 2023, 2024, 2025];
     const ANIO_POR_DEFECTO = 2025;
 
-    const cache = {};    // anio -> array de municipalidades ya cargado
+    const cache = {};    // anio -> registro completo (121 campos) ya cargado
     const enVuelo = {};  // anio -> Promise en curso, para no pedir el mismo archivo dos veces
 
-    // Los archivos de datos declaran `const municipios2025 = [...]`. Un const de
-    // nivel superior vive en el ámbito léxico global y NO queda colgado de window,
-    // así que hay que resolver el identificador; new Function() se evalúa en el
-    // ámbito global y sí lo alcanza.
-    function globalDelAnio(anio) {
-        const nombre = 'municipios' + anio;
+    const cacheLigero = {};
+    const enVueloLigero = {};
+
+    // Los archivos de datos declaran `const municipios2025 = [...]` (o
+    // `...2025Lite` en la versión ligera). Un const de nivel superior vive en
+    // el ámbito léxico global y NO queda colgado de window, así que hay que
+    // resolver el identificador; new Function() se evalúa en el ámbito global
+    // y sí lo alcanza.
+    function resolverGlobal(nombre) {
         try {
             return new Function('return typeof ' + nombre + ' !== "undefined" ? ' + nombre + ' : undefined;')();
         } catch (e) {
@@ -29,59 +38,79 @@
         }
     }
 
-    function cargar(anio) {
-        anio = Number(anio);
-
-        if (cache[anio]) return Promise.resolve(cache[anio]);
-        if (enVuelo[anio]) return enVuelo[anio];
+    function cargarArchivo(src, nombreVariable, cacheDestino, enVueloDestino, anio) {
+        if (cacheDestino[anio]) return Promise.resolve(cacheDestino[anio]);
+        if (enVueloDestino[anio]) return enVueloDestino[anio];
 
         // El archivo podría haberse incluido con un <script> en la página
-        if (Array.isArray(globalDelAnio(anio))) {
-            cache[anio] = globalDelAnio(anio);
-            return Promise.resolve(cache[anio]);
+        if (Array.isArray(resolverGlobal(nombreVariable))) {
+            cacheDestino[anio] = resolverGlobal(nombreVariable);
+            return Promise.resolve(cacheDestino[anio]);
         }
 
-        enVuelo[anio] = new Promise((resolve, reject) => {
+        enVueloDestino[anio] = new Promise((resolve, reject) => {
             const script = document.createElement('script');
-            script.src = 'data/municipios_' + anio + '.js';
+            script.src = src;
             script.async = true;
             script.onload = () => {
-                const datos = globalDelAnio(anio);
+                const datos = resolverGlobal(nombreVariable);
                 if (!Array.isArray(datos)) {
-                    delete enVuelo[anio];
-                    reject(new Error('El archivo del año ' + anio + ' no definió municipios' + anio));
+                    delete enVueloDestino[anio];
+                    reject(new Error(src + ' no definió ' + nombreVariable));
                     return;
                 }
-                cache[anio] = datos;
-                delete enVuelo[anio];
+                cacheDestino[anio] = datos;
+                delete enVueloDestino[anio];
                 resolve(datos);
             };
             script.onerror = () => {
-                delete enVuelo[anio];
-                reject(new Error('No se pudo descargar data/municipios_' + anio + '.js'));
+                delete enVueloDestino[anio];
+                reject(new Error('No se pudo descargar ' + src));
             };
             document.head.appendChild(script);
         });
 
-        return enVuelo[anio];
+        return enVueloDestino[anio];
+    }
+
+    function cargar(anio) {
+        anio = Number(anio);
+        return cargarArchivo('data/municipios_' + anio + '.js', 'municipios' + anio, cache, enVuelo, anio);
+    }
+
+    function cargarLigero(anio) {
+        anio = Number(anio);
+        return cargarArchivo('data/municipios_' + anio + '_lite.js', 'municipios' + anio + 'Lite', cacheLigero, enVueloLigero, anio);
     }
 
     window.RENAMU = {
         anios: ANIOS.slice(),
         anioActual: ANIO_POR_DEFECTO,
 
-        // Datos del año activo ya cargados (array vacío si todavía no llegaron)
+        // Registro completo (121 campos) del año activo, ya cargado (Datos > Descargas)
         datos: function () {
             return cache[window.RENAMU.anioActual] || [];
         },
 
-        // Cambia de año y resuelve con los datos de ese año
+        // Versión ligera (13 campos) del año activo, ya cargada (Dashboard, Estadísticas)
+        datosLigeros: function () {
+            return cacheLigero[window.RENAMU.anioActual] || [];
+        },
+
+        // Cambia de año y resuelve con el registro completo de ese año
         setAnio: function (anio) {
             window.RENAMU.anioActual = Number(anio);
             return cargar(window.RENAMU.anioActual);
         },
 
+        // Cambia de año y resuelve con la versión ligera de ese año
+        setAnioLigero: function (anio) {
+            window.RENAMU.anioActual = Number(anio);
+            return cargarLigero(window.RENAMU.anioActual);
+        },
+
         cargar: cargar,
+        cargarLigero: cargarLigero,
 
         estaCargado: function (anio) {
             return Boolean(cache[Number(anio)]);
