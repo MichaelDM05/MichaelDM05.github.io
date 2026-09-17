@@ -388,6 +388,9 @@ img, svg { max-width: 100%; }
 .btn-ghost { background: transparent; color: var(--ink-soft); border-color: var(--gray-300); }
 .btn-ghost:hover { border-color: var(--gray-400); background: var(--gray-100); }
 
+/* Feedback de "presionado", útil sobre todo en touch (donde no hay :hover) */
+.btn:active { transform: translateY(0) scale(0.97); }
+
 /* ============================================================
    Sections
    ============================================================ */
@@ -643,8 +646,10 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     padding: 18px 24px;
     border-bottom: 1px solid var(--line);
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 8px 16px;
 }
 
 .table-top-bar h3 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--navy); }
@@ -900,7 +905,15 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     padding-top: 22px;
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: #6E8497;
+    color: #7C93A6; /* antes #6E8497: contraste insuficiente (4.4:1) sobre --navy-deep */
+}
+
+/* Anillo de foco visible sobre fondos oscuros: el azul --blue casi no se ve
+   sobre --navy/--navy-deep (contraste ~2.7:1), así que aquí usamos --cyan. */
+.hero :focus-visible,
+.cta-band :focus-visible,
+.footer :focus-visible {
+    outline-color: var(--cyan);
 }
 
 /* ============================================================
@@ -933,6 +946,19 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     .filter-grid { grid-template-columns: 1fr; }
     .footer-grid { grid-template-columns: 1fr; }
     .container { padding: 0 16px; }
+}
+
+/* Ajustes finos para móviles angostos (iPhone SE/Mini ≈ 375px y menores):
+   menos padding vertical y tarjetas con más aire respecto al borde. */
+@media (max-width: 480px) {
+    .section { padding: 56px 0; }
+    .hero { padding-top: 56px; }
+    .hero h1 { font-size: clamp(2.1rem, 8vw, 2.6rem); }
+    .page-header { padding: 44px 0 32px; }
+    .contact-form { padding: 24px; }
+    .filter-bar { padding: 20px; }
+    .pdf-card { padding: 20px; }
+    .cta-band { padding: 28px 20px; }
 }
 
 /* ============================================================
@@ -1106,8 +1132,8 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     display: none;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border: 1px solid var(--line);
     border-radius: 8px;
     background: var(--white);
@@ -1153,7 +1179,11 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     }
 
     .navbar-links a { padding: 13px 14px; font-size: 0.95rem; }
-    .navbar-cta { margin-left: 0; margin-top: 6px; text-align: center; }
+
+    /* En el menú móvil el CTA "Explorar Datos" duplica el enlace "Dashboard"
+       de la propia lista (mismo destino); se oculta solo aquí para no repetir
+       el mismo ítem dos veces en una lista vertical corta. */
+    .navbar-cta { display: none; }
 }
 
 /* ============================================================
@@ -1223,6 +1253,25 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 
 .data-table th.sorted::after { opacity: 1; color: var(--cyan); }
 .data-table th.sorted.desc::after { transform: translateY(-1px) rotate(180deg); }
+
+/* Mismo motivo que el foco sobre .hero/.cta-band/.footer: la cabecera es navy */
+.data-table th[data-campo]:focus-visible { outline-color: var(--cyan); }
+
+/* Pista de scroll horizontal en tablas anchas, sólo visible en pantallas chicas */
+.table-scroll { -webkit-overflow-scrolling: touch; }
+.table-top-bar-meta { display: flex; align-items: center; gap: 14px; }
+.table-scroll-hint { display: none; }
+
+@media (max-width: 768px) {
+    .table-scroll-hint {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--ink-soft);
+    }
+}
 
 .filter-actions { display: flex; align-items: flex-end; }
 .filter-hint { margin-top: 14px; font-size: 0.78rem; color: var(--ink-soft); font-family: var(--font-mono); }
