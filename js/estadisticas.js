@@ -54,7 +54,7 @@ function renderTodo() {
 }
 
 function actualizarEstadisticas() {
-    const datos = window.RENAMU.datos();
+    const datos = window.RENAMU.datosLigeros();
     const total = datos.length;
 
     const set = (id, valor) => {
@@ -110,17 +110,17 @@ function agrupar(datos, clave, valorFn) {
 }
 
 function crearGraficoDepartamentos() {
-    const filas = agrupar(window.RENAMU.datos(), 'departamento', () => 1).slice(0, 10);
+    const filas = agrupar(window.RENAMU.datosLigeros(), 'departamento', () => 1).slice(0, 10);
     renderBarras('chartDeptos', filas);
 }
 
 function crearGraficoPCs() {
-    const filas = agrupar(window.RENAMU.datos(), 'departamento', (d) => Number(d.pc_total_operativas) || 0).slice(0, 10);
+    const filas = agrupar(window.RENAMU.datosLigeros(), 'departamento', (d) => Number(d.pc_total_operativas) || 0).slice(0, 10);
     renderBarras('chartPCs', filas);
 }
 
 function crearResumenTipos() {
-    const datos = window.RENAMU.datos();
+    const datos = window.RENAMU.datosLigeros();
     const provinciales = datos.filter((d) => Number(d.tipo_municipalidad) === 1).length;
     const distritales = datos.filter((d) => Number(d.tipo_municipalidad) === 2).length;
 
@@ -138,7 +138,7 @@ function crearResumenTipos() {
 }
 
 function crearTopPCs() {
-    const datos = [...window.RENAMU.datos()]
+    const datos = [...window.RENAMU.datosLigeros()]
         .sort((a, b) => (Number(b.pc_total_operativas) || 0) - (Number(a.pc_total_operativas) || 0))
         .slice(0, 5);
 
@@ -159,7 +159,7 @@ function crearTopPCs() {
 }
 
 function crearTiposConexion() {
-    const datos = window.RENAMU.datos();
+    const datos = window.RENAMU.datosLigeros();
     const filas = agrupar(datos, 'tipo_conexion_internet', () => 1).slice(0, 6);
 
     document.getElementById('tiposConexion').innerHTML = filas.map(([nombre, valor], i) => `
@@ -174,7 +174,7 @@ function crearTiposConexion() {
 }
 
 function crearResumenSexo() {
-    const datos = window.RENAMU.datos();
+    const datos = window.RENAMU.datosLigeros();
     const hombres = datos.filter((d) => d.sexo_alcalde === 'Hombre').length;
     const mujeres = datos.filter((d) => d.sexo_alcalde === 'Mujer').length;
 

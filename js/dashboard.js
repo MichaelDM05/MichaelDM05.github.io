@@ -38,7 +38,7 @@ function debounce(fn, ms) {
 
 function cambiarAnio(anio) {
     mostrarCargando();
-    window.RENAMU.setAnio(anio)
+    window.RENAMU.setAnioLigero(anio)
         .then(() => {
             poblarStats();
             poblarFiltroDepartamento();
@@ -75,7 +75,7 @@ function poblarSelectorAnio() {
 }
 
 function poblarStats() {
-    const datos = window.RENAMU.datos();
+    const datos = window.RENAMU.datosLigeros();
     const total = datos.length;
 
     const set = (id, valor) => {
@@ -102,7 +102,7 @@ function poblarStats() {
 function poblarFiltroDepartamento() {
     const select = document.getElementById('filtroDepto');
     const seleccionado = select.value;
-    const deptos = [...new Set(window.RENAMU.datos().map((d) => d.departamento))].sort();
+    const deptos = [...new Set(window.RENAMU.datosLigeros().map((d) => d.departamento))].sort();
 
     select.innerHTML = '<option value="">Todos</option>' +
         deptos.map((dep) => `<option value="${escaparHtml(dep)}">${escaparHtml(dep)}</option>`).join('');
@@ -120,7 +120,7 @@ function limpiarFiltros() {
 }
 
 function aplicarFiltros() {
-    const datos = window.RENAMU.datos();
+    const datos = window.RENAMU.datosLigeros();
     const depto = document.getElementById('filtroDepto').value;
     const tipo = document.getElementById('filtroTipo').value;
     const ubigeo = document.getElementById('filtroUbigeo').value.trim().replace(/\s+/g, '');
