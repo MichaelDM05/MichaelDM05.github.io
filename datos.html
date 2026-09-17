@@ -14,12 +14,14 @@
     <meta property="og:description" content="Descarga el registro RENAMU en CSV, JSON o el diccionario oficial en PDF, años 2021 a 2025.">
     <meta property="og:url" content="https://michaeldm05.github.io/datos.html">
     <meta property="og:image" content="https://michaeldm05.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Datos | RENAMU 2021–2025 - INEI">
     <meta name="twitter:image" content="https://michaeldm05.github.io/og-image.png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap" rel="stylesheet">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -35,7 +37,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .dict-table { width: 100%; border-collapse: collapse; }
+        /* min-width fuerza el scroll horizontal de .table-scroll en vez de que
+           las 3 columnas se aplasten en móvil (mismo patrón que .data-table). */
+        .dict-table { width: 100%; min-width: 560px; border-collapse: collapse; }
         .dict-table th {
             text-align: left;
             font-family: var(--font-mono);

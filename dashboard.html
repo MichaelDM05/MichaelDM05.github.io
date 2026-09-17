@@ -14,12 +14,14 @@
     <meta property="og:description" content="Reporte Power BI y buscador de las 1,891 municipalidades del Perú por ubigeo, departamento, tipo y alcalde.">
     <meta property="og:url" content="https://michaeldm05.github.io/dashboard.html">
     <meta property="og:image" content="https://michaeldm05.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Dashboard | RENAMU - INEI">
     <meta name="twitter:image" content="https://michaeldm05.github.io/og-image.png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap" rel="stylesheet">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -34,6 +36,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <!-- Adelanta la descarga de la versión ligera del año por defecto: no bloquea
+         el render y evita esperar a que corra el JS para empezar a pedirla. -->
+    <link rel="preload" as="script" href="data/municipios_2025_lite.js">
 </head>
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -188,7 +193,13 @@
             <div class="table-container tech-frame reveal">
                 <div class="table-top-bar">
                     <h3>Resultados</h3>
-                    <span class="table-count" id="resultadosCount" aria-live="polite"></span>
+                    <div class="table-top-bar-meta">
+                        <span class="table-scroll-hint">
+                            <span class="material-icons" style="font-size:14px;" aria-hidden="true">swipe</span>
+                            Desliza para ver más
+                        </span>
+                        <span class="table-count" id="resultadosCount" aria-live="polite"></span>
+                    </div>
                 </div>
                 <div class="table-scroll">
                     <table class="data-table">
