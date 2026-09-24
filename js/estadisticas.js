@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     poblarSelectorAnio();
     cambiarAnio(window.RENAMU.anioActual);
+    crearGraficoMuniPorAnio();
 
     document.getElementById('filtroAnio').addEventListener('change', (e) => cambiarAnio(e.target.value));
 });
@@ -20,7 +21,7 @@ function cambiarAnio(anio) {
     document.getElementById('anioLabel').textContent = anio;
     marcarCargando();
 
-    window.RENAMU.setAnio(anio)
+    window.RENAMU.setAnioLigero(anio)
         .then(renderTodo)
         .catch((err) => {
             CONTENEDORES.forEach((id) => {
@@ -96,6 +97,48 @@ function renderBarras(contenedorId, filas, sufijo) {
                 <div class="hbar-fill" style="width:${Math.max((valor / max) * 100, 1.5)}%"></div>
             </div>
             <div class="hbar-value">${numeroPE(valor)}${sufijo || ''}</div>
+        </div>
+    `).join('');
+}
+
+// Comparativo entre todos los años (no depende del selector): carga la versión
+// ligera de cada año y cuenta filas con ubigeo válido, una municipalidad por fila.
+function crearGraficoMuniPorAnio() {
+    const cont = document.getElementById('chartMuniPorAnio');
+    if (!cont) return;
+
+    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
+
+    Promise.all(window.RENAMU.anios.map((anio) => window.RENAMU.cargarLigero(anio)))
+        .then((listasPorAnio) => {
+            const filas = window.RENAMU.anios.map((anio, i) => {
+                const conteo = listasPorAnio[i].filter((d) => d.ubigeo !== null && d.ubigeo !== undefined && d.ubigeo !== '').length;
+                return [anio, conteo];
+            });
+            renderBarrasVerticales('chartMuniPorAnio', filas);
+        })
+        .catch((err) => {
+            cont.innerHTML = `<p class="chart-state"><span class="material-icons">error_outline</span>
+                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
+        });
+}
+
+function renderBarrasVerticales(contenedorId, filas) {
+    const cont = document.getElementById(contenedorId);
+
+    if (!filas.length) {
+        cont.innerHTML = '<p class="chart-state">Sin datos disponibles.</p>';
+        return;
+    }
+
+    const max = Math.max(...filas.map(([, valor]) => valor), 1);
+    cont.innerHTML = filas.map(([etiqueta, valor]) => `
+        <div class="vbar-col">
+            <div class="vbar-value">${numeroPE(valor)}</div>
+            <div class="vbar-track">
+                <div class="vbar-fill" style="height:${Math.max((valor / max) * 100, 2)}%"></div>
+            </div>
+            <div class="vbar-axis">${escaparHtml(etiqueta)}</div>
         </div>
     `).join('');
 }
