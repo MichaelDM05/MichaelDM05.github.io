@@ -86,6 +86,105 @@
                 <p class="filter-hint">CONTEO DE MUNICIPALIDADES POR AÑO (COLUMNA UBIGEO) · RENAMU 2021–2025</p>
             </div>
 
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>👥 Personal municipal por año (al 31 de marzo)</h3>
+                <div class="vbar-chart" id="chartPersonalPorAnio"></div>
+                <p class="filter-hint">SUMA DE PERSONAL TOTAL AL 31 DE MARZO (P19M_T) · MÓDULO III · RENAMU 2021–2025</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>⚖️ Personal municipal por régimen laboral y año</h3>
+                <div class="line-chart-wrap">
+                    <svg class="line-chart" id="chartRegimenPorAnio" viewBox="0 0 640 300" preserveAspectRatio="none" role="img" aria-label="Personal municipal por régimen laboral y año"></svg>
+                </div>
+                <ul class="line-chart-legend" id="leyendaRegimenPorAnio"></ul>
+                <p class="filter-hint">PERSONAL AL 31 DE MARZO POR RÉGIMEN LABORAL (MÓDULO III, P19M) · RENAMU 2021–2025</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>🧾 Personal de Locación de Servicios por año</h3>
+                <div class="vbar-chart" id="chartLocacionPorAnio"></div>
+                <p class="filter-hint">SUMA DE PERSONAL DE LOCACIÓN / ORDEN DE SERVICIOS AL 31 DE MARZO (P19A_2_T) · MÓDULO III · RENAMU 2021–2025</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>♿ Personal con discapacidad por año</h3>
+                <div class="vbar-chart" id="chartDiscapacidadPorAnio"></div>
+                <p class="filter-hint">SUMA DE PERSONAL CON DISCAPACIDAD AL 31 DE MARZO (P20_2_T) · MÓDULO III · RENAMU 2021–2025</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <div class="chart-card-header">
+                    <h3>🚜 Municipalidades que tienen maquinaria pesada</h3>
+                    <button class="chart-toggle-btn" id="btnPorcentajeMaquinaria" type="button" title="Ver en porcentaje" aria-pressed="false">%</button>
+                </div>
+                <div class="line-chart-wrap">
+                    <svg class="line-chart" id="chartMaquinariaPorAnio" viewBox="0 0 640 300" preserveAspectRatio="none" role="img" aria-label="Maquinaria pesada: total, operativa y no operativa por año"></svg>
+                </div>
+                <ul class="line-chart-legend" id="leyendaMaquinariaPorAnio"></ul>
+                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE TIENEN MAQUINARIA PESADA, 2021 - 2025 · MÓDULO II (P11B) · RENAMU</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>💻 Computadoras operativas de las municipalidades</h3>
+                <div class="vbar-chart" id="chartComputadorasPorAnio"></div>
+                <p class="filter-hint">PERÚ: COMPUTADORAS OPERATIVAS DE LAS MUNICIPALIDADES, 2021 - 2025 · MÓDULO II (P13A_T) · RENAMU</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>📶 Municipalidades que cuentan con servicio de internet</h3>
+                <div class="vbar-chart" id="chartInternetPorAnio"></div>
+                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE CUENTAN CON SERVICIO DE INTERNET, 2021 - 2025 · MÓDULO II (P14A_1) · RENAMU</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>🔗 Municipalidades que tienen Portal de Transparencia Estándar (PTE)</h3>
+                <div class="vbar-chart" id="chartPtePorAnio"></div>
+                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE TIENEN PORTAL DE TRANSPARENCIA ESTÁNDAR (PTE), 2021 - 2025 · MÓDULO II (P18_Portal) · RENAMU</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>🏙️ Municipalidades con instrumentos de gestión urbana y/o rural</h3>
+                <div class="vbar-chart" id="chartInstrumentosPorAnio"></div>
+                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE DISPONEN DE INSTRUMENTOS DE GESTIÓN Y DESARROLLO URBANO Y/O RURAL, 2021 - 2025 · MÓDULO IV (P23_1 a P23_16) · RENAMU</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>📑 Municipalidades con TUPA según Metodología de Determinación de Costos</h3>
+                <div class="vbar-chart" id="chartTupaPorAnio"></div>
+                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE TIENEN TUPA SEGÚN METODOLOGÍA DE DETERMINACIÓN DE COSTOS, 2021 - 2025 · MÓDULO IV (P26) · RENAMU</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>🧑‍💼 Municipalidades con personal exclusivo en Administración Tributaria</h3>
+                <div class="vbar-chart" id="chartAdminTributariaPorAnio"></div>
+                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE TIENEN PERSONAL EXCLUSIVO EN EL ÁREA DE ADMINISTRACIÓN TRIBUTARIA, AL 31 DE MARZO DE 2021 - 2025 · MÓDULO IV (P32_2_T) · RENAMU</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>⚖️ Municipalidades que tienen Área de Ejecución Coactiva</h3>
+                <div class="vbar-chart" id="chartEjecucionCoactivaPorAnio"></div>
+                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE TIENEN ÁREA DE EJECUCIÓN COACTIVA, 2021 - 2025 · MÓDULO IV (P33A: 1 y 2) · RENAMU</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>📜 Licencias de funcionamiento otorgadas</h3>
+                <div class="vbar-chart" id="chartLicenciasPorAnio"></div>
+                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE OTORGARON LICENCIAS DE FUNCIONAMIENTO PARA ESTABLECIMIENTOS, 2020 - 2024 · MÓDULO IV (P34A_1 a P34A_31) · RENAMU</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>👶 Casos atendidos de la DEMUNA</h3>
+                <div class="vbar-chart" id="chartDemunaPorAnio"></div>
+                <p class="filter-hint">NÚMERO DE CASOS ATENDIDOS DE LA DEMUNA, 2020 - 2024 · MÓDULO V (P64_1_1 a P64_19_1) · RENAMU</p>
+            </div>
+
+            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
+                <h3>🏥 Municipalidades que administran establecimientos de salud</h3>
+                <div class="vbar-chart" id="chartSaludPorAnio"></div>
+                <p class="filter-hint">MUNICIPALIDADES QUE ADMINISTRAN ESTABLECIMIENTOS DE SALUD, 2021 - 2025 · MÓDULO V (P66_1_1 a P66_10_1) · RENAMU</p>
+            </div>
+
             <h2 class="subsection-title">Indicadores del año seleccionado</h2>
             <p class="subsection-subtitle">Resumen agregado del levantamiento elegido arriba; cambia el año para comparar entre ejercicios.</p>
             <div class="stats-grid reveal" style="margin-bottom:40px;">
@@ -146,7 +245,34 @@
                 </div>
             </div>
 
-            <p class="filter-hint">FUENTE: RENAMU · MÓDULO I (DATOS GENERALES) Y MÓDULO II (EQUIPAMIENTO Y TIC) · INEI</p>
+            <h2 class="subsection-title" style="margin-top:8px;">Recursos humanos y competencias</h2>
+            <p class="subsection-subtitle">Personal municipal e instrumentos de gestión, según el Módulo III y IV del RENAMU.</p>
+            <div class="chart-grid">
+                <div class="chart-card tech-frame reveal">
+                    <h3>👥 Personal municipal por departamento</h3>
+                    <div class="bar-chart" id="chartPersonal"></div>
+                    <p class="filter-hint">TOP 10 · PERSONAL AL 31 DE DICIEMBRE</p>
+                </div>
+                <div class="chart-card tech-frame reveal reveal-delay-1">
+                    <h3>📋 Instrumentos de gestión municipal</h3>
+                    <div class="summary-grid" id="resumenInstrumentos"></div>
+                </div>
+            </div>
+
+            <h2 class="subsection-title">Servicios públicos locales</h2>
+            <p class="subsection-subtitle">Recojo de residuos sólidos brindado por la municipalidad, según el Módulo V del RENAMU.</p>
+            <div class="chart-grid">
+                <div class="chart-card tech-frame reveal">
+                    <h3>🗑️ Frecuencia de recojo de residuos sólidos</h3>
+                    <div class="top-list" id="frecuenciaResiduos"></div>
+                </div>
+                <div class="chart-card tech-frame reveal reveal-delay-1">
+                    <h3>🚛 Cobertura del servicio de recojo</h3>
+                    <div class="top-list" id="coberturaResiduos"></div>
+                </div>
+            </div>
+
+            <p class="filter-hint">FUENTE: RENAMU · MÓDULOS I-V (DATOS GENERALES, EQUIPAMIENTO Y TIC, RECURSOS HUMANOS, COMPETENCIAS Y SERVICIOS PÚBLICOS) · INEI</p>
         </div>
     </section>
     </main>
