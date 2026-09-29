@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://michaeldm05.github.io/sitemap.xml
