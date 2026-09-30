@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; script-src 'self' 'unsafe-eval'; connect-src 'self'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Datos | RENAMU 2021–2025 - INEI</title>
     <meta name="description" content="Descarga el registro RENAMU en CSV o JSON y consulta el diccionario de los campos publicados por el INEI, años 2021 a 2025.">
     <meta name="theme-color" content="#0A2A43">
@@ -21,7 +23,6 @@
     <meta name="twitter:image" content="https://michaeldm05.github.io/og-image.png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap" rel="stylesheet">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -32,9 +33,7 @@
         ]
     }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
         /* min-width fuerza el scroll horizontal de .table-scroll en vez de que
@@ -233,6 +232,7 @@
                             <a href="docs/renamu_diccionario_2024.pdf" download>2024</a>
                             <a href="docs/renamu_diccionario_2023.pdf" download>2023</a>
                             <a href="docs/renamu_diccionario_2022.pdf" download>2022</a>
+                            <a href="docs/renamu_diccionario_2021.pdf" download>2021</a>
                         </div>
                     </div>
                 </div>
@@ -247,8 +247,9 @@
             <div class="table-container tech-frame reveal" style="margin-bottom:32px;">
                 <div class="table-scroll" style="max-height:none;">
                     <table class="dict-table">
+                        <caption class="sr-only">Variables globales de identificación del RENAMU</caption>
                         <thead>
-                            <tr><th>Campo</th><th>Descripción</th><th>Equivalente en las descargas CSV/JSON</th></tr>
+                            <tr><th scope="col">Campo</th><th scope="col">Descripción</th><th scope="col">Equivalente en las descargas CSV/JSON</th></tr>
                         </thead>
                         <tbody>
                             <tr><td>Año</td><td>Año en que se ejecuta el estudio</td><td><code>anio</code></td></tr>
@@ -305,6 +306,14 @@
                     </ul>
                 </div>
             </div>
+            <nav aria-label="Información legal">
+                <ul class="footer-legal">
+                    <li><a href="privacidad.html">Política de Privacidad</a></li>
+                    <li><a href="terminos.html">Términos y Condiciones</a></li>
+                    <li><a href="cookies.html">Política de Cookies</a></li>
+                    <li><button type="button" data-abrir-cookies>Configurar cookies</button></li>
+                </ul>
+            </nav>
             <div class="footer-bottom">Copyright © 2026 INEI · Datos RENAMU 2021–2025</div>
         </div>
     </footer>
@@ -315,6 +324,7 @@
     </div>
 
     <script src="data/municipios.js"></script>
+    <script src="js/consent.js"></script>
     <script src="js/main.js"></script>
     <script src="js/datos.js"></script>
 </body>

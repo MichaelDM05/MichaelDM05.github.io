@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; script-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Contacto | RENAMU - INEI</title>
     <meta name="description" content="Contacta al equipo del Registro Nacional de Municipalidades del INEI: consultas técnicas, solicitudes de datos y reportes de incidencias.">
     <meta name="theme-color" content="#0A2A43">
@@ -21,7 +23,6 @@
     <meta name="twitter:image" content="https://michaeldm05.github.io/og-image.png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap" rel="stylesheet">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -32,9 +33,7 @@
         ]
     }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -96,13 +95,16 @@
 
                 <form class="contact-form tech-frame reveal reveal-delay-1" id="formContacto" novalidate>
                     <h2 class="contact-form-title">Envíanos un mensaje</h2>
+                    <p class="form-required-note">Todos los campos son obligatorios.</p>
                     <div class="form-group">
                         <label for="campoNombre">Nombre completo</label>
-                        <input type="text" id="campoNombre" name="nombre" class="form-control" placeholder="Tu nombre" autocomplete="name" required>
+                        <input type="text" id="campoNombre" name="nombre" class="form-control" placeholder="Tu nombre" autocomplete="name" maxlength="120" required aria-describedby="errorNombre">
+                        <p class="field-error" id="errorNombre" hidden></p>
                     </div>
                     <div class="form-group">
                         <label for="campoCorreo">Correo electrónico</label>
-                        <input type="email" id="campoCorreo" name="correo" class="form-control" placeholder="tucorreo@ejemplo.com" autocomplete="email" required>
+                        <input type="email" id="campoCorreo" name="correo" class="form-control" placeholder="tucorreo@ejemplo.com" autocomplete="email" maxlength="254" required aria-describedby="errorCorreo">
+                        <p class="field-error" id="errorCorreo" hidden></p>
                     </div>
                     <div class="form-group">
                         <label for="campoAsunto">Asunto</label>
@@ -115,7 +117,9 @@
                     </div>
                     <div class="form-group">
                         <label for="campoMensaje">Mensaje</label>
-                        <textarea class="form-control" id="campoMensaje" name="mensaje" placeholder="Cuéntanos en qué podemos ayudarte" required></textarea>
+                        <textarea class="form-control" id="campoMensaje" name="mensaje" placeholder="Cuéntanos en qué podemos ayudarte" maxlength="5000" required aria-describedby="ayudaMensaje errorMensaje"></textarea>
+                        <span class="form-hint" id="ayudaMensaje">No incluyas datos sensibles (salud, documento de identidad, etc.): no son necesarios para responderte.</span>
+                        <p class="field-error" id="errorMensaje" hidden></p>
                     </div>
 
                     <!-- Campo trampa: invisible para personas, los bots de formularios suelen rellenarlo -->
@@ -126,7 +130,29 @@
 
                     <div class="form-group captcha-group">
                         <label for="campoCaptcha">Verificación: ¿cuánto es <span class="captcha-question" id="captchaPregunta">? + ?</span>?</label>
-                        <input type="text" inputmode="numeric" autocomplete="off" class="form-control" id="campoCaptcha" name="captcha_respuesta" placeholder="Escribe el resultado" required>
+                        <input type="text" inputmode="numeric" autocomplete="off" class="form-control" id="campoCaptcha" name="captcha_respuesta" placeholder="Escribe el resultado" required aria-describedby="errorCaptcha">
+                        <p class="field-error" id="errorCaptcha" hidden></p>
+                    </div>
+
+                    <p class="privacy-clause" id="clausulaPrivacidad">
+                        <strong>Información sobre tus datos.</strong>
+                        Responsable: [RAZÓN SOCIAL]. Finalidad: responder tu consulta; no se usan para publicidad.
+                        Destinatario: los mensajes se envían y almacenan mediante Google Apps Script (Google LLC),
+                        con transferencia internacional de datos. Conservación: hasta atender la consulta y como
+                        máximo [PLAZO DE CONSERVACIÓN]. Puedes ejercer tus derechos de acceso, rectificación,
+                        cancelación y oposición escribiendo a [CORREO DE PRIVACIDAD].
+                        <a href="privacidad.html">Más información</a>.
+                    </p>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" id="campoConsentimiento" name="consentimiento" value="si" required aria-describedby="clausulaPrivacidad errorConsentimiento">
+                            <label for="campoConsentimiento">
+                                He leído la <a href="privacidad.html">Política de Privacidad</a> y autorizo el tratamiento
+                                de mis datos para atender mi consulta.
+                            </label>
+                        </div>
+                        <p class="field-error" id="errorConsentimiento" hidden></p>
                     </div>
 
                     <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
@@ -168,6 +194,14 @@
                     </ul>
                 </div>
             </div>
+            <nav aria-label="Información legal">
+                <ul class="footer-legal">
+                    <li><a href="privacidad.html">Política de Privacidad</a></li>
+                    <li><a href="terminos.html">Términos y Condiciones</a></li>
+                    <li><a href="cookies.html">Política de Cookies</a></li>
+                    <li><button type="button" data-abrir-cookies>Configurar cookies</button></li>
+                </ul>
+            </nav>
             <div class="footer-bottom">Copyright © 2026 INEI · Datos RENAMU 2021–2025</div>
         </div>
     </footer>
@@ -177,87 +211,8 @@
         <span id="toastMessage"></span>
     </div>
 
+    <script src="js/consent.js"></script>
     <script src="js/main.js"></script>
-    <script>
-        // Pega aquí la URL de "Aplicación web" que te da Apps Script al desplegar
-        const CONTACTO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgK9K1XXOFR6PTEWHLTkMLGPEYmpRMdBw5wjlobkd4b9mDYKXrXsID7_pqMbx86pbF/exec';
-
-        // Captcha propio: un reto matemático simple + un campo trampa (honeypot).
-        // No depende de ningún servicio externo ni de una clave de sitio.
-        let captchaResultado = 0;
-
-        function generarCaptcha() {
-            const a = 1 + Math.floor(Math.random() * 9);
-            const b = 1 + Math.floor(Math.random() * 9);
-            captchaResultado = a + b;
-            document.getElementById('captchaPregunta').textContent = `${a} + ${b}`;
-            document.getElementById('campoCaptcha').value = '';
-        }
-
-        generarCaptcha();
-
-        document.getElementById('formContacto').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const form = e.target;
-            const boton = form.querySelector('button[type="submit"]');
-
-            const datos = Object.fromEntries(new FormData(form).entries());
-
-            // Honeypot: una persona nunca ve ni llena este campo. Si viene con contenido
-            // es un bot; simulamos éxito para no darle pistas de que fue detectado.
-            if (datos.sitio_web) {
-                form.reset();
-                generarCaptcha();
-                mostrarToast('Mensaje enviado. Te responderemos pronto.', 'check_circle');
-                return;
-            }
-
-            // Validación propia: así el aviso usa el mismo toast que el resto del sitio
-            if (!datos.nombre.trim() || !datos.mensaje.trim()) {
-                mostrarToast('Completa tu nombre y el mensaje.', 'error');
-                return;
-            }
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(datos.correo.trim())) {
-                mostrarToast('Revisa el correo electrónico.', 'error');
-                form.querySelector('#campoCorreo').focus();
-                return;
-            }
-            if (Number(datos.captcha_respuesta) !== captchaResultado) {
-                mostrarToast('La verificación no es correcta. Intenta de nuevo.', 'error');
-                generarCaptcha();
-                form.querySelector('#campoCaptcha').focus();
-                return;
-            }
-
-            delete datos.sitio_web;
-            delete datos.captcha_respuesta;
-
-            boton.disabled = true;
-            boton.classList.add('is-busy');
-
-            try {
-                const resp = await fetch(CONTACTO_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(datos)
-                });
-                const data = await resp.json();
-
-                if (data.ok) {
-                    mostrarToast('Mensaje enviado. Te responderemos pronto.', 'check_circle');
-                    form.reset();
-                    generarCaptcha();
-                } else {
-                    mostrarToast('No se pudo enviar. Intenta de nuevo.', 'error');
-                    generarCaptcha();
-                }
-            } catch (err) {
-                mostrarToast('No se pudo enviar. Revisa tu conexión.', 'error');
-            } finally {
-                boton.disabled = false;
-                boton.classList.remove('is-busy');
-            }
-        });
-    </script>
+    <script src="js/contacto.js"></script>
 </body>
 </html>

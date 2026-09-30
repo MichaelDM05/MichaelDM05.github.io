@@ -21,7 +21,6 @@
     <meta name="twitter:image" content="https://michaeldm05.github.io/og-image.png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap" rel="stylesheet">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -32,9 +31,7 @@
         ]
     }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/style.css">
     <!-- Adelanta la descarga de la versión ligera del año por defecto: no bloquea
          el render y evita esperar a que corra el JS para empezar a pedirla. -->
@@ -79,22 +76,22 @@
             <h2 class="sr-only">Indicadores clave</h2>
             <div class="stats-grid reveal">
                 <div class="stat-item">
-                    <div class="stat-item-icon">🏛️</div>
+                    <div class="stat-item-icon" aria-hidden="true">🏛️</div>
                     <div class="stat-item-number" id="totalMuni">0</div>
                     <div class="stat-item-label">Municipalidades</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-item-icon">🗺️</div>
+                    <div class="stat-item-icon" aria-hidden="true">🗺️</div>
                     <div class="stat-item-number" id="totalDept">0</div>
                     <div class="stat-item-label">Departamentos</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-item-icon">💻</div>
+                    <div class="stat-item-icon" aria-hidden="true">💻</div>
                     <div class="stat-item-number" id="promedioPCs">0</div>
                     <div class="stat-item-label">PCs operativas / municipio</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-item-icon">🔗</div>
+                    <div class="stat-item-icon" aria-hidden="true">🔗</div>
                     <div class="stat-item-number" id="pctPortal">0%</div>
                     <div class="stat-item-label">Con portal de transparencia</div>
                 </div>
@@ -139,6 +136,13 @@
                     </iframe>
                 </div>
             </div>
+            <p class="powerbi-privacy-note">
+                <span class="material-icons" aria-hidden="true">info</span>
+                <span>
+                    Este reporte lo sirve Microsoft Power BI, que puede usar sus propias cookies y recibir tu
+                    dirección IP. Más información en la <a href="cookies.html#terceros">Política de Cookies</a>.
+                </span>
+            </p>
         </div>
     </section>
 
@@ -263,6 +267,14 @@
                     </ul>
                 </div>
             </div>
+            <nav aria-label="Información legal">
+                <ul class="footer-legal">
+                    <li><a href="privacidad.html">Política de Privacidad</a></li>
+                    <li><a href="terminos.html">Términos y Condiciones</a></li>
+                    <li><a href="cookies.html">Política de Cookies</a></li>
+                    <li><button type="button" data-abrir-cookies>Configurar cookies</button></li>
+                </ul>
+            </nav>
             <div class="footer-bottom">Copyright © 2026 INEI · Datos RENAMU 2021–2025</div>
         </div>
     </footer>
@@ -273,6 +285,7 @@
     </div>
 
     <script src="data/municipios.js"></script>
+    <script src="js/consent.js"></script>
     <script src="js/main.js"></script>
     <script src="js/dashboard.js"></script>
 </body>

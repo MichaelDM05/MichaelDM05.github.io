@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; script-src 'self'; connect-src 'self'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>RENAMU 2021–2025 | INEI - Inicio</title>
     <meta name="description" content="Registro Nacional de Municipalidades (RENAMU) del INEI: 1,891 municipalidades del Perú con datos de gestión, equipamiento y transparencia, 2021–2025.">
     <meta name="theme-color" content="#0A2A43">
@@ -24,10 +26,7 @@
     <meta name="twitter:image" content="https://michaeldm05.github.io/og-image.png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/style.css">
     <script type="application/ld+json">
     {
@@ -99,7 +98,7 @@
                 <li><a href="datos.html">Datos</a></li>
                 <li><a href="estadisticas.html">Estadísticas</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="dashboard.html" class="navbar-cta">Explorar Datos</a></li>
+                <li><a href="datos.html" class="navbar-cta">Explorar Datos</a></li>
             </ul>
         </div>
     </nav>
@@ -111,7 +110,7 @@
         <div class="container">
             <div class="hero-copy">
                 <div class="hero-badge">
-                    <span class="hero-badge-dot"></span>
+                    <span class="hero-badge-dot" aria-hidden="true"></span>
                     Actualizado · Levantamiento 2025
                 </div>
                 <h1>
@@ -124,60 +123,54 @@
                 </p>
                 <div class="hero-actions">
                     <a href="dashboard.html" class="btn btn-primary">
-                        <span class="material-icons" style="font-size: 18px;">rocket_launch</span>
+                        <span class="material-icons" style="font-size: 18px;" aria-hidden="true">rocket_launch</span>
                         Ver Dashboard
                     </a>
                     <a href="datos.html" class="btn btn-outline">
-                        <span class="material-icons" style="font-size: 18px;">table_chart</span>
+                        <span class="material-icons" style="font-size: 18px;" aria-hidden="true">table_chart</span>
                         Explorar Datos
                     </a>
                 </div>
             </div>
 
-            <!-- Signature graphic: lectura técnica del territorio que cubre el registro -->
+            <!-- Mapa del Perú por departamentos (img/mapa-peru.svg, límites INEI-2007) con las
+                 cifras del levantamiento 2025. El mapa ocupa x 110–410, y 20–459 de este lienzo. -->
             <div class="hero-map">
-                <svg viewBox="0 0 420 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                    <path class="contour contour--soft" d="M40 60 C 110 40, 170 90, 210 70 S 320 30, 380 55"/>
-                    <path class="contour contour--soft" d="M30 100 C 100 80, 160 130, 205 110 S 315 75, 390 100"/>
-                    <path class="contour contour--mid" d="M25 145 C 95 120, 155 175, 200 150 S 310 115, 395 140"/>
-                    <path class="contour contour--mid" d="M20 190 C 90 165, 150 220, 195 195 S 305 160, 400 185"/>
-                    <path class="contour contour--strong" d="M20 235 C 90 210, 150 265, 195 240 S 305 205, 400 230"/>
-                    <path class="contour contour--mid" d="M25 280 C 95 258, 150 305, 200 282 S 310 250, 395 272"/>
-                    <path class="contour contour--mid" d="M30 322 C 100 302, 158 345, 205 322 S 315 292, 390 312"/>
-                    <path class="contour contour--soft" d="M35 362 C 105 344, 160 382, 208 362 S 318 335, 385 352"/>
+                <svg viewBox="0 0 572 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="mapaTitulo" focusable="false">
+                    <title id="mapaTitulo">Mapa del Perú por departamentos. RENAMU 2025: 1,891 municipalidades en 25 departamentos; Lima 171, Cusco 116, Arequipa 109, Loreto 53 y Tumbes 13 municipalidades.</title>
+                    <image href="img/mapa-peru.svg" x="98" y="8" width="324" height="463.1"/>
 
-                    <circle class="pin-ring" cx="150" cy="120" r="9"/>
-                    <circle class="pin" cx="150" cy="120" r="3.2"/>
-                    <line class="leader" x1="159" y1="120" x2="200" y2="112"/>
-                    <text class="pin-label" x="203" y="108">Lima</text>
-                    <text class="pin-value" x="203" y="124">171 munic.</text>
+                    <!-- Líneas guía -->
+                    <path class="leader" d="M120 59 C 130 64, 131 84, 130.8 98"/>
+                    <path class="leader" d="M398 91 L 276 127"/>
+                    <path class="leader" d="M148 287 L 205 305"/>
+                    <path class="leader" d="M412 265 L 329 335"/>
+                    <path class="leader" d="M238 455 C 282 456, 312 438, 322 408"/>
 
-                    <circle class="pin-ring" cx="230" cy="245" r="9"/>
-                    <circle class="pin" cx="230" cy="245" r="3.2"/>
-                    <line class="leader" x1="239" y1="245" x2="285" y2="256"/>
-                    <text class="pin-label" x="288" y="253">Cusco</text>
-                    <text class="pin-value" x="288" y="269">116 munic.</text>
+                    <!-- Pines -->
+                    <g class="map-pin"><circle class="pin-ring" cx="130.8" cy="104.7" r="9"/><circle class="pin" cx="130.8" cy="104.7" r="3.6"/></g>
+                    <g class="map-pin"><circle class="pin-ring" cx="269.3" cy="129.4" r="9"/><circle class="pin" cx="269.3" cy="129.4" r="3.6"/></g>
+                    <g class="map-pin"><circle class="pin-ring" cx="211.7" cy="308" r="9"/><circle class="pin" cx="211.7" cy="308" r="3.6"/></g>
+                    <g class="map-pin"><circle class="pin-ring" cx="323.7" cy="340.4" r="9"/><circle class="pin" cx="323.7" cy="340.4" r="3.6"/></g>
+                    <g class="map-pin"><circle class="pin-ring" cx="326.1" cy="402.7" r="9"/><circle class="pin" cx="326.1" cy="402.7" r="3.6"/></g>
 
-                    <circle class="pin-ring" cx="120" cy="330" r="9"/>
-                    <circle class="pin" cx="120" cy="330" r="3.2"/>
-                    <line class="leader" x1="112" y1="336" x2="70" y2="360"/>
-                    <text class="pin-label" x="30" y="378" text-anchor="middle">Arequipa</text>
-                    <text class="pin-value" x="30" y="394" text-anchor="middle">109 munic.</text>
+                    <!-- Etiquetas -->
+                    <g class="map-callout" transform="translate(8 34)"><rect width="112" height="50" rx="8"/><text class="pin-label" x="13" y="21">Tumbes</text><text class="pin-value" x="13" y="40">13 munic.</text></g>
+                    <g class="map-callout" transform="translate(398 66)"><rect width="112" height="50" rx="8"/><text class="pin-label" x="13" y="21">Loreto</text><text class="pin-value" x="13" y="40">53 munic.</text></g>
+                    <g class="map-callout" transform="translate(36 262)"><rect width="112" height="50" rx="8"/><text class="pin-label" x="13" y="21">Lima</text><text class="pin-value" x="13" y="40">171 munic.</text></g>
+                    <g class="map-callout" transform="translate(412 240)"><rect width="112" height="50" rx="8"/><text class="pin-label" x="13" y="21">Cusco</text><text class="pin-value" x="13" y="40">116 munic.</text></g>
+                    <g class="map-callout" transform="translate(126 430)"><rect width="112" height="50" rx="8"/><text class="pin-label" x="13" y="21">Arequipa</text><text class="pin-value" x="13" y="40">109 munic.</text></g>
 
-                    <circle class="pin-ring" cx="290" cy="150" r="9"/>
-                    <circle class="pin" cx="290" cy="150" r="3.2"/>
-                    <line class="leader" x1="298" y1="144" x2="330" y2="120"/>
-                    <text class="pin-label" x="333" y="116">Loreto</text>
-                    <text class="pin-value" x="333" y="132">53 munic.</text>
-
-                    <g class="compass" transform="translate(370, 30)">
-                        <line x1="0" y1="-12" x2="0" y2="12"/>
-                        <line x1="-12" y1="0" x2="12" y2="0"/>
+                    <!-- Totales -->
+                    <g class="map-stat" transform="translate(424 358)">
+                        <rect width="142" height="138" rx="10"/>
+                        <text class="map-stat-number" x="71" text-anchor="middle" y="44">1,891</text>
+                        <text class="map-stat-label" x="71" text-anchor="middle" y="64">municipalidades</text>
+                        <line x1="18" y1="78" x2="124" y2="78"/>
+                        <text class="map-stat-small" x="71" text-anchor="middle" y="98">25 departamentos</text>
+                        <line x1="18" y1="110" x2="124" y2="110"/>
+                        <text class="map-stat-caption" x="71" text-anchor="middle" y="127">RENAMU 2025</text>
                     </g>
-                    <text class="compass-label" x="370" y="52" text-anchor="middle">N</text>
-
-                    <text class="caption" x="0" y="425">LEVANTAMIENTO NACIONAL — 25 DEPARTAMENTOS</text>
-                    <text class="caption" x="420" y="425" text-anchor="end">RENAMU 2025</text>
                 </svg>
             </div>
         </div>
@@ -232,22 +225,22 @@
             </div>
             <div class="stats-grid reveal">
                 <div class="stat-item">
-                    <div class="stat-item-icon">🏛️</div>
+                    <div class="stat-item-icon" aria-hidden="true">🏛️</div>
                     <div class="stat-item-number">1,891</div>
                     <div class="stat-item-label">Municipalidades</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-item-icon">🗺️</div>
+                    <div class="stat-item-icon" aria-hidden="true">🗺️</div>
                     <div class="stat-item-number">196</div>
                     <div class="stat-item-label">Provincias</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-item-icon">💻</div>
+                    <div class="stat-item-icon" aria-hidden="true">💻</div>
                     <div class="stat-item-number">107,681</div>
                     <div class="stat-item-label">PCs operativas</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-item-icon">🔗</div>
+                    <div class="stat-item-icon" aria-hidden="true">🔗</div>
                     <div class="stat-item-number">56%</div>
                     <div class="stat-item-label">Con portal de transparencia</div>
                 </div>
@@ -317,6 +310,14 @@
                     </ul>
                 </div>
             </div>
+            <nav aria-label="Información legal">
+                <ul class="footer-legal">
+                    <li><a href="privacidad.html">Política de Privacidad</a></li>
+                    <li><a href="terminos.html">Términos y Condiciones</a></li>
+                    <li><a href="cookies.html">Política de Cookies</a></li>
+                    <li><button type="button" data-abrir-cookies>Configurar cookies</button></li>
+                </ul>
+            </nav>
             <div class="footer-bottom">
                 Copyright © 2026 INEI · Registro Nacional de Municipalidades · Datos 2021–2025
             </div>
@@ -324,11 +325,12 @@
     </footer>
 
     <!-- Toast -->
-    <div class="toast" id="toast">
-        <span class="material-icons toast-icon">check_circle</span>
+    <div class="toast" id="toast" role="status" aria-live="polite">
+        <span class="material-icons toast-icon" aria-hidden="true">check_circle</span>
         <span id="toastMessage"></span>
     </div>
 
+    <script src="js/consent.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
