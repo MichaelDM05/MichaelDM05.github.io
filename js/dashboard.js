@@ -60,7 +60,7 @@ function mostrarCargando() {
 function mostrarErrorCarga(err) {
     document.getElementById('tablaBody').innerHTML = `
         <tr><td colspan="8" class="table-state">
-            <span class="material-icons table-state-icon">error_outline</span>
+            <span class="material-icons table-state-icon" aria-hidden="true">error_outline</span>
             No se pudieron cargar los datos del año ${escaparHtml(window.RENAMU.anioActual)}.
             <small>${escaparHtml(err && err.message)}</small>
         </td></tr>`;
@@ -179,7 +179,7 @@ function renderTabla() {
     if (total === 0) {
         tbody.innerHTML = `
             <tr><td colspan="8" class="table-state">
-                <span class="material-icons table-state-icon">search_off</span>
+                <span class="material-icons table-state-icon" aria-hidden="true">search_off</span>
                 No se encontraron municipalidades con esos filtros.
             </td></tr>`;
         return;
