@@ -326,19 +326,37 @@ img, svg { max-width: 100%; }
 .hero-map { position: relative; }
 .hero-map svg { width: 100%; height: auto; display: block; overflow: visible; }
 
-.hero-map .contour { fill: none; stroke: var(--cyan); stroke-width: 1; }
-.hero-map .contour--soft { opacity: 0.18; }
-.hero-map .contour--mid { opacity: 0.32; }
-.hero-map .contour--strong { opacity: 0.55; stroke-width: 1.2; }
+/* Mapa del Perú: pines, líneas guía, etiquetas y tarjeta de totales */
+.hero-map .pin-ring { fill: rgba(79, 195, 232, 0.18); stroke: #8FE0FA; stroke-width: 1.2; }
+.hero-map .pin { fill: #D6F5FF; }
+.hero-map .leader { fill: none; stroke: rgba(207, 225, 242, 0.6); stroke-width: 1; }
 
-.hero-map .pin-ring { fill: none; stroke: var(--cyan); stroke-width: 1; opacity: 0.6; }
-.hero-map .pin { fill: var(--cyan); }
-.hero-map .leader { stroke: var(--line-on-navy); stroke-width: 1; stroke-dasharray: 2 3; }
-.hero-map .pin-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.3px; fill: #CFE1F2; text-transform: uppercase; }
-.hero-map .pin-value { font-family: var(--font-mono); font-size: 12px; font-weight: 600; fill: var(--white); }
-.hero-map .caption { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.5px; fill: #7E97AC; text-transform: uppercase; }
-.hero-map .compass { fill: none; stroke: #7E97AC; stroke-width: 1; }
-.hero-map .compass-label { font-family: var(--font-mono); font-size: 10px; fill: #CFE1F2; }
+.hero-map .map-callout rect,
+.hero-map .map-stat rect { fill: rgba(7, 29, 48, 0.82); stroke: rgba(79, 195, 232, 0.55); stroke-width: 1; }
+
+.hero-map .pin-label { font-family: var(--font-body); font-size: 13px; fill: #CFE1F2; }
+.hero-map .pin-value { font-family: var(--font-body); font-size: 15.5px; font-weight: 700; fill: var(--white); }
+
+.hero-map .map-stat line { stroke: rgba(79, 195, 232, 0.35); stroke-width: 1; }
+.hero-map .map-stat-number { font-family: var(--font-display); font-size: 29px; font-weight: 700; fill: var(--white); }
+.hero-map .map-stat-label { font-family: var(--font-body); font-size: 12px; font-weight: 600; fill: #CFE1F2; }
+.hero-map .map-stat-small { font-family: var(--font-body); font-size: 11.5px; fill: #CFE1F2; }
+.hero-map .map-stat-caption { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.4px; fill: #B9CBDB; }
+
+/* Pulso suave de los pines (se desactiva con prefers-reduced-motion) */
+@media (prefers-reduced-motion: no-preference) {
+    .hero-map .pin-ring { animation: pin-pulso 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+}
+
+@keyframes pin-pulso {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.35); opacity: 0.55; }
+}
+
+@media (max-width: 560px) {
+    /* En móvil el mapa aprovecha también el margen lateral del contenedor */
+    .hero-map { margin: 0 -12px; }
+}
 
 .hero-strip { position: relative; z-index: 2; border-top: 1px solid var(--line-on-navy); background: rgba(255, 255, 255, 0.03); }
 
@@ -354,7 +372,8 @@ img, svg { max-width: 100%; }
 
 @media (max-width: 900px) {
     .hero .container { grid-template-columns: 1fr; }
-    .hero-map { max-width: 360px; margin: 0 auto; }
+    /* Más ancho que antes (360px): las etiquetas del mapa se leen mejor */
+    .hero-map { max-width: 520px; margin: 0 auto; }
     .hero-strip .container { flex-wrap: wrap; gap: 8px; }
 }
 
@@ -617,7 +636,8 @@ img, svg { max-width: 100%; }
 .filter-select, .filter-input, .form-control {
     width: 100%;
     padding: 11px 14px;
-    border: 1.5px solid var(--gray-300);
+    /* Antes --gray-300 (1.5:1 sobre blanco): WCAG 1.4.11 pide 3:1 para el borde de un campo */
+    border: 1.5px solid #7B8FA3;
     border-radius: 6px;
     font-size: 0.9rem;
     font-family: var(--font-body);
@@ -627,7 +647,7 @@ img, svg { max-width: 100%; }
     outline: none;
 }
 
-.filter-select:hover, .filter-input:hover, .form-control:hover { border-color: var(--gray-400); }
+.filter-select:hover, .filter-input:hover, .form-control:hover { border-color: var(--ink-soft); }
 
 .filter-select:focus, .filter-input:focus, .form-control:focus {
     border-color: var(--blue);
@@ -1318,7 +1338,8 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     white-space: normal !important;
 }
 
-.table-state small { display: block; margin-top: 8px; font-size: 0.78rem; color: var(--gray-400); }
+/* Antes --gray-400 (2.3:1 sobre blanco, insuficiente para texto) */
+.table-state small { display: block; margin-top: 8px; font-size: 0.78rem; color: var(--ink-soft); }
 .table-state-icon { display: block; font-size: 2.4rem; margin-bottom: 12px; color: var(--gray-400); }
 
 .table-state-spinner {
@@ -1401,3 +1422,302 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     .hbar-row { grid-template-columns: 84px 1fr 62px; gap: 8px; }
     .hbar-name { font-size: 0.76rem; }
 }
+/* ============================================================
+   Accesibilidad: foco en campos de formulario
+   ============================================================ */
+
+/* .form-control y los filtros ponen outline:none; sin esto el anillo de foco
+   global (:focus-visible) queda anulado y solo cambia el color del borde. */
+.filter-select:focus-visible, .filter-input:focus-visible, .form-control:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 1px;
+}
+
+/* <main tabindex="-1"> recibe foco por script (aviso de cookies): sin anillo */
+#contenido:focus { outline: none; }
+
+/* ============================================================
+   Formulario de contacto: errores y consentimiento
+   ============================================================ */
+
+.form-control[aria-invalid="true"] { border-color: #B3261E; }
+
+.field-error {
+    margin-top: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #B3261E;
+}
+
+.form-required-note { font-size: 0.8rem; color: var(--ink-soft); margin: -8px 0 18px; }
+
+.form-group .form-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+.form-check { display: flex; align-items: flex-start; gap: 10px; }
+
+.form-check input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    accent-color: var(--blue);
+    cursor: pointer;
+}
+
+/* Anula el estilo mono/mayúsculas de .form-group label: es una frase completa */
+.form-group .form-check label {
+    font-family: var(--font-body);
+    font-size: 0.86rem;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink);
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.form-check a, .privacy-clause a { color: var(--blue); text-decoration: underline; }
+
+.privacy-clause {
+    margin: 0 0 18px;
+    padding: 14px 16px;
+    background: var(--gray-100);
+    border-radius: 4px;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+}
+
+.privacy-clause strong { color: var(--ink); }
+
+/* ============================================================
+   Pie de página: enlaces legales
+   ============================================================ */
+
+.footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    list-style: none;
+    margin-bottom: 18px;
+    font-size: 0.8rem;
+}
+
+.footer-legal a,
+.footer-legal button {
+    color: #93A8BB;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.footer-legal a:hover,
+.footer-legal button:hover { color: var(--cyan); }
+
+/* ============================================================
+   Aviso y configuración de cookies
+   ============================================================ */
+
+.cookie-banner {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    z-index: 3000;
+    max-width: 980px;
+    margin: 0 auto;
+    background: var(--white);
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    border-top: 3px solid var(--blue);
+    border-radius: 6px;
+    box-shadow: 0 24px 48px -20px rgba(7, 29, 48, 0.45);
+}
+
+.cookie-banner-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px 28px;
+    padding: 20px 24px;
+}
+
+.cookie-banner h2 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+}
+
+.cookie-banner p { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.5; }
+.cookie-banner a { color: var(--blue); text-decoration: underline; }
+
+.cookie-banner-actions { display: flex; flex-wrap: wrap; gap: 10px; flex-shrink: 0; }
+
+@media (max-width: 760px) {
+    .cookie-banner-inner { flex-direction: column; align-items: stretch; padding: 18px; }
+    .cookie-banner-actions .btn { flex: 1 1 auto; justify-content: center; }
+}
+
+.cookie-dialog {
+    width: min(560px, calc(100% - 32px));
+    max-height: calc(100vh - 48px);
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--ink);
+    box-shadow: 0 30px 60px -24px rgba(7, 29, 48, 0.55);
+}
+
+.cookie-dialog::backdrop { background: rgba(7, 29, 48, 0.55); }
+
+.cookie-dialog-form { position: relative; padding: 28px; }
+
+.cookie-dialog h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 8px;
+    padding-right: 36px;
+}
+
+.cookie-dialog-form > p { font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 18px; }
+
+.cookie-cat {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+}
+
+.cookie-cat legend {
+    padding: 0 6px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--navy);
+}
+
+.cookie-cat p { font-size: 0.82rem; color: var(--ink-soft); margin-top: 6px; }
+.cookie-cat a { color: var(--blue); text-decoration: underline; }
+.cookie-cat code { font-family: var(--font-mono); font-size: 0.9em; }
+
+.cookie-switch { display: inline-flex; align-items: center; gap: 8px; font-size: 0.86rem; cursor: pointer; }
+.cookie-switch input { width: 18px; height: 18px; accent-color: var(--blue); cursor: pointer; }
+.cookie-switch input:disabled { cursor: not-allowed; }
+
+.cookie-dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+.cookie-dialog-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #7B8FA3;
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--ink-soft);
+    cursor: pointer;
+}
+
+.cookie-dialog-close:hover { border-color: var(--ink-soft); color: var(--ink); }
+
+/* ============================================================
+   Aviso junto al reporte Power BI (fuera del iframe)
+   ============================================================ */
+
+.powerbi-privacy-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 14px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+.powerbi-privacy-note .material-icons { font-size: 18px; color: var(--blue); }
+.powerbi-privacy-note a { color: var(--blue); text-decoration: underline; }
+
+/* ============================================================
+   Páginas legales
+   ============================================================ */
+
+.legal {
+    max-width: 780px;
+    color: var(--ink);
+    font-size: 0.97rem;
+    line-height: 1.7;
+}
+
+.legal h2 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 40px 0 12px;
+    scroll-margin-top: 84px;
+}
+
+.legal h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 24px 0 8px;
+}
+
+.legal p, .legal ul, .legal ol { margin-bottom: 14px; }
+.legal ul, .legal ol { padding-left: 22px; }
+.legal li { margin-bottom: 6px; }
+.legal a { color: var(--blue); text-decoration: underline; }
+.legal a:hover { color: var(--blue-deep); }
+.legal code { font-family: var(--font-mono); font-size: 0.88em; background: var(--gray-100); padding: 1px 5px; border-radius: 3px; }
+
+.legal-meta { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 20px; }
+
+.legal-draft {
+    border-left: 3px solid #A6720B;
+    background: #FCF4E3;
+    padding: 12px 16px;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.88rem;
+    margin-bottom: 28px;
+}
+
+.legal-toc {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+}
+
+.legal-toc h2 { margin: 0 0 8px; font-size: 1rem; }
+.legal-toc ol { margin: 0; }
+
+.legal-table-wrap { overflow-x: auto; margin-bottom: 18px; }
+
+.legal-table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.88rem; background: var(--white); }
+
+.legal-table th, .legal-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+}
+
+.legal-table th { background: var(--gray-100); font-weight: 600; color: var(--navy); }
