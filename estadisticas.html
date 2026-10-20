@@ -74,110 +74,72 @@
         <div class="container">
             <h2 class="subsection-title">Principales Indicadores de Gestión Municipal</h2>
 
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>🏛️ Municipalidades registradas por año</h3>
-                <div class="vbar-chart" id="chartMuniPorAnio"></div>
-                <p class="filter-hint">CONTEO DE MUNICIPALIDADES POR AÑO (COLUMNA UBIGEO) · RENAMU 2021–2025</p>
+            <div class="resumen-grid" aria-label="Resumen del último año disponible">
+                <a class="resumen-tile" href="#ind-muni" data-resumen="muni">
+                    <span class="resumen-label">Municipalidades</span>
+                    <strong class="resumen-valor">—</strong>
+                    <small class="resumen-cambio">Calculando…</small>
+                </a>
+                <a class="resumen-tile" href="#ind-personal" data-resumen="personal">
+                    <span class="resumen-label">Personal municipal</span>
+                    <strong class="resumen-valor">—</strong>
+                    <small class="resumen-cambio">Calculando…</small>
+                </a>
+                <a class="resumen-tile" href="#ind-computadoras" data-resumen="computadoras">
+                    <span class="resumen-label">Computadoras operativas</span>
+                    <strong class="resumen-valor">—</strong>
+                    <small class="resumen-cambio">Calculando…</small>
+                </a>
+                <a class="resumen-tile" href="#ind-internet" data-resumen="internet">
+                    <span class="resumen-label">Con servicio de internet</span>
+                    <strong class="resumen-valor">—</strong>
+                    <small class="resumen-cambio">Calculando…</small>
+                </a>
             </div>
 
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>👥 Personal municipal por año (al 31 de marzo)</h3>
-                <div class="vbar-chart" id="chartPersonalPorAnio"></div>
-                <p class="filter-hint">SUMA DE PERSONAL TOTAL AL 31 DE MARZO (P19M_T) · MÓDULO III · RENAMU 2021–2025</p>
-            </div>
+            <nav class="stats-nav" aria-label="Temas de las estadísticas">
+                <a href="#tema-padron">Padrón municipal</a>
+                <a href="#tema-personal">Recursos humanos</a>
+                <a href="#tema-equipamiento">Equipamiento y TIC</a>
+                <a href="#tema-gestion">Gestión y competencias</a>
+                <a href="#tema-servicios">Servicios sociales</a>
+            </nav>
 
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>⚖️ Personal municipal por régimen laboral y año</h3>
-                <div class="line-chart-wrap">
-                    <svg class="line-chart" id="chartRegimenPorAnio" viewBox="0 0 640 300" preserveAspectRatio="none" role="img" aria-label="Personal municipal por régimen laboral y año"></svg>
-                </div>
-                <ul class="line-chart-legend" id="leyendaRegimenPorAnio"></ul>
-                <p class="filter-hint">PERSONAL AL 31 DE MARZO POR RÉGIMEN LABORAL (MÓDULO III, P19M) · RENAMU 2021–2025</p>
-            </div>
+            <section class="stats-tema" id="tema-padron" aria-labelledby="tema-padron-titulo">
+                <h2 class="stats-tema-title" id="tema-padron-titulo"><span>Módulo I</span>Padrón municipal</h2>
+                <article class="serie-card tech-frame reveal" id="ind-muni" data-indicador="muni"></article>
+            </section>
 
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>🧾 Personal de Locación de Servicios por año</h3>
-                <div class="vbar-chart" id="chartLocacionPorAnio"></div>
-                <p class="filter-hint">SUMA DE PERSONAL DE LOCACIÓN / ORDEN DE SERVICIOS AL 31 DE MARZO (P19A_2_T) · MÓDULO III · RENAMU 2021–2025</p>
-            </div>
+            <section class="stats-tema" id="tema-personal" aria-labelledby="tema-personal-titulo">
+                <h2 class="stats-tema-title" id="tema-personal-titulo"><span>Módulo III</span>Recursos humanos</h2>
+                <article class="serie-card tech-frame reveal" id="ind-personal" data-indicador="personal"></article>
+                <article class="serie-card tech-frame reveal" id="ind-regimen" data-indicador="regimen"></article>
+                <article class="serie-card tech-frame reveal" id="ind-locacion" data-indicador="locacion"></article>
+                <article class="serie-card tech-frame reveal" id="ind-discapacidad" data-indicador="discapacidad"></article>
+            </section>
 
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>♿ Personal con discapacidad por año</h3>
-                <div class="vbar-chart" id="chartDiscapacidadPorAnio"></div>
-                <p class="filter-hint">SUMA DE PERSONAL CON DISCAPACIDAD AL 31 DE MARZO (P20_2_T) · MÓDULO III · RENAMU 2021–2025</p>
-            </div>
+            <section class="stats-tema" id="tema-equipamiento" aria-labelledby="tema-equipamiento-titulo">
+                <h2 class="stats-tema-title" id="tema-equipamiento-titulo"><span>Módulo II</span>Equipamiento y TIC</h2>
+                <article class="serie-card tech-frame reveal" id="ind-maquinaria" data-indicador="maquinaria"></article>
+                <article class="serie-card tech-frame reveal" id="ind-computadoras" data-indicador="computadoras"></article>
+                <article class="serie-card tech-frame reveal" id="ind-internet" data-indicador="internet"></article>
+                <article class="serie-card tech-frame reveal" id="ind-pte" data-indicador="pte"></article>
+            </section>
 
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <div class="chart-card-header">
-                    <h3>🚜 Municipalidades que tienen maquinaria pesada</h3>
-                    <button class="chart-toggle-btn" id="btnPorcentajeMaquinaria" type="button" title="Ver en porcentaje" aria-pressed="false">%</button>
-                </div>
-                <div class="line-chart-wrap">
-                    <svg class="line-chart" id="chartMaquinariaPorAnio" viewBox="0 0 640 300" preserveAspectRatio="none" role="img" aria-label="Maquinaria pesada: total, operativa y no operativa por año"></svg>
-                </div>
-                <ul class="line-chart-legend" id="leyendaMaquinariaPorAnio"></ul>
-                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE TIENEN MAQUINARIA PESADA, 2021 - 2025 · MÓDULO II (P11B) · RENAMU</p>
-            </div>
+            <section class="stats-tema" id="tema-gestion" aria-labelledby="tema-gestion-titulo">
+                <h2 class="stats-tema-title" id="tema-gestion-titulo"><span>Módulo IV</span>Gestión y competencias</h2>
+                <article class="serie-card tech-frame reveal" id="ind-instrumentos" data-indicador="instrumentos"></article>
+                <article class="serie-card tech-frame reveal" id="ind-tupa" data-indicador="tupa"></article>
+                <article class="serie-card tech-frame reveal" id="ind-adminTributaria" data-indicador="adminTributaria"></article>
+                <article class="serie-card tech-frame reveal" id="ind-ejecucionCoactiva" data-indicador="ejecucionCoactiva"></article>
+                <article class="serie-card tech-frame reveal" id="ind-licencias" data-indicador="licencias"></article>
+            </section>
 
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>💻 Computadoras operativas de las municipalidades</h3>
-                <div class="vbar-chart" id="chartComputadorasPorAnio"></div>
-                <p class="filter-hint">PERÚ: COMPUTADORAS OPERATIVAS DE LAS MUNICIPALIDADES, 2021 - 2025 · MÓDULO II (P13A_T) · RENAMU</p>
-            </div>
-
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>📶 Municipalidades que cuentan con servicio de internet</h3>
-                <div class="vbar-chart" id="chartInternetPorAnio"></div>
-                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE CUENTAN CON SERVICIO DE INTERNET, 2021 - 2025 · MÓDULO II (P14A_1) · RENAMU</p>
-            </div>
-
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>🔗 Municipalidades que tienen Portal de Transparencia Estándar (PTE)</h3>
-                <div class="vbar-chart" id="chartPtePorAnio"></div>
-                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE TIENEN PORTAL DE TRANSPARENCIA ESTÁNDAR (PTE), 2021 - 2025 · MÓDULO II (P18_Portal) · RENAMU</p>
-            </div>
-
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>🏙️ Municipalidades con instrumentos de gestión urbana y/o rural</h3>
-                <div class="vbar-chart" id="chartInstrumentosPorAnio"></div>
-                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE DISPONEN DE INSTRUMENTOS DE GESTIÓN Y DESARROLLO URBANO Y/O RURAL, 2021 - 2025 · MÓDULO IV (P23_1 a P23_16) · RENAMU</p>
-            </div>
-
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>📑 Municipalidades con TUPA según Metodología de Determinación de Costos</h3>
-                <div class="vbar-chart" id="chartTupaPorAnio"></div>
-                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE TIENEN TUPA SEGÚN METODOLOGÍA DE DETERMINACIÓN DE COSTOS, 2021 - 2025 · MÓDULO IV (P26) · RENAMU</p>
-            </div>
-
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>🧑‍💼 Municipalidades con personal exclusivo en Administración Tributaria</h3>
-                <div class="vbar-chart" id="chartAdminTributariaPorAnio"></div>
-                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE TIENEN PERSONAL EXCLUSIVO EN EL ÁREA DE ADMINISTRACIÓN TRIBUTARIA, AL 31 DE MARZO DE 2021 - 2025 · MÓDULO IV (P32_2_T) · RENAMU</p>
-            </div>
-
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>⚖️ Municipalidades que tienen Área de Ejecución Coactiva</h3>
-                <div class="vbar-chart" id="chartEjecucionCoactivaPorAnio"></div>
-                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE TIENEN ÁREA DE EJECUCIÓN COACTIVA, 2021 - 2025 · MÓDULO IV (P33A: 1 y 2) · RENAMU</p>
-            </div>
-
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>📜 Licencias de funcionamiento otorgadas</h3>
-                <div class="vbar-chart" id="chartLicenciasPorAnio"></div>
-                <p class="filter-hint">PERÚ: MUNICIPALIDADES QUE OTORGARON LICENCIAS DE FUNCIONAMIENTO PARA ESTABLECIMIENTOS, 2020 - 2024 · MÓDULO IV (P34A_1 a P34A_31) · RENAMU</p>
-            </div>
-
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>👶 Casos atendidos de la DEMUNA</h3>
-                <div class="vbar-chart" id="chartDemunaPorAnio"></div>
-                <p class="filter-hint">NÚMERO DE CASOS ATENDIDOS DE LA DEMUNA, 2020 - 2024 · MÓDULO V (P64_1_1 a P64_19_1) · RENAMU</p>
-            </div>
-
-            <div class="chart-card tech-frame reveal" style="margin-bottom:40px;">
-                <h3>🏥 Municipalidades que administran establecimientos de salud</h3>
-                <div class="vbar-chart" id="chartSaludPorAnio"></div>
-                <p class="filter-hint">MUNICIPALIDADES QUE ADMINISTRAN ESTABLECIMIENTOS DE SALUD, 2021 - 2025 · MÓDULO V (P66_1_1 a P66_10_1) · RENAMU</p>
-            </div>
+            <section class="stats-tema" id="tema-servicios" aria-labelledby="tema-servicios-titulo">
+                <h2 class="stats-tema-title" id="tema-servicios-titulo"><span>Módulo V</span>Servicios sociales</h2>
+                <article class="serie-card tech-frame reveal" id="ind-demuna" data-indicador="demuna"></article>
+                <article class="serie-card tech-frame reveal" id="ind-salud" data-indicador="salud"></article>
+            </section>
 
             <p class="filter-hint">FUENTE: RENAMU · MÓDULOS I-V (DATOS GENERALES, EQUIPAMIENTO Y TIC, RECURSOS HUMANOS, COMPETENCIAS Y SERVICIOS PÚBLICOS) · INEI</p>
         </div>
