@@ -1,542 +1,669 @@
-// RENAMU · Estadísticas (comparativos entre años)
+// RENAMU · Estadísticas (comparativos entre años, no dependen del selector)
 
-document.addEventListener('DOMContentLoaded', () => {
-    crearGraficoMuniPorAnio();
-    crearGraficoPersonalPorAnio();
-    crearGraficoRegimenPorAnio();
-    crearGraficoLocacionPorAnio();
-    crearGraficoDiscapacidadPorAnio();
-    crearGraficoMaquinariaPorAnio();
-    crearGraficoComputadorasPorAnio();
-    crearGraficoInternetPorAnio();
-    crearGraficoPtePorAnio();
-    crearGraficoInstrumentosPorAnio();
-    crearGraficoTupaPorAnio();
-    crearGraficoAdminTributariaPorAnio();
-    crearGraficoEjecucionCoactivaPorAnio();
-    crearGraficoLicenciasPorAnio();
-    crearGraficoDemunaPorAnio();
-    crearGraficoSaludPorAnio();
-});
+const ANIOS_MODULOS = [2021, 2022, 2023, 2024, 2025];
+const MUNICIPALIDADES = ['municipalidad', 'municipalidades'];
 
-// Comparativo entre todos los años (no depende del selector): carga la versión
-// ligera de cada año y cuenta filas con ubigeo válido, una municipalidad por fila.
-function crearGraficoMuniPorAnio() {
-    const cont = document.getElementById('chartMuniPorAnio');
-    if (!cont) return;
+const sumar = (campo) => (datos) => datos.reduce((s, d) => s + (Number(d[campo]) || 0), 0);
+const contar = (condicion) => (datos) => datos.filter(condicion).length;
 
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
+// Indicadores de una sola serie. `desfase` = 1 cuando la pregunta es
+// retrospectiva: la encuesta del año X pregunta por el año X-1, así que la
+// barra se etiqueta con (año de la encuesta − 1) aunque el dato salga de
+// municipios_{X}_lite.js.
+const INDICADORES = {
+    muni: {
+        icono: 'account_balance',
+        titulo: 'Municipalidades registradas por año',
+        badge: 'Serie homologada',
+        sujeto: 'El padrón',
+        unidad: MUNICIPALIDADES,
+        valor: contar((d) => d.ubigeo !== null && d.ubigeo !== undefined && d.ubigeo !== ''),
+        pie: 'Conteo de municipalidades por año (columna ubigeo) · RENAMU',
+    },
+    personal: {
+        icono: 'groups',
+        titulo: 'Personal municipal por año (al 31 de marzo)',
+        badge: 'Módulo III',
+        sujeto: 'El personal municipal',
+        unidad: ['trabajador', 'trabajadores'],
+        valor: sumar('personal_total_mar'),
+        pie: 'Suma de personal total al 31 de marzo (P19M_T) · Módulo III · RENAMU',
+    },
+    locacion: {
+        icono: 'receipt_long',
+        titulo: 'Personal de Locación de Servicios por año',
+        badge: 'Módulo III',
+        sujeto: 'El personal por locación',
+        unidad: ['persona', 'personas'],
+        valor: sumar('personal_locacion_mar'),
+        pie: 'Suma de personal de locación / orden de servicios al 31 de marzo (P19A_2_T) · Módulo III · RENAMU',
+    },
+    // Pregunta filtro: si la municipalidad respondió "No tiene", el campo queda
+    // vacío en vez de 0, pero sumar() lo trata igual (Number(null)||0 = 0).
+    discapacidad: {
+        icono: 'accessible',
+        titulo: 'Personal con discapacidad por año',
+        badge: 'Módulo III',
+        sujeto: 'El personal con discapacidad',
+        unidad: ['trabajador', 'trabajadores'],
+        valor: sumar('personal_discapacidad_mar'),
+        pie: 'Suma de personal con discapacidad al 31 de marzo (P20_2_T) · Módulo III · RENAMU',
+    },
+    computadoras: {
+        icono: 'computer',
+        titulo: 'Computadoras operativas de las municipalidades',
+        badge: 'Módulo II',
+        sujeto: 'El parque de computadoras',
+        unidad: ['computadora', 'computadoras'],
+        anios: ANIOS_MODULOS,
+        valor: sumar('pc_total_operativas'),
+        pie: 'Perú: computadoras operativas de las municipalidades · Módulo II (P13A_T) · RENAMU',
+    },
+    internet: {
+        icono: 'wifi',
+        titulo: 'Municipalidades que cuentan con servicio de internet',
+        badge: 'Módulo II',
+        sujeto: 'La conectividad municipal',
+        unidad: MUNICIPALIDADES,
+        anios: ANIOS_MODULOS,
+        valor: contar((d) => Number(d.pc_con_acceso_internet) > 0),
+        pie: 'Perú: municipalidades que cuentan con servicio de internet · Módulo II (P14A_1) · RENAMU',
+    },
+    // P18_Portal con dato = tienen URL de su portal registrada. No se usa la
+    // autoevaluación de P18 porque no siempre coincide con si cargaron una URL.
+    pte: {
+        icono: 'public',
+        titulo: 'Municipalidades que tienen Portal de Transparencia Estándar (PTE)',
+        badge: 'Módulo II',
+        sujeto: 'La adopción del PTE',
+        unidad: MUNICIPALIDADES,
+        anios: ANIOS_MODULOS,
+        valor: contar((d) => d.tiene_pte === 'Si'),
+        pie: 'Perú: municipalidades que tienen Portal de Transparencia Estándar (PTE) · Módulo II (P18_Portal) · RENAMU',
+    },
+    // Al menos uno de los 16 instrumentos (P23_1 a P23_16; cada uno 1="Sí"/2="No").
+    instrumentos: {
+        icono: 'location_city',
+        titulo: 'Municipalidades con instrumentos de gestión urbana y/o rural',
+        badge: 'Módulo IV',
+        sujeto: 'El uso de instrumentos de gestión',
+        unidad: MUNICIPALIDADES,
+        anios: ANIOS_MODULOS,
+        valor: contar((d) => d.tiene_instrumentos_gestion === 'Si'),
+        pie: 'Perú: municipalidades que disponen de instrumentos de gestión y desarrollo urbano y/o rural · Módulo IV (P23_1 a P23_16) · RENAMU',
+    },
+    tupa: {
+        icono: 'description',
+        titulo: 'Municipalidades con TUPA según Metodología de Determinación de Costos',
+        badge: 'Módulo IV',
+        sujeto: 'La adopción del TUPA por costos',
+        unidad: MUNICIPALIDADES,
+        valor: contar((d) => d.tiene_tupa_metodologia_costos === 'Si'),
+        pie: 'Perú: municipalidades que tienen TUPA según metodología de determinación de costos · Módulo IV (P26) · RENAMU',
+    },
+    adminTributaria: {
+        icono: 'badge',
+        titulo: 'Municipalidades con personal exclusivo en Administración Tributaria',
+        badge: 'Módulo IV',
+        sujeto: 'La presencia de personal tributario',
+        unidad: MUNICIPALIDADES,
+        anios: ANIOS_MODULOS,
+        valor: contar((d) => Number(d.personal_administracion_tributaria_mar) > 0),
+        pie: 'Perú: municipalidades con personal exclusivo en el área de administración tributaria, al 31 de marzo · Módulo IV (P32_2_T) · RENAMU',
+    },
+    // P33A = 1 "Sí y depende de Adm. Tributaria" ó 2 "Sí y no depende"; se excluye 3 "No tiene".
+    ejecucionCoactiva: {
+        icono: 'gavel',
+        titulo: 'Municipalidades que tienen Área de Ejecución Coactiva',
+        badge: 'Módulo IV',
+        sujeto: 'La presencia de áreas coactivas',
+        unidad: MUNICIPALIDADES,
+        anios: ANIOS_MODULOS,
+        valor: contar((d) => d.tiene_area_ejecucion_coactiva === 'Si'),
+        pie: 'Perú: municipalidades que tienen área de ejecución coactiva · Módulo IV (P33A: 1 y 2) · RENAMU',
+    },
+    licencias: {
+        icono: 'storefront',
+        titulo: 'Licencias de funcionamiento otorgadas',
+        badge: 'Módulo IV',
+        sujeto: 'El otorgamiento de licencias',
+        unidad: ['licencia', 'licencias'],
+        anios: ANIOS_MODULOS,
+        desfase: 1,
+        valor: sumar('licencias_funcionamiento_total'),
+        pie: 'Perú: licencias de funcionamiento otorgadas para establecimientos · Módulo IV (P34A_1 a P34A_31) · RENAMU',
+    },
+    demuna: {
+        icono: 'child_care',
+        titulo: 'Casos atendidos de la DEMUNA',
+        badge: 'Módulo V',
+        sujeto: 'La atención de casos',
+        unidad: ['caso', 'casos'],
+        anios: ANIOS_MODULOS,
+        desfase: 1,
+        valor: sumar('casos_demuna_total'),
+        pie: 'Número de casos atendidos de la DEMUNA · Módulo V (P64_1_1 a P64_19_1) · RENAMU',
+    },
+    // Esta pregunta sí corresponde al año de la encuesta (sin desfase).
+    salud: {
+        icono: 'local_hospital',
+        titulo: 'Municipalidades que administran establecimientos de salud',
+        badge: 'Módulo V',
+        sujeto: 'La gestión municipal de salud',
+        unidad: MUNICIPALIDADES,
+        valor: contar((d) => d.administra_establecimientos_salud === 'Si'),
+        pie: 'Municipalidades que administran establecimientos de salud · Módulo V (P66_1_1 a P66_10_1) · RENAMU',
+    },
+};
 
-    Promise.all(window.RENAMU.anios.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = window.RENAMU.anios.map((anio, i) => {
-                const conteo = listasPorAnio[i].filter((d) => d.ubigeo !== null && d.ubigeo !== undefined && d.ubigeo !== '').length;
-                return [anio, conteo];
-            });
-            renderBarrasVerticales('chartMuniPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo entre todos los años (no depende del selector): suma el personal
-// municipal al 31 de marzo (P19M_T, Módulo III) de cada año.
-function crearGraficoPersonalPorAnio() {
-    const cont = document.getElementById('chartPersonalPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(window.RENAMU.anios.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = window.RENAMU.anios.map((anio, i) => {
-                const total = listasPorAnio[i].reduce((s, d) => s + (Number(d.personal_total_mar) || 0), 0);
-                return [anio, total];
-            });
-            renderBarrasVerticales('chartPersonalPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo entre todos los años (no depende del selector): suma el personal
-// de Locación / Orden de Servicios al 31 de marzo (P19A_2_T, Módulo III) de cada año.
-function crearGraficoLocacionPorAnio() {
-    const cont = document.getElementById('chartLocacionPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(window.RENAMU.anios.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = window.RENAMU.anios.map((anio, i) => {
-                const total = listasPorAnio[i].reduce((s, d) => s + (Number(d.personal_locacion_mar) || 0), 0);
-                return [anio, total];
-            });
-            renderBarrasVerticales('chartLocacionPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo entre todos los años (no depende del selector): suma el personal
-// con discapacidad al 31 de marzo (P20_2_T, Módulo III) de cada año. Es una
-// pregunta filtro: si la municipalidad respondió "No tiene", el campo queda
-// vacío en vez de 0, pero el reduce ya lo trata igual (Number(null)||0 = 0).
-function crearGraficoDiscapacidadPorAnio() {
-    const cont = document.getElementById('chartDiscapacidadPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(window.RENAMU.anios.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = window.RENAMU.anios.map((anio, i) => {
-                const total = listasPorAnio[i].reduce((s, d) => s + (Number(d.personal_discapacidad_mar) || 0), 0);
-                return [anio, total];
-            });
-            renderBarrasVerticales('chartDiscapacidadPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo entre todos los años (no depende del selector): personal al 31 de
-// marzo por régimen laboral (Módulo III, pregunta 19). Cada serie ya viene
-// pre-sumada en el archivo ligero: personal_276_mar (Nombrado+Contratado del
-// D.Leg. 276), personal_728_mar (D.Leg. 728) y personal_cas_mar (CAS).
-// Paleta categórica: se separan los 3 tonos lo más posible en matiz (azul,
-// verde-azulado, ámbar) en vez de azul+cian —dos azules contiguos— siguiendo
-// la guía de Carbon Design System de maximizar el contraste entre colores
-// vecinos de una paleta categórica para que se distingan incluso con daltonismo.
+// Paleta categórica de tonos bien separados en matiz (azul, verde-azulado,
+// ámbar) para que se distingan entre sí incluso con daltonismo.
 const SERIES_REGIMEN = [
-    { campo: 'personal_276_mar', etiqueta: 'Decreto Legislativo N° 276', color: 'var(--blue)' },
-    { campo: 'personal_728_mar', etiqueta: 'Decreto Legislativo N° 728', color: '#0E7C7B' },
-    { campo: 'personal_cas_mar', etiqueta: 'Contrato Administrativo de Servicios (CAS)', color: '#A6720B' }
+    { campo: 'personal_276_mar', etiqueta: 'Decreto Legislativo N° 276', corto: 'D. Leg. 276', color: '#5B9BF0' },
+    { campo: 'personal_728_mar', etiqueta: 'Decreto Legislativo N° 728', corto: 'D. Leg. 728', color: '#3CC4B0' },
+    { campo: 'personal_cas_mar', etiqueta: 'Contrato Administrativo de Servicios (CAS)', corto: 'CAS', color: '#F2B04E' },
 ];
-
-function crearGraficoRegimenPorAnio() {
-    const svg = document.getElementById('chartRegimenPorAnio');
-    const leyenda = document.getElementById('leyendaRegimenPorAnio');
-    if (!svg || !leyenda) return;
-
-    leyenda.innerHTML = SERIES_REGIMEN.map((s) => `
-        <li><span class="swatch" style="background:${s.color}"></span>${escaparHtml(s.etiqueta)}</li>
-    `).join('');
-
-    Promise.all(window.RENAMU.anios.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const series = SERIES_REGIMEN.map((s) => ({
-                ...s,
-                valores: listasPorAnio.map((datos) => datos.reduce((acc, d) => acc + (Number(d[s.campo]) || 0), 0))
-            }));
-            renderGroupedBarChart(svg, window.RENAMU.anios, series);
-        })
-        .catch((err) => {
-            svg.innerHTML = '';
-            leyenda.innerHTML = `<li>No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</li>`;
-        });
-}
-
-// SVG de barras agrupadas: un grupo de 3 barras (una por régimen) por año.
-// Comparado con un gráfico de líneas, cada valor tiene su propio espacio
-// horizontal, así que las etiquetas nunca se superponen aunque dos regímenes
-// tengan cifras parecidas en el mismo año.
-function renderGroupedBarChart(svg, etiquetasX, series, formatoValor) {
-    formatoValor = formatoValor || ((v) => numeroPE(Math.round(v)));
-    const W = 640, H = 300;
-    const padL = 52, padR = 16, padTop = 34, padBottom = 32;
-    const plotW = W - padL - padR;
-    const plotH = H - padTop - padBottom;
-
-    const maxDato = Math.max(1, ...series.flatMap((s) => s.valores));
-    const max = maxDato * 1.15; // aire arriba para que la etiqueta de la barra más alta no se corte
-    const n = etiquetasX.length;
-    const y = (valor) => padTop + plotH - (valor / max) * plotH;
-    const alto = (valor) => (valor / max) * plotH;
-
-    // Cada año ocupa un mismo ancho de grupo; dentro del grupo, las 3 barras
-    // van una al lado de la otra con un pequeño espacio entre ellas.
-    const anchoGrupo = plotW / n;
-    const paddingGrupo = anchoGrupo * 0.05;
-    const anchoUtil = anchoGrupo - paddingGrupo * 2;
-    const espacioBarra = 1;
-    const anchoBarra = (anchoUtil - espacioBarra * (series.length - 1)) / series.length;
-
-    // Grilla de referencia: 5 niveles (0%, 25%, 50%, 75%, 100% del máximo)
-    const niveles = [0, 0.25, 0.5, 0.75, 1];
-    const grilla = niveles.map((f) => {
-        const valor = maxDato * f;
-        const yy = y(valor);
-        return `
-            <line class="line-grid" x1="${padL}" y1="${yy}" x2="${W - padR}" y2="${yy}"></line>
-            <text class="line-axis-label line-axis-label--y" x="${padL - 8}" y="${yy}">${formatoValor(valor)}</text>`;
-    }).join('');
-
-    const barras = etiquetasX.map((anio, i) => {
-        const xGrupo = padL + i * anchoGrupo + paddingGrupo;
-        return series.map((s, idxSerie) => {
-            const v = s.valores[i];
-            const xBarra = xGrupo + idxSerie * (anchoBarra + espacioBarra);
-            const yBarra = y(v);
-            return `
-                <rect class="bar-rect" x="${xBarra}" y="${yBarra}" width="${anchoBarra}" height="${alto(v)}" rx="3" style="fill:${s.color}">
-                    <title>${escaparHtml(s.etiqueta)} · ${anio}: ${formatoValor(v)}</title>
-                </rect>
-                <text class="line-value-label" x="${xBarra + anchoBarra / 2}" y="${yBarra - 6}" style="fill:${s.color};font-size:9.5px;font-weight:700">${formatoValor(v)}</text>`;
-        }).join('');
-    }).join('');
-
-    const etiquetasEjeX = etiquetasX.map((anio, i) => {
-        const xCentro = padL + i * anchoGrupo + anchoGrupo / 2;
-        return `<text class="line-axis-label" x="${xCentro}" y="${H - 8}">${anio}</text>`;
-    }).join('');
-
-    svg.innerHTML = grilla + barras + etiquetasEjeX;
-}
-
-// Años usados por las tarjetas "por año" de Módulo II/IV que antes mostraban
-// solo 2022-2025 (maquinaria pesada, computadoras, internet, PTE,
-// instrumentos de gestión, administración tributaria, ejecución coactiva).
-// Se agregó 2021 a pedido: el dato existe para los 7 indicadores.
-const ANIOS_MAQUINARIA = [2021, 2022, 2023, 2024, 2025];
 
 const SERIES_MAQUINARIA = [
-    { campo: 'maquinaria_total', etiqueta: 'Total', color: 'var(--navy)' },
-    { campo: 'maquinaria_operativa', etiqueta: 'Operativo', color: 'var(--blue)' },
-    { campo: 'maquinaria_no_operativa', etiqueta: 'No operativo', color: '#C22B2B' }
+    { etiqueta: 'Total', corto: 'Total', color: '#A9BCD0' },
+    { etiqueta: 'Operativo', corto: 'Operativo', color: '#4FC3E8' },
+    { etiqueta: 'No operativo', corto: 'No operativo', color: '#F27C7C' },
 ];
 
-// Guarda los valores absolutos ya calculados para poder alternar a porcentaje
-// sin volver a leer los archivos ligeros.
-let datosMaquinariaPorAnio = null;
-let modoMaquinaria = 'absoluto'; // 'absoluto' | 'porcentaje'
+const INDICADORES_MULTIPLES = {
+    regimen: {
+        icono: 'work',
+        titulo: 'Personal municipal por régimen laboral y año',
+        badge: 'Módulo III',
+        pie: 'Personal al 31 de marzo por régimen laboral (Módulo III, P19M) · RENAMU',
+        calcular: (listas) => SERIES_REGIMEN.map((s) => ({ ...s, valores: listas.map(sumar(s.campo)) })),
+        resumen: resumenRegimen,
+    },
+    maquinaria: {
+        icono: 'agriculture',
+        titulo: 'Municipalidades que tienen maquinaria pesada',
+        badge: 'Módulo II',
+        anios: ANIOS_MODULOS,
+        pie: 'Perú: municipalidades que tienen maquinaria pesada · Módulo II (P11B) · RENAMU',
+        porcentaje: true,
+        // "No operativo" no viene precalculado: es la diferencia Total - Operativo
+        calcular: (listas) => {
+            const totales = listas.map(sumar('maquinaria_total'));
+            const operativas = listas.map(sumar('maquinaria_operativa'));
+            return [totales, operativas, totales.map((t, i) => t - operativas[i])]
+                .map((valores, i) => ({ ...SERIES_MAQUINARIA[i], valores }));
+        },
+        resumen: resumenMaquinaria,
+    },
+};
 
-function crearGraficoMaquinariaPorAnio() {
-    const svg = document.getElementById('chartMaquinariaPorAnio');
-    const leyenda = document.getElementById('leyendaMaquinariaPorAnio');
-    const boton = document.getElementById('btnPorcentajeMaquinaria');
-    if (!svg || !leyenda) return;
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-indicador]').forEach((art) => {
+        const clave = art.dataset.indicador;
+        if (INDICADORES[clave]) crearIndicador(art, clave, INDICADORES[clave]);
+        else if (INDICADORES_MULTIPLES[clave]) crearIndicadorMultiple(art, clave, INDICADORES_MULTIPLES[clave]);
+    });
+    resaltarTemaActivo();
+});
 
-    leyenda.innerHTML = SERIES_MAQUINARIA.map((s) => `
-        <li><span class="swatch" style="background:${s.color}"></span>${escaparHtml(s.etiqueta)}</li>
-    `).join('');
+function resaltarTemaActivo() {
+    const enlaces = [...document.querySelectorAll('.stats-nav a')];
+    if (!enlaces.length || !('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver((entradas) => {
+        entradas.filter((e) => e.isIntersecting).forEach((e) => {
+            enlaces.forEach((a) => {
+                const activo = a.getAttribute('href') === '#' + e.target.id;
+                a.classList.toggle('active', activo);
+                if (activo) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+            });
+        });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('.stats-tema').forEach((t) => observer.observe(t));
+}
 
-    if (boton) boton.addEventListener('click', () => {
-        modoMaquinaria = modoMaquinaria === 'absoluto' ? 'porcentaje' : 'absoluto';
-        boton.classList.toggle('active', modoMaquinaria === 'porcentaje');
-        boton.setAttribute('aria-pressed', String(modoMaquinaria === 'porcentaje'));
-        renderGraficoMaquinaria();
+/* ---------- Formato ---------- */
+
+function conSigno(n, formato) {
+    formato = formato || numeroPE;
+    if (n > 0) return '+' + formato(n);
+    if (n < 0) return '−' + formato(Math.abs(n));
+    return formato(0);
+}
+
+function porcentaje(n) {
+    return decimalPE(Math.round(n * 10) / 10, 1) + '%';
+}
+
+function ejeCorto(v) {
+    if (v >= 1e6) return decimalPE(v / 1e6, v % 1e6 ? 1 : 0) + ' M';
+    if (v >= 1e4) return numeroPE(Math.round(v / 1e3)) + ' mil';
+    return numeroPE(v);
+}
+
+function pasoRedondo(x) {
+    const base = Math.pow(10, Math.floor(Math.log10(x)));
+    return [1, 2, 5, 10].map((m) => m * base).find((p) => p >= x);
+}
+
+function claseSigno(n) {
+    return n > 0 ? 'is-up' : n < 0 ? 'is-down' : '';
+}
+
+/* ---------- Estructura común de la tarjeta ---------- */
+
+function armarTarjeta(art, clave, cfg, etiquetas, accionExtra) {
+    const idTitulo = 'serie-' + clave + '-titulo';
+    art.setAttribute('aria-labelledby', idTitulo);
+    const rango = `${etiquetas[0]}&#8288;–&#8288;${etiquetas[etiquetas.length - 1]}`;
+    art.innerHTML = `
+        <header class="serie-head">
+            <div class="serie-icon" aria-hidden="true"><span class="material-icons">${cfg.icono}</span></div>
+            <div class="serie-titles">
+                <p class="serie-eyebrow">Serie histórica · ${rango}</p>
+                <h3 id="${idTitulo}">${escaparHtml(cfg.titulo)}</h3>
+            </div>
+            <div class="serie-head-actions">
+                ${accionExtra || ''}
+                <button class="serie-download" type="button" data-rol="csv" disabled title="Descargar los datos en CSV">
+                    <span class="material-icons" aria-hidden="true">download</span>CSV
+                </button>
+                <span class="serie-badge"><span class="serie-badge-dot" aria-hidden="true"></span>${escaparHtml(cfg.badge)}</span>
+            </div>
+        </header>
+        <dl class="serie-kpis" data-rol="kpis">
+            ${'<div class="serie-kpi"><dt>&nbsp;</dt><dd>—</dd></div>'.repeat(3)}
+        </dl>
+        <div class="serie-body">
+            <div class="serie-chart-wrap">
+                <ul class="serie-legend" data-rol="leyenda"></ul>
+                <div class="serie-chart" data-rol="grafico">
+                    <p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>
+                </div>
+                <p class="serie-foot">${escaparHtml(cfg.pie)} ${rango}</p>
+            </div>
+            <aside class="serie-insight" aria-live="polite">
+                <p class="serie-insight-eyebrow">Lectura rápida</p>
+                <h4 data-rol="lectura-titulo">Calculando…</h4>
+                <p class="serie-insight-text" data-rol="lectura-texto"></p>
+                <div class="serie-insight-metric">
+                    <span data-rol="metrica-etiqueta">Variación acumulada</span>
+                    <strong data-rol="metrica">—</strong>
+                </div>
+                <ol class="serie-timeline" data-rol="timeline"></ol>
+                <p class="serie-source">Fuente: Registro Nacional de Municipalidades, INEI.</p>
+            </aside>
+        </div>`;
+    return (rol) => art.querySelector(`[data-rol="${rol}"]`);
+}
+
+function mostrarError(q, err) {
+    q('grafico').innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
+        No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
+    q('lectura-titulo').textContent = 'Datos no disponibles';
+}
+
+// CSV con punto y coma y BOM para que Excel en español lo abra con tildes y columnas correctas.
+function habilitarCsv(q, clave, filas) {
+    const btn = q('csv');
+    const campo = (v) => /[";\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v);
+    btn.disabled = false;
+    btn.addEventListener('click', () => {
+        const csv = '\uFEFF' + filas.map((f) => f.map(campo).join(';')).join('\r\n');
+        const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `renamu_${clave}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+}
+
+function pintarResumen(clave, serie) {
+    const tile = document.querySelector(`[data-resumen="${clave}"]`);
+    if (!tile) return;
+    const inicio = serie[0], fin = serie[serie.length - 1];
+    const pct = inicio.valor ? ((fin.valor - inicio.valor) / inicio.valor) * 100 : 0;
+    tile.querySelector('.resumen-valor').textContent = numeroPE(fin.valor);
+    const cambio = tile.querySelector('.resumen-cambio');
+    cambio.textContent = `${conSigno(pct, porcentaje)} entre ${inicio.anio} y ${fin.anio}`;
+    cambio.className = 'resumen-cambio ' + claseSigno(pct);
+}
+
+function pintarKpis(q, kpis) {
+    q('kpis').innerHTML = kpis.map((k) => `
+        <div class="serie-kpi">
+            <dt>${k.etiqueta}</dt>
+            <dd class="${k.clase || ''}">${escaparHtml(k.valor)}${k.detalle ? `<small>${escaparHtml(k.detalle)}</small>` : ''}</dd>
+        </div>`).join('');
+}
+
+function pintarLectura(q, { titulo, texto, metricaEtiqueta, metrica, metricaClase }) {
+    q('lectura-titulo').textContent = titulo;
+    q('lectura-texto').textContent = texto;
+    if (metricaEtiqueta) q('metrica-etiqueta').textContent = metricaEtiqueta;
+    const m = q('metrica');
+    m.textContent = metrica;
+    m.className = metricaClase || '';
+}
+
+// Eje Y: se recorta cuando la variación es pequeña frente al valor (si no, las
+// diferencias serían invisibles); en los demás casos parte de cero.
+function escalaY(valores, recortable) {
+    const min = Math.min(...valores), max = Math.max(...valores, 1);
+    if (recortable && (max - min) / max < 0.15) {
+        const paso = pasoRedondo(Math.max(max - min, 10) / 3);
+        const lo = Math.max(0, Math.floor(min / paso) * paso - paso);
+        let hi = Math.ceil(max / paso) * paso;
+        if (hi - max < paso * 0.3) hi += paso;
+        return { lo, hi, paso, recortado: lo > 0 };
+    }
+    const paso = pasoRedondo(max / 4);
+    let hi = Math.ceil(max / paso) * paso;
+    if (hi - max < paso * 0.3) hi += paso;
+    return { lo: 0, hi, paso, recortado: false };
+}
+
+function plotHTML(escala, columnasHTML, xEtiquetas, extraArea, formatoEje) {
+    const { lo, hi, paso } = escala;
+    const pct = (v) => ((v - lo) / (hi - lo)) * 100;
+    const ticks = [];
+    for (let t = lo; t <= hi + paso / 2; t += paso) ticks.push(t);
+    return `
+        <div class="serie-plot">
+            <div class="serie-yaxis" aria-hidden="true">
+                ${ticks.map((t) => `<span style="bottom:${pct(t)}%">${(formatoEje || ejeCorto)(t)}</span>`).join('')}
+            </div>
+            <div class="serie-area">
+                ${ticks.map((t) => `<span class="serie-grid" style="bottom:${pct(t)}%" aria-hidden="true"></span>`).join('')}
+                ${extraArea || ''}
+                <div class="serie-cols">${columnasHTML}</div>
+                <div class="serie-tooltip" role="tooltip" hidden></div>
+            </div>
+        </div>
+        <div class="serie-xaxis" aria-hidden="true">${xEtiquetas.map((e) => `<span>${escaparHtml(e)}</span>`).join('')}</div>`;
+}
+
+function conectarTooltip(cont, contenido) {
+    const area = cont.querySelector('.serie-area');
+    const tooltip = cont.querySelector('.serie-tooltip');
+    const cols = cont.querySelectorAll('.serie-col');
+
+    const mostrar = (col) => {
+        tooltip.innerHTML = contenido(Number(col.dataset.i));
+        tooltip.hidden = false;
+        cols.forEach((c) => c.classList.toggle('is-active', c === col));
+
+        const marca = col.querySelector('.serie-mark');
+        const alto = Math.max(...[...col.querySelectorAll('.serie-bar')].map((b) => b.offsetHeight));
+        const izq = col.offsetLeft + (col.offsetWidth - marca.offsetWidth) / 2;
+        let left = izq + marca.offsetWidth + 10;
+        if (left + tooltip.offsetWidth > area.clientWidth) left = izq - tooltip.offsetWidth - 10;
+        tooltip.style.left = Math.max(0, left) + 'px';
+        tooltip.style.top = Math.max(0, Math.min(area.clientHeight - alto - 10, area.clientHeight - tooltip.offsetHeight)) + 'px';
+    };
+    const ocultar = () => {
+        tooltip.hidden = true;
+        cols.forEach((c) => c.classList.remove('is-active'));
+    };
+    cols.forEach((col) => {
+        col.addEventListener('mouseenter', () => mostrar(col));
+        col.addEventListener('focus', () => mostrar(col));
+        col.addEventListener('mouseleave', ocultar);
+        col.addEventListener('blur', ocultar);
+    });
+}
+
+/* ---------- Indicadores de una sola serie ---------- */
+
+function crearIndicador(art, clave, cfg) {
+    const anios = cfg.anios || window.RENAMU.anios;
+    const etiquetas = anios.map((a) => String(a - (cfg.desfase || 0)));
+    const q = armarTarjeta(art, clave, cfg, etiquetas);
+
+    Promise.all(anios.map((anio) => window.RENAMU.cargarLigero(anio)))
+        .then((listas) => {
+            const serie = listas.map((datos, i) => ({ anio: etiquetas[i], valor: cfg.valor(datos) }));
+            renderSerie(q, cfg, serie);
+            pintarResumen(clave, serie);
+            habilitarCsv(q, clave, [['Año', cfg.titulo], ...serie.map((p) => [p.anio, p.valor])]);
+        })
+        .catch((err) => mostrarError(q, err));
+}
+
+function renderSerie(q, cfg, serie) {
+    const unidad = (n) => cfg.unidad[Math.abs(n) === 1 ? 0 : 1];
+    const cantidad = (n) => `${numeroPE(Math.abs(n))} ${unidad(n)}`;
+
+    serie.forEach((p, i) => { p.delta = i > 0 ? p.valor - serie[i - 1].valor : 0; });
+    const cambios = serie.filter((p) => p.delta !== 0);
+    const primerCambio = cambios.length ? serie.indexOf(cambios[0]) : serie.length;
+    const destacado = cambios.reduce((a, p) => (Math.abs(p.delta) > Math.abs(a.delta) ? p : a), cambios[0]);
+    serie.forEach((p, i) => {
+        p.tipo = p === destacado ? 'cambio' : (i < primerCambio && cambios.length ? 'base' : 'consolidado');
     });
 
-    Promise.all(ANIOS_MAQUINARIA.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            // "No operativo" no viene precalculado: es la diferencia Total - Operativo
-            const totales = listasPorAnio.map((datos) => datos.reduce((s, d) => s + (Number(d.maquinaria_total) || 0), 0));
-            const operativas = listasPorAnio.map((datos) => datos.reduce((s, d) => s + (Number(d.maquinaria_operativa) || 0), 0));
-            const noOperativas = totales.map((t, i) => t - operativas[i]);
+    const inicio = serie[0], fin = serie[serie.length - 1];
+    const variacion = fin.valor - inicio.valor;
+    const pctVar = inicio.valor ? (variacion / inicio.valor) * 100 : null;
+    const ultimo = cambios[cambios.length - 1];
+    const unico = cambios.length === 1;
 
-            datosMaquinariaPorAnio = { totales, operativas, noOperativas };
-            renderGraficoMaquinaria();
-        })
-        .catch((err) => {
-            svg.innerHTML = '';
-            leyenda.innerHTML = `<li>No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</li>`;
-        });
-}
+    pintarKpis(q, [
+        { etiqueta: 'Valor actual', valor: numeroPE(fin.valor) },
+        {
+            etiqueta: `Variación ${inicio.anio}&#8288;–&#8288;${fin.anio}`,
+            valor: conSigno(variacion),
+            clase: claseSigno(variacion),
+            detalle: pctVar !== null && !unico ? conSigno(pctVar, porcentaje) : '',
+        },
+        unico || !cambios.length
+            ? { etiqueta: 'Último cambio', valor: ultimo ? ultimo.anio : 'Sin cambios' }
+            : { etiqueta: 'Mayor variación', valor: destacado.anio, detalle: `${conSigno(destacado.delta)} vs. año anterior` },
+    ]);
 
-// Dibuja el gráfico con los datos ya cargados, en valor absoluto o en
-// porcentaje sobre el total de cada año (Total siempre queda en 100%).
-function renderGraficoMaquinaria() {
-    const svg = document.getElementById('chartMaquinariaPorAnio');
-    if (!svg || !datosMaquinariaPorAnio) return;
+    // Leyenda
+    const ultimoBase = serie[Math.max(primerCambio - 1, 0)].anio;
+    const etiquetaDestacado = unico
+        ? `${destacado.delta > 0 ? 'Incremento' : 'Disminución'} en ${destacado.anio}`
+        : `Mayor variación (${destacado ? destacado.anio : ''})`;
+    const soloTrasCambio = serie.every((p) => p.tipo !== 'consolidado' || p.delta === 0);
+    const leyenda = [
+        ['base', ultimoBase === inicio.anio ? `Base ${inicio.anio}` : `Base ${inicio.anio}–${ultimoBase}`],
+        ['cambio', etiquetaDestacado],
+        ['consolidado', !cambios.length ? 'Nivel estable' : soloTrasCambio ? 'Nivel consolidado' : 'Otros años'],
+    ].filter(([tipo]) => serie.some((p) => p.tipo === tipo));
+    q('leyenda').innerHTML = leyenda.map(([tipo, texto]) =>
+        `<li><span class="serie-swatch is-${tipo}" aria-hidden="true"></span>${escaparHtml(texto)}</li>`
+    ).join('');
 
-    const { totales, operativas, noOperativas } = datosMaquinariaPorAnio;
-
-    let valoresPorCampo, formatoValor;
-    if (modoMaquinaria === 'porcentaje') {
-        const pct = (parte, total) => (total ? (parte / total) * 100 : 0);
-        valoresPorCampo = {
-            maquinaria_total: totales.map(() => 100),
-            maquinaria_operativa: operativas.map((v, i) => pct(v, totales[i])),
-            maquinaria_no_operativa: noOperativas.map((v, i) => pct(v, totales[i]))
-        };
-        formatoValor = (v) => (Math.round(v * 10) / 10).toString().replace('.', ',') + '%';
-    } else {
-        valoresPorCampo = { maquinaria_total: totales, maquinaria_operativa: operativas, maquinaria_no_operativa: noOperativas };
-        formatoValor = (v) => numeroPE(Math.round(v));
-    }
-
-    const series = SERIES_MAQUINARIA.map((s) => ({ ...s, valores: valoresPorCampo[s.campo] }));
-    renderGroupedBarChart(svg, ANIOS_MAQUINARIA, series, formatoValor);
-}
-
-// Comparativo 2022-2025 (no depende del selector): computadoras operativas de
-// las municipalidades (Módulo II, P13A_T = pc_total_operativas).
-function crearGraficoComputadorasPorAnio() {
-    const cont = document.getElementById('chartComputadorasPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(ANIOS_MAQUINARIA.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = ANIOS_MAQUINARIA.map((anio, i) => {
-                const total = listasPorAnio[i].reduce((s, d) => s + (Number(d.pc_total_operativas) || 0), 0);
-                return [anio, total];
-            });
-            renderBarrasVerticales('chartComputadorasPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo 2022-2025 (no depende del selector): municipalidades que cuentan
-// con servicio de internet (Módulo II, P14A_1 = pc_con_acceso_internet > 0).
-function crearGraficoInternetPorAnio() {
-    const cont = document.getElementById('chartInternetPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(ANIOS_MAQUINARIA.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = ANIOS_MAQUINARIA.map((anio, i) => {
-                const conInternet = listasPorAnio[i].filter((d) => Number(d.pc_con_acceso_internet) > 0).length;
-                return [anio, conInternet];
-            });
-            renderBarrasVerticales('chartInternetPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo 2022-2025 (no depende del selector): municipalidades con Portal
-// de Transparencia Estándar (Módulo II, P18_Portal con dato = tienen URL de
-// su portal registrada). No se basa en la autoevaluación de P18 porque no
-// siempre coincide con si realmente cargaron una URL (ver conversación).
-function crearGraficoPtePorAnio() {
-    const cont = document.getElementById('chartPtePorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(ANIOS_MAQUINARIA.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = ANIOS_MAQUINARIA.map((anio, i) => {
-                const conPte = listasPorAnio[i].filter((d) => d.tiene_pte === 'Si').length;
-                return [anio, conPte];
-            });
-            renderBarrasVerticales('chartPtePorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo 2022-2025 (no depende del selector): municipalidades que
-// disponen de al menos uno de los 16 instrumentos de gestión y desarrollo
-// urbano y/o rural (Módulo IV, P23_1 a P23_16; cada uno 1="Sí"/2="No").
-function crearGraficoInstrumentosPorAnio() {
-    const cont = document.getElementById('chartInstrumentosPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(ANIOS_MAQUINARIA.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = ANIOS_MAQUINARIA.map((anio, i) => {
-                const conInstrumentos = listasPorAnio[i].filter((d) => d.tiene_instrumentos_gestion === 'Si').length;
-                return [anio, conInstrumentos];
-            });
-            renderBarrasVerticales('chartInstrumentosPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo 2021-2025 (no depende del selector): municipalidades cuyo TUPA
-// fue elaborado según Metodología de Determinación de Costos (Módulo IV, P26).
-function crearGraficoTupaPorAnio() {
-    const cont = document.getElementById('chartTupaPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(window.RENAMU.anios.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = window.RENAMU.anios.map((anio, i) => {
-                const conTupa = listasPorAnio[i].filter((d) => d.tiene_tupa_metodologia_costos === 'Si').length;
-                return [anio, conTupa];
-            });
-            renderBarrasVerticales('chartTupaPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo 2022-2025 (no depende del selector): municipalidades con personal
-// exclusivo en el área de Administración Tributaria al 31 de marzo (Módulo IV,
-// P32_2_T > 0).
-function crearGraficoAdminTributariaPorAnio() {
-    const cont = document.getElementById('chartAdminTributariaPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(ANIOS_MAQUINARIA.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = ANIOS_MAQUINARIA.map((anio, i) => {
-                const conPersonal = listasPorAnio[i].filter((d) => Number(d.personal_administracion_tributaria_mar) > 0).length;
-                return [anio, conPersonal];
-            });
-            renderBarrasVerticales('chartAdminTributariaPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo 2022-2025 (no depende del selector): municipalidades con Área de
-// Ejecución Coactiva (Módulo IV, P33A = 1 "Sí y depende de Adm. Tributaria" ó
-// 2 "Sí y no depende de Adm. Tributaria"; se excluye 3 "No tiene").
-function crearGraficoEjecucionCoactivaPorAnio() {
-    const cont = document.getElementById('chartEjecucionCoactivaPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(ANIOS_MAQUINARIA.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = ANIOS_MAQUINARIA.map((anio, i) => {
-                const conArea = listasPorAnio[i].filter((d) => d.tiene_area_ejecucion_coactiva === 'Si').length;
-                return [anio, conArea];
-            });
-            renderBarrasVerticales('chartEjecucionCoactivaPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Años de la encuesta (fuente de los archivos _lite.js) de los que se toma
-// este indicador.
-const ANIOS_LICENCIAS = [2021, 2022, 2023, 2024, 2025];
-
-// Comparativo 2020-2024 (no depende del selector): suma nacional de licencias
-// de funcionamiento otorgadas (Módulo IV, suma de P34A_1 a P34A_31; cada campo
-// es el número de licencias otorgadas por tipo de establecimiento).
-//
-// OJO: esta pregunta del formulario RENAMU es retrospectiva. El diccionario de
-// la encuesta "Año 2025" titula esta sección "...licencias de funcionamiento
-// para establecimientos, 2024" — es decir, la encuesta levantada en el año X
-// pregunta por las licencias otorgadas en el año X-1. Por eso se etiqueta cada
-// barra con (año de la encuesta − 1), aunque el dato salga de
-// municipios_{año}_lite.js.
-function crearGraficoLicenciasPorAnio() {
-    const cont = document.getElementById('chartLicenciasPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(ANIOS_LICENCIAS.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = ANIOS_LICENCIAS.map((anio, i) => {
-                const total = listasPorAnio[i].reduce((s, d) => s + (Number(d.licencias_funcionamiento_total) || 0), 0);
-                return [anio - 1, total];
-            });
-            renderBarrasVerticales('chartLicenciasPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo 2020-2024 (no depende del selector): suma nacional de casos
-// atendidos por la DEMUNA (Módulo V, suma de P64_1_1 a P64_19_1). Misma
-// lógica que licencias de funcionamiento: la encuesta es retrospectiva (la
-// sección se titula "...2024" en la encuesta "Año 2025"), así que cada barra
-// se etiqueta con (año de la encuesta − 1).
-function crearGraficoDemunaPorAnio() {
-    const cont = document.getElementById('chartDemunaPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(ANIOS_LICENCIAS.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = ANIOS_LICENCIAS.map((anio, i) => {
-                const total = listasPorAnio[i].reduce((s, d) => s + (Number(d.casos_demuna_total) || 0), 0);
-                return [anio - 1, total];
-            });
-            renderBarrasVerticales('chartDemunaPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-// Comparativo 2021-2025 (no depende del selector): municipalidades que
-// administran al menos un establecimiento de salud (Módulo V, suma de
-// P66_1_1 a P66_10_1 > 0). A diferencia de licencias/DEMUNA, esta pregunta
-// SÍ corresponde al año de la encuesta (sin desfase).
-function crearGraficoSaludPorAnio() {
-    const cont = document.getElementById('chartSaludPorAnio');
-    if (!cont) return;
-
-    cont.innerHTML = '<p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>';
-
-    Promise.all(window.RENAMU.anios.map((anio) => window.RENAMU.cargarLigero(anio)))
-        .then((listasPorAnio) => {
-            const filas = window.RENAMU.anios.map((anio, i) => {
-                const conSalud = listasPorAnio[i].filter((d) => d.administra_establecimientos_salud === 'Si').length;
-                return [anio, conSalud];
-            });
-            renderBarrasVerticales('chartSaludPorAnio', filas);
-        })
-        .catch((err) => {
-            cont.innerHTML = `<p class="chart-state"><span class="material-icons" aria-hidden="true">error_outline</span>
-                No se pudieron cargar los datos. ${escaparHtml(err && err.message)}</p>`;
-        });
-}
-
-function renderBarrasVerticales(contenedorId, filas) {
-    const cont = document.getElementById(contenedorId);
-
-    if (!filas.length) {
-        cont.innerHTML = '<p class="chart-state">Sin datos disponibles.</p>';
-        return;
-    }
-
-    const max = Math.max(...filas.map(([, valor]) => valor), 1);
-    cont.innerHTML = filas.map(([etiqueta, valor]) => `
-        <div class="vbar-col">
-            <div class="vbar-value">${numeroPE(valor)}</div>
-            <div class="vbar-track">
-                <div class="vbar-fill" style="height:${Math.max((valor / max) * 100, 2)}%"></div>
+    // Gráfico
+    const escala = escalaY(serie.map((p) => p.valor), true);
+    const etiquetaBarra = compactoBarra(Math.max(...serie.map((p) => p.valor)));
+    const pct = (v) => ((v - escala.lo) / (escala.hi - escala.lo)) * 100;
+    const columnas = serie.map((p, i) => `
+        <div class="serie-col is-${p.tipo}" tabindex="0" data-i="${i}"
+             aria-label="${p.anio}: ${cantidad(p.valor)}${p.delta ? `, ${conSigno(p.delta)} respecto al año anterior` : ''}">
+            <div class="serie-bar serie-mark" style="height:${Math.max(pct(p.valor), 0.5)}%">
+                <span class="serie-bar-label">
+                    <span class="serie-bar-value">${etiquetaBarra(p.valor)}</span>
+                    ${p.tipo === 'cambio' ? `<span class="serie-pill ${claseSigno(p.delta)}">${conSigno(p.delta, etiquetaBarra)}</span>` : ''}
+                </span>
             </div>
-            <div class="vbar-axis">${escaparHtml(etiqueta)}</div>
-        </div>
-    `).join('');
+        </div>`).join('');
+    const baseline = escala.recortado
+        ? `<span class="serie-baseline" style="bottom:${pct(inicio.valor)}%" aria-hidden="true"></span>` : '';
+    const cont = q('grafico');
+    cont.innerHTML = plotHTML(escala, columnas, serie.map((p) => p.anio), baseline);
+
+    conectarTooltip(cont, (i) => {
+        const p = serie[i];
+        const comparacion = p.delta
+            ? `<p class="serie-tooltip-delta ${claseSigno(p.delta)}">${conSigno(p.delta)} respecto al año anterior</p>`
+            : `<p class="serie-tooltip-delta">${i === 0 ? 'Año base de la serie' : 'Sin cambio respecto al año anterior'}</p>`;
+        return `
+            <p class="serie-tooltip-year">${p.anio}</p>
+            <p class="serie-tooltip-value is-${p.tipo}">${numeroPE(p.valor)}</p>
+            <p class="serie-tooltip-unit">${unidad(p.valor)}</p>
+            ${comparacion}`;
+    });
+
+    // Lectura rápida
+    const S = cfg.sujeto;
+    let titulo, texto;
+    if (!cambios.length) {
+        titulo = `${S} se mantuvo estable`;
+        texto = `Entre ${inicio.anio} y ${fin.anio} el registro se mantuvo en ${cantidad(fin.valor)}.`;
+    } else if (unico && ultimo !== fin) {
+        const d = ultimo.delta;
+        titulo = d > 0 ? `${S} creció y luego se estabilizó` : `${S} se redujo y luego se estabilizó`;
+        texto = `En ${ultimo.anio} ${d > 0 ? 'se sumaron' : 'hubo'} ${cantidad(d)}${d > 0 ? '' : ' menos'}. ` +
+            `Desde entonces, el registro se mantiene estable en ${cantidad(fin.valor)}.`;
+    } else if (unico) {
+        titulo = `${S} cambió en ${ultimo.anio}`;
+        texto = `En ${ultimo.anio} el registro pasó de ${numeroPE(ultimo.valor - ultimo.delta)} a ${cantidad(ultimo.valor)}.`;
+    } else {
+        const deltas = serie.slice(1).map((p) => p.delta);
+        if (deltas.every((d) => d >= 0)) titulo = `${S} creció de forma sostenida`;
+        else if (deltas.every((d) => d <= 0)) titulo = `${S} cayó de forma sostenida`;
+        else if (variacion > 0) titulo = `${S} creció con altibajos`;
+        else if (variacion < 0) titulo = `${S} retrocedió con altibajos`;
+        else titulo = `${S} volvió a su nivel inicial`;
+        const previo = serie[serie.indexOf(destacado) - 1];
+        texto = `Entre ${inicio.anio} y ${fin.anio} pasó de ${numeroPE(inicio.valor)} a ${cantidad(fin.valor)}. ` +
+            `El mayor cambio fue en ${destacado.anio}: ${conSigno(destacado.delta)} respecto a ${previo.anio}.`;
+    }
+    pintarLectura(q, {
+        titulo,
+        texto,
+        metrica: pctVar === null ? '—' : conSigno(pctVar, porcentaje),
+        metricaClase: claseSigno(pctVar),
+    });
+
+    const hitos = serie.filter((p, i) => i === 0 || i === serie.length - 1 || p === destacado);
+    q('timeline').innerHTML = hitos.map((p) =>
+        `<li class="is-${p.tipo}"><span class="serie-timeline-dot" aria-hidden="true"></span>${p.anio}</li>`
+    ).join('');
+}
+
+// Formato corto de las etiquetas sobre las barras según el mayor valor de la
+// serie (p. ej. "188,1 mil"), igual para todas las barras de una tarjeta.
+function compactoBarra(max) {
+    if (max >= 1e6) return (v) => decimalPE(v / 1e6, 2) + ' M';
+    if (max >= 1e5) return (v) => decimalPE(v / 1e3, 1) + ' mil';
+    return numeroPE;
+}
+
+/* ---------- Indicadores de varias series (barras agrupadas) ---------- */
+
+function crearIndicadorMultiple(art, clave, cfg) {
+    const anios = cfg.anios || window.RENAMU.anios;
+    const etiquetas = anios.map(String);
+    const boton = cfg.porcentaje
+        ? '<button class="chart-toggle-btn" type="button" title="Ver en porcentaje" aria-pressed="false">%</button>' : '';
+    const q = armarTarjeta(art, clave, cfg, etiquetas, boton);
+    q('timeline').remove();
+
+    Promise.all(anios.map((anio) => window.RENAMU.cargarLigero(anio)))
+        .then((listas) => {
+            const series = cfg.calcular(listas);
+            habilitarCsv(q, clave, [['Año', ...series.map((s) => s.etiqueta)],
+                ...etiquetas.map((anio, i) => [anio, ...series.map((s) => s.valores[i])])]);
+            q('leyenda').innerHTML = series.map((s) =>
+                `<li><span class="serie-swatch" style="background:${s.color}" aria-hidden="true"></span>${escaparHtml(s.etiqueta)}</li>`
+            ).join('');
+            const resumen = cfg.resumen(series, etiquetas);
+            pintarKpis(q, resumen.kpis);
+            pintarLectura(q, resumen.lectura);
+
+            let enPorcentaje = false;
+            const dibujar = () => renderAgrupado(q('grafico'), etiquetas, series, enPorcentaje);
+            dibujar();
+
+            const btn = art.querySelector('.chart-toggle-btn');
+            if (btn) btn.addEventListener('click', () => {
+                enPorcentaje = !enPorcentaje;
+                btn.classList.toggle('active', enPorcentaje);
+                btn.setAttribute('aria-pressed', String(enPorcentaje));
+                dibujar();
+            });
+        })
+        .catch((err) => mostrarError(q, err));
+}
+
+// En porcentaje, cada serie se expresa sobre la primera (el total) de su año.
+function renderAgrupado(cont, etiquetas, series, enPorcentaje) {
+    const totales = series[0].valores;
+    const valor = (s, i) => (enPorcentaje ? (totales[i] ? (s.valores[i] / totales[i]) * 100 : 0) : s.valores[i]);
+    const formato = enPorcentaje ? porcentaje : numeroPE;
+
+    const escala = enPorcentaje
+        ? { lo: 0, hi: 100, paso: 25 }
+        : escalaY(series.flatMap((s) => s.valores), false);
+    const pct = (v) => ((v - escala.lo) / (escala.hi - escala.lo)) * 100;
+
+    const columnas = etiquetas.map((anio, i) => `
+        <div class="serie-col" tabindex="0" data-i="${i}"
+             aria-label="${anio}: ${series.map((s) => `${s.etiqueta} ${formato(valor(s, i))}`).join(', ')}">
+            <div class="serie-group serie-mark">
+                ${series.map((s) => `<div class="serie-bar" style="height:${Math.max(pct(valor(s, i)), 0.5)}%;background:${s.color}"></div>`).join('')}
+            </div>
+        </div>`).join('');
+    cont.innerHTML = plotHTML(escala, columnas, etiquetas, '', enPorcentaje ? (t) => t + '%' : ejeCorto);
+
+    conectarTooltip(cont, (i) => `
+        <p class="serie-tooltip-year">${etiquetas[i]}</p>
+        ${series.map((s) => `
+            <p class="serie-tooltip-row">
+                <span><span class="serie-swatch" style="background:${s.color}" aria-hidden="true"></span>${escaparHtml(s.corto)}</span>
+                <strong>${formato(valor(s, i))}</strong>
+            </p>`).join('')}`);
+}
+
+function resumenRegimen(series, etiquetas) {
+    const n = etiquetas.length - 1;
+    const a = etiquetas[0], b = etiquetas[n];
+    const cambio = (s) => (s.valores[0] ? ((s.valores[n] - s.valores[0]) / s.valores[0]) * 100 : 0);
+    const totalFin = series.reduce((acc, s) => acc + s.valores[n], 0);
+    const mayor = series.reduce((x, s) => (s.valores[n] > x.valores[n] ? s : x));
+    const crece = series.reduce((x, s) => (Math.abs(cambio(s)) > Math.abs(cambio(x)) ? s : x));
+    const participacion = totalFin ? (mayor.valores[n] / totalFin) * 100 : 0;
+
+    return {
+        kpis: series.map((s) => ({
+            etiqueta: `${escaparHtml(s.corto)} · ${b}`,
+            valor: numeroPE(s.valores[n]),
+            detalle: `${conSigno(cambio(s), porcentaje)} desde ${a}`,
+        })),
+        lectura: {
+            titulo: `${mayor.corto} concentra la mayor parte del personal`,
+            texto: `En ${b}, ${mayor.corto} reúne ${numeroPE(mayor.valores[n])} trabajadores. ` +
+                `Entre ${a} y ${b}, ${crece.corto} es el régimen que más varió: ${conSigno(cambio(crece), porcentaje)}.`,
+            metricaEtiqueta: `Participación de ${mayor.corto} en ${b}`,
+            metrica: porcentaje(participacion),
+        },
+    };
+}
+
+function resumenMaquinaria(series, etiquetas) {
+    const n = etiquetas.length - 1;
+    const a = etiquetas[0], b = etiquetas[n];
+    const [total, operativo, noOperativo] = series;
+    const operatividad = (i) => (total.valores[i] ? (operativo.valores[i] / total.valores[i]) * 100 : 0);
+    const diferencia = operatividad(n) - operatividad(0);
+
+    return {
+        kpis: [
+            { etiqueta: `Total · ${b}`, valor: numeroPE(total.valores[n]), detalle: `${conSigno(total.valores[n] - total.valores[0])} desde ${a}` },
+            { etiqueta: `Operativo · ${b}`, valor: numeroPE(operativo.valores[n]), detalle: `${porcentaje(operatividad(n))} del total` },
+            { etiqueta: `No operativo · ${b}`, valor: numeroPE(noOperativo.valores[n]), detalle: `${porcentaje(100 - operatividad(n))} del total` },
+        ],
+        lectura: {
+            titulo: `El ${porcentaje(operatividad(n))} de la maquinaria está operativa`,
+            texto: `En ${b} estaban operativas ${numeroPE(operativo.valores[n])} de un total de ${numeroPE(total.valores[n])}. ` +
+                `En ${a} la proporción era ${porcentaje(operatividad(0))}.`,
+            metricaEtiqueta: `Cambio en operatividad ${a}–${b}`,
+            metrica: conSigno(diferencia, (v) => decimalPE(Math.round(v * 10) / 10, 1) + ' pp'),
+            metricaClase: claseSigno(diferencia),
+        },
+    };
 }

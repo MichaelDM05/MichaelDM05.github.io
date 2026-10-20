@@ -9,6 +9,11 @@ function ubigeoPadded(d) {
     return String(d.ubigeo).padStart(6, '0');
 }
 
+// El Callao se agrupa dentro de Lima: el Perú se cuenta con 24 departamentos.
+function departamentoDe(d) {
+    return d.departamento === 'CALLAO' ? 'LIMA' : d.departamento;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     poblarSelectorAnio();
     conectarEventos();
@@ -90,10 +95,10 @@ function poblarStats() {
     }
 
     set('totalMuni', numeroPE(total));
-    set('totalDept', new Set(datos.map((d) => d.departamento)).size);
+    set('totalDept', new Set(datos.map(departamentoDe)).size);
 
     const totalPCs = datos.reduce((s, d) => s + (Number(d.pc_total_operativas) || 0), 0);
-    set('promedioPCs', (totalPCs / total).toFixed(1));
+    set('promedioPCs', decimalPE(totalPCs / total, 1));
 
     const conPortal = datos.filter((d) => d.tiene_portal_transparencia === 'Si').length;
     set('pctPortal', Math.round((conPortal / total) * 100) + '%');
@@ -102,7 +107,7 @@ function poblarStats() {
 function poblarFiltroDepartamento() {
     const select = document.getElementById('filtroDepto');
     const seleccionado = select.value;
-    const deptos = [...new Set(window.RENAMU.datosLigeros().map((d) => d.departamento))].sort();
+    const deptos = [...new Set(window.RENAMU.datosLigeros().map(departamentoDe))].sort();
 
     select.innerHTML = '<option value="">Todos</option>' +
         deptos.map((dep) => `<option value="${escaparHtml(dep)}">${escaparHtml(dep)}</option>`).join('');
@@ -127,7 +132,7 @@ function aplicarFiltros() {
     const busqueda = document.getElementById('busqueda').value.trim().toLowerCase();
 
     datosFiltrados = datos.filter((d) => {
-        if (depto && d.departamento !== depto) return false;
+        if (depto && departamentoDe(d) !== depto) return false;
         if (tipo && String(d.tipo_municipalidad) !== tipo) return false;
         if (ubigeo && !ubigeoPadded(d).startsWith(ubigeo)) return false;
         if (busqueda) {
@@ -154,7 +159,8 @@ function aplicarOrden() {
     const numerico = campo === 'ubigeo' || campo === 'tipo_municipalidad';
 
     datosFiltrados.sort((a, b) => {
-        const va = a[campo], vb = b[campo];
+        const va = campo === 'departamento' ? departamentoDe(a) : a[campo];
+        const vb = campo === 'departamento' ? departamentoDe(b) : b[campo];
         if (numerico) return ((Number(va) || 0) - (Number(vb) || 0)) * dir;
         return String(va ?? '').localeCompare(String(vb ?? ''), 'es') * dir;
     });
@@ -167,7 +173,7 @@ function aplicarOrden() {
     });
 }
 
-// Sin paginación: las 1,891 municipalidades filtradas se renderizan de una vez
+// Sin paginación: las 1 891 municipalidades filtradas se renderizan de una vez
 // dentro del recuadro, que se desplaza internamente (.table-scroll).
 function renderTabla() {
     const tbody = document.getElementById('tablaBody');
@@ -191,7 +197,7 @@ function renderTabla() {
         return `
         <tr>
             <td class="mono">${escaparHtml(ubigeoPadded(d))}</td>
-            <td>${escaparHtml(tituloCaso(d.departamento))}</td>
+            <td>${escaparHtml(tituloCaso(departamentoDe(d)))}</td>
             <td>${escaparHtml(tituloCaso(d.provincia))}</td>
             <td class="cell-strong">${escaparHtml(tituloCaso(d.distrito))}</td>
             <td><span class="pill ${esProvincial ? 'pill-blue' : 'pill-soft'}">${escaparHtml(tipo)}</span></td>

@@ -78,8 +78,15 @@ function escaparHtml(valor) {
         .replace(/'/g, '&#39;');
 }
 
+// Convención del sitio: miles separados con espacio (no separable) y coma decimal: 188 098 · 12,5
 function numeroPE(n) {
-    return Number(n || 0).toLocaleString('es-PE');
+    return Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 3 })
+        .replace(/,/g, '\u00A0')
+        .replace('.', ',');
+}
+
+function decimalPE(n, digitos) {
+    return Number(n || 0).toFixed(digitos).replace('.', ',');
 }
 
 // "PERCY ZUTA  CASTILLO" -> "Percy Zuta Castillo"
