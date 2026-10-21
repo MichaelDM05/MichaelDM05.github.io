@@ -1992,3 +1992,95 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     .stats-tema-title { flex-direction: column; gap: 4px; font-size: 1.25rem; }
     .serie-head-actions { width: 100%; }
 }
+
+/* ============================================================
+   Mapa de población por distrito (inicio)
+   ============================================================ */
+
+.pob-layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 20px; align-items: start; }
+.pob-panel { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.pob-box { background: var(--white); border: 1px solid var(--line); border-radius: 4px; padding: 18px 20px; }
+
+.pob-eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.4px; text-transform: uppercase; color: var(--blue); }
+.pob-big { font-family: var(--font-mono); font-size: 2.1rem; font-weight: 600; letter-spacing: -0.5px; color: var(--navy); margin-top: 6px; line-height: 1.1; }
+.pob-sub { font-size: 0.82rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+.pob-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.pob-row2 b { display: block; font-family: var(--font-mono); font-size: 0.98rem; font-weight: 600; color: var(--navy); }
+.pob-row2 span { font-size: 0.76rem; color: var(--ink-soft); }
+
+.pob-ctl { display: flex; flex-direction: column; gap: 12px; }
+.pob-ctl label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--ink-soft); margin-bottom: 5px; }
+.pob-ctl select, .pob-ctl input {
+    width: 100%; font: inherit; font-size: 0.92rem; padding: 9px 11px; border-radius: 6px;
+    border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink);
+}
+.pob-ctl select:focus-visible, .pob-ctl input:focus-visible, .pob-leyenda button:focus-visible, .pob-zoom button:focus-visible {
+    outline: 2px solid var(--blue); outline-offset: 1px;
+}
+
+.pob-leyenda { display: flex; flex-direction: column; gap: 3px; margin-top: 10px; }
+.pob-leyenda button {
+    display: grid; grid-template-columns: 18px 1fr auto; gap: 10px; align-items: center; width: 100%;
+    text-align: left; font: inherit; font-size: 0.86rem; font-family: var(--font-mono); padding: 6px 8px;
+    border-radius: 4px; border: 1px solid transparent; background: none; color: var(--ink); cursor: pointer;
+}
+.pob-leyenda button:hover { background: var(--blue-light); }
+.pob-leyenda button.on { border-color: var(--blue); background: var(--blue-light); }
+.pob-leyenda i { width: 18px; height: 14px; border-radius: 2px; display: block; box-shadow: inset 0 0 0 1px var(--line); }
+.pob-leyenda em { font-style: normal; color: var(--ink-soft); font-size: 0.78rem; }
+.pob-nota { font-size: 0.78rem; color: var(--ink-soft); line-height: 1.45; margin-top: 10px; }
+
+.pob-ficha h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--navy); margin: 4px 0 2px; line-height: 1.15; }
+.pob-ficha-ruta { font-size: 0.84rem; color: var(--ink-soft); }
+.pob-kv { display: grid; grid-template-columns: 1fr auto; gap: 6px 10px; margin-top: 12px; font-size: 0.88rem; }
+.pob-kv dt { color: var(--ink-soft); }
+.pob-kv dd { margin: 0; font-family: var(--font-mono); font-weight: 600; color: var(--navy); text-align: right; }
+.pob-sexbar { display: flex; height: 8px; border-radius: 99px; overflow: hidden; margin-top: 12px; background: var(--gray-200); }
+.pob-sexbar i { display: block; height: 100%; }
+.pob-sexbar .h { background: var(--blue); }
+.pob-sexbar .m { background: var(--cyan); }
+.pob-vacio { color: var(--ink-soft); font-size: 0.88rem; }
+
+.pob-mapa {
+    position: relative; min-height: 520px; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 4px;
+    background-color: var(--paper);
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px; background-position: -1px -1px;
+}
+.pob-mapa svg { display: block; width: 100%; height: 100%; }
+.pob-d { stroke: var(--white); stroke-width: 0.35; vector-effect: non-scaling-stroke; cursor: pointer; transition: opacity 0.2s; }
+.pob-d.dim { opacity: 0.15; }
+.pob-d.out { opacity: 0.22; }
+.pob-d:hover { stroke: var(--cyan); stroke-width: 1.4; }
+.pob-d.sel { stroke: #F2B04E; stroke-width: 2.4; }
+.pob-dep { fill: none; stroke: var(--navy-deep); stroke-opacity: 0.6; stroke-width: 0.9; vector-effect: non-scaling-stroke; pointer-events: none; }
+
+.pob-zoom { position: absolute; right: 12px; top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.pob-zoom button {
+    width: 36px; height: 36px; display: grid; place-items: center; border-radius: 6px; border: 1px solid var(--line-strong);
+    background: var(--white); color: var(--navy); cursor: pointer; transition: var(--transition);
+}
+.pob-zoom button:hover { background: var(--blue-light); border-color: var(--blue); }
+.pob-zoom .material-icons { font-size: 20px; }
+.pob-hint { position: absolute; left: 12px; bottom: 10px; font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-soft); background: rgba(243, 247, 251, 0.85); padding: 3px 8px; border-radius: 3px; pointer-events: none; }
+
+.pob-tip {
+    position: absolute; z-index: 5; pointer-events: none; min-width: 210px; padding: 12px 14px; border-radius: 6px;
+    background: var(--navy); color: var(--white); box-shadow: var(--shadow-md); font-size: 0.82rem;
+    display: flex; flex-direction: column; gap: 3px;
+}
+.pob-tip strong { font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; }
+.pob-tip-pp { color: #B9CBDB; font-size: 0.74rem; margin-bottom: 6px; }
+.pob-tip-tot { font-family: var(--font-mono); font-size: 1.35rem; font-weight: 600; color: var(--cyan); border-top: 1px solid var(--line-on-navy); padding-top: 6px; margin-bottom: 4px; }
+.pob-tip-tot small { display: block; font-family: var(--font-body); font-size: 0.7rem; font-weight: 400; color: #B9CBDB; text-transform: uppercase; letter-spacing: 0.3px; }
+.pob-tip-r { display: flex; justify-content: space-between; gap: 14px; }
+.pob-tip-r span { color: #B9CBDB; }
+.pob-tip-r b { font-family: var(--font-mono); font-weight: 500; }
+
+@media (max-width: 900px) {
+    .pob-layout { grid-template-columns: 1fr; }
+    .pob-mapa { order: -1; }
+}
+@media (max-width: 560px) {
+    .pob-hint { display: none; }
+}
