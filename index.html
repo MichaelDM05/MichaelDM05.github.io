@@ -249,6 +249,59 @@
         </div>
     </section>
 
+    <!-- Población por distrito (Censos Nacionales 2025) -->
+    <section class="section" id="poblacion">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-eyebrow">Censos Nacionales 2025</div>
+                <h2 class="section-title">Población por distrito</h2>
+                <p class="section-subtitle">Explora la población total de cada distrito del país. Filtra por departamento, busca un distrito o haz clic en el mapa para ver su ficha.</p>
+            </div>
+            <div class="pob-layout reveal">
+                <aside class="pob-panel">
+                    <div class="pob-box">
+                        <div class="pob-eyebrow" id="pobAmbito">Perú</div>
+                        <div class="pob-big" id="pobTotal">—</div>
+                        <div class="pob-sub">Población total</div>
+                        <div class="pob-row2">
+                            <div><b id="pobH">—</b><span>Hombres</span></div>
+                            <div><b id="pobM">—</b><span>Mujeres</span></div>
+                        </div>
+                    </div>
+                    <div class="pob-box pob-ctl">
+                        <div>
+                            <label for="pobDep">Departamento</label>
+                            <select id="pobDep"><option value="">Todo el Perú</option></select>
+                        </div>
+                        <div>
+                            <label for="pobBuscar">Buscar distrito</label>
+                            <input id="pobBuscar" list="pobLista" placeholder="Escribe un distrito…" autocomplete="off">
+                            <datalist id="pobLista"></datalist>
+                        </div>
+                    </div>
+                    <div class="pob-box">
+                        <div class="pob-eyebrow">Población total · rangos INEI</div>
+                        <div class="pob-leyenda" id="pobLeyenda"></div>
+                        <p class="pob-nota">Entre paréntesis, número de distritos en el mapa. Haz clic en un rango para resaltarlo.</p>
+                    </div>
+                    <div class="pob-box pob-ficha" id="pobFicha"><p class="pob-vacio">Pasa el cursor o haz clic sobre un distrito para ver su ficha.</p></div>
+                </aside>
+                <div class="pob-mapa" id="pobMapa">
+                    <svg role="img" aria-label="Mapa de población por distrito del Perú"></svg>
+                    <div class="pob-zoom">
+                        <button type="button" id="pobZin" aria-label="Acercar"><span class="material-icons" aria-hidden="true">add</span></button>
+                        <button type="button" id="pobZout" aria-label="Alejar"><span class="material-icons" aria-hidden="true">remove</span></button>
+                        <button type="button" id="pobZreset" aria-label="Ver todo el Perú"><span class="material-icons" aria-hidden="true">zoom_out_map</span></button>
+                    </div>
+                    <div class="pob-hint">Ctrl + rueda para acercar · arrastra para mover</div>
+                    <div class="pob-tip" id="pobTip" hidden></div>
+                </div>
+            </div>
+            <p class="filter-hint">FUENTE: INEI · CENSOS NACIONALES 2025, POBLACIÓN TOTAL · LÍMITES DISTRITALES: PERU-GEOJSON</p>
+            <p class="pob-nota" id="pobGap"></p>
+        </div>
+    </section>
+
     <!-- CTA final -->
     <section class="section">
         <div class="container">
@@ -332,5 +385,9 @@
 
     <script src="js/consent.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/vendor/d3.v7.8.5.min.js" defer></script>
+    <script src="js/vendor/topojson-client.v3.1.0.min.js" defer></script>
+    <script src="data/poblacion_distritos.js" defer></script>
+    <script src="js/mapa-poblacion.js" defer></script>
 </body>
 </html>

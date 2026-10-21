@@ -20,10 +20,13 @@ RENAMU_web/
 │   ├── main.js           Navbar, menú móvil, animación de entrada, toast y utilidades
 │   ├── dashboard.js      Filtros, orden y render de la tabla de municipalidades
 │   ├── estadisticas.js   Cálculo y render de los gráficos
-│   └── datos.js          Generación de los archivos CSV/JSON en el navegador
+│   ├── datos.js          Generación de los archivos CSV/JSON en el navegador
+│   ├── mapa-poblacion.js Mapa de población por distrito de la portada (Censos 2025)
+│   └── vendor/           d3 7.8.5 y topojson-client 3.1.0 (locales: la CSP no admite CDN)
 ├── data/
 │   ├── municipios.js         Cargador: descarga el año pedido bajo demanda
-│   └── municipios_YYYY.js    Un archivo por año (~6,9 MB, 121 campos por municipalidad)
+│   ├── municipios_YYYY.js    Un archivo por año (~6,9 MB, 121 campos por municipalidad)
+│   └── poblacion_distritos.js Límites distritales (TopoJSON) y población del Censo 2025
 ├── docs/
 │   └── renamu_diccionario_YYYY.pdf   Diccionario oficial de variables del INEI (2022-2025)
 ├── favicon.svg           Ícono del sitio (marca INEI/RENAMU)
