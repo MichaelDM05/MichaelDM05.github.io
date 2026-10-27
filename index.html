@@ -7,7 +7,7 @@
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>RENAMU 2021–2025 | INEI - Inicio</title>
     <meta name="description" content="Registro Nacional de Municipalidades (RENAMU) del INEI: 1 891 municipalidades del Perú con datos de gestión, equipamiento y transparencia, 2021–2025.">
-    <meta name="theme-color" content="#0A2A43">
+    <meta name="theme-color" content="#0A2540">
     <!-- Si el sitio cambia de dominio, actualiza michaeldm05.github.io aquí y en el
          resto de páginas, además de sitemap.xml y robots.txt. -->
     <link rel="canonical" href="https://michaeldm05.github.io/index.html">
@@ -81,12 +81,20 @@
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
+    <!-- Franja institucional -->
+    <div class="topbar">
+        <div class="container topbar-inner">
+            <span class="topbar-org"><span class="topbar-dot" aria-hidden="true"></span>Instituto Nacional de Estadística e Informática</span>
+            <span class="topbar-links"><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a><a href="tel:+5116520000">(01) 652-0000</a></span>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar" id="navbar" aria-label="Navegación principal">
         <div class="navbar-inner">
             <a href="index.html" class="navbar-logo">
-                <div class="navbar-logo-icon" aria-hidden="true">INEI</div>
-                RENAMU
+                <span class="navbar-logo-icon" aria-hidden="true">INEI</span>
+                <span class="navbar-logo-text"><span class="navbar-logo-name">RENAMU</span><span class="navbar-logo-sub">Registro Nacional de Municipalidades</span></span>
             </a>
             <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir menú de navegación">
                 <span class="material-icons icon-open" aria-hidden="true">menu</span>
@@ -94,11 +102,11 @@
             </button>
             <ul class="navbar-links" id="navLinks">
                 <li><a href="index.html" class="active" aria-current="page">Inicio</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="dashboard.html">Dashboard en Power BI</a></li>
                 <li><a href="datos.html">Datos</a></li>
                 <li><a href="estadisticas.html">Estadísticas</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="datos.html" class="navbar-cta">Explorar Datos</a></li>
+                <li class="navbar-cta-item"><a href="datos.html#descargas" class="navbar-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Descargar datos</a></li>
             </ul>
         </div>
     </nav>
@@ -106,29 +114,22 @@
     <!-- Hero -->
     <main id="contenido">
     <section class="hero">
-        <div class="hero-frame"></div>
         <div class="container">
             <div class="hero-copy">
-                <div class="hero-badge">
-                    <span class="hero-badge-dot" aria-hidden="true"></span>
-                    Actualizado · Levantamiento 2025
-                </div>
-                <h1>
-                    Registro Nacional<br>
-                    de <span class="accent">Municipalidades</span>
-                </h1>
+                <span class="hero-eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>INEI · Serie 2021–2025</span>
+                <h1>Registro Nacional de Municipalidades</h1>
                 <p>
-                    El sistema oficial de información estadística del INEI que impulsa
-                    la transparencia y eficiencia en la gestión pública municipal.
+                    Datos oficiales del INEI sobre la gestión, el equipamiento y la transparencia
+                    de las 1&nbsp;891 municipalidades del Perú, de 2021 a 2025.
                 </p>
                 <div class="hero-actions">
                     <a href="dashboard.html" class="btn btn-primary">
-                        <span class="material-icons" style="font-size: 18px;" aria-hidden="true">rocket_launch</span>
-                        Ver Dashboard
+                        Ver dashboard en Power BI
+                        <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
                     </a>
                     <a href="datos.html" class="btn btn-outline">
-                        <span class="material-icons" style="font-size: 18px;" aria-hidden="true">table_chart</span>
-                        Explorar Datos
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+                        Descargar datos
                     </a>
                 </div>
             </div>
@@ -174,92 +175,107 @@
                 </svg>
             </div>
         </div>
-        <div class="hero-strip">
-            <div class="container">
-                <span>ESC. 1:1&nbsp;891 MUNICIPALIDADES</span>
-                <span>SISTEMA RENAMU / INEI</span>
+    </section>
+
+    <!-- 01 · Organización territorial -->
+    <section class="section" aria-labelledby="cifras">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <span class="section-label">01 · Organización territorial</span>
+                    <h2 class="section-title" id="cifras">Cómo se organiza el país</h2>
+                </div>
+                <p class="section-subtitle">Cada distrito tiene una municipalidad. En la capital de cada provincia, esa municipalidad es además la provincial.</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-item-number">24</div>
+                    <div class="stat-item-label">departamentos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-number">196</div>
+                    <div class="stat-item-label">provincias</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-number">1&nbsp;891</div>
+                    <div class="stat-item-label">distritos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-number">3&nbsp;098</div>
+                    <div class="stat-item-label">centros poblados</div>
+                </div>
+            </div>
+            <div class="split-card">
+                <div class="split-head">
+                    <strong>1&nbsp;891 municipalidades</strong>
+                    <span>Fuente: INEI, RENAMU 2025, módulos I y II.</span>
+                </div>
+                <div class="split-bar" role="img" aria-label="196 municipalidades provinciales (10,4 %) y 1 695 distritales (89,6 %)">
+                    <div class="split-prov" style="width:10.4%">196</div>
+                    <div class="split-dist">1&nbsp;695</div>
+                </div>
+                <ul class="split-legend">
+                    <li><span class="split-swatch split-prov" aria-hidden="true"></span>Provinciales (10,4&nbsp;%)</li>
+                    <li><span class="split-swatch split-dist" aria-hidden="true"></span>Distritales (89,6&nbsp;%)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <!-- Features -->
-    <section class="section">
+    <!-- 02 · Acceso al registro -->
+    <section class="section section-light" aria-labelledby="consulta">
         <div class="container">
-            <div class="section-header reveal">
-                <div class="section-eyebrow">¿Qué ofrecemos?</div>
-                <h2 class="section-title">Información municipal<br>al alcance de todos</h2>
-                <p class="section-subtitle">
-                    Datos actualizados, confiables y accesibles para la toma de decisiones
-                </p>
+            <div class="section-header section-header--solo">
+                <div>
+                    <span class="section-label">02 · Acceso al registro</span>
+                    <h2 class="section-title" id="consulta">Tres formas de consultar el registro</h2>
+                </div>
             </div>
             <div class="features-grid">
-                <a href="dashboard.html" class="feature-card reveal" data-code="REG—01 / DASHBOARD">
-                    <div class="feature-icon" aria-hidden="true">📊</div>
-                    <h3>Dashboard Interactivo</h3>
-                    <p>Visualiza indicadores clave con gráficos dinámicos y filtros avanzados</p>
-                    <span class="feature-card-cta">Ver Dashboard <span class="material-icons" aria-hidden="true">arrow_forward</span></span>
+                <a href="dashboard.html" class="feature-card">
+                    <span class="feature-card-top">
+                        <span class="icon-tile" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></span>
+                        <span class="feature-card-num">01</span>
+                    </span>
+                    <h3>Dashboard en Power BI</h3>
+                    <p>Indicadores con gráficos dinámicos y filtros por año, departamento y tipo.</p>
+                    <span class="feature-card-cta">Abrir el dashboard<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
                 </a>
-                <a href="dashboard.html" class="feature-card reveal reveal-delay-1" data-code="REG—02 / BÚSQUEDA">
-                    <div class="feature-icon" aria-hidden="true">🔍</div>
-                    <h3>Búsqueda Avanzada</h3>
-                    <p>Encuentra cualquier municipalidad por ubigeo, departamento, provincia o distrito</p>
-                    <span class="feature-card-cta">Buscar municipalidad <span class="material-icons" aria-hidden="true">arrow_forward</span></span>
+                <a href="dashboard.html#directorio" class="feature-card">
+                    <span class="feature-card-top">
+                        <span class="icon-tile" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+                        <span class="feature-card-num">02</span>
+                    </span>
+                    <h3>Directorio de municipalidades</h3>
+                    <p>Busca por ubigeo, departamento, provincia, distrito o nombre del alcalde.</p>
+                    <span class="feature-card-cta">Buscar municipalidad<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
                 </a>
-                <a href="datos.html" class="feature-card reveal reveal-delay-2" data-code="REG—03 / EXPORTACIÓN">
-                    <div class="feature-icon" aria-hidden="true">📥</div>
-                    <h3>Exportación de Datos</h3>
-                    <p>Descarga la información en CSV, JSON o el diccionario oficial en PDF</p>
-                    <span class="feature-card-cta">Ir a Datos <span class="material-icons" aria-hidden="true">arrow_forward</span></span>
+                <a href="datos.html" class="feature-card">
+                    <span class="feature-card-top">
+                        <span class="icon-tile" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></span>
+                        <span class="feature-card-num">03</span>
+                    </span>
+                    <h3>Descarga de datos</h3>
+                    <p>El registro en CSV o JSON y el diccionario oficial de variables en PDF.</p>
+                    <span class="feature-card-cta">Descargar datos<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
                 </a>
             </div>
-        </div>
-    </section>
-
-    <!-- Stats -->
-    <section class="section section-light">
-        <div class="container">
-            <div class="section-header reveal">
-                <div class="section-eyebrow">Cobertura</div>
-                <h2 class="section-title">RENAMU en cifras</h2>
-                <p class="section-subtitle">Resultados del levantamiento 2025, el más reciente publicado.</p>
-            </div>
-            <div class="stats-grid reveal">
-                <div class="stat-item">
-                    <div class="stat-item-icon" aria-hidden="true">🏛️</div>
-                    <div class="stat-item-number">1&nbsp;891</div>
-                    <div class="stat-item-label">Municipalidades</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-item-icon" aria-hidden="true">🗺️</div>
-                    <div class="stat-item-number">196</div>
-                    <div class="stat-item-label">Provincias</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-item-icon" aria-hidden="true">💻</div>
-                    <div class="stat-item-number">107&nbsp;681</div>
-                    <div class="stat-item-label">PCs operativas</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-item-icon" aria-hidden="true">🔗</div>
-                    <div class="stat-item-number">56%</div>
-                    <div class="stat-item-label">Con portal de transparencia</div>
-                </div>
-            </div>
-            <p class="filter-hint">FUENTE: RENAMU 2025 · MÓDULOS I Y II · INEI</p>
         </div>
     </section>
 
     <!-- Población por distrito (Censos Nacionales 2025) -->
     <section class="section" id="poblacion">
         <div class="container">
-            <div class="section-header reveal">
-                <div class="section-eyebrow">Censos Nacionales 2025</div>
-                <h2 class="section-title">Población por distrito</h2>
-                <p class="section-subtitle">Explora la población total de cada distrito del país. Filtra por departamento, busca un distrito o haz clic en el mapa para ver su ficha.</p>
+            <div class="section-header">
+                <div>
+                    <span class="section-label">03 · Censos Nacionales 2025</span>
+                    <h2 class="section-title">Población por distrito</h2>
+                </div>
+                <p class="section-subtitle">Elige un departamento, busca un distrito o haz clic en el mapa para ver su ficha.</p>
             </div>
-            <div class="pob-layout reveal">
+            <div class="pob-layout">
                 <aside class="pob-panel">
-                    <div class="pob-box">
+                    <div class="pob-box pob-box--dest">
                         <div class="pob-eyebrow" id="pobAmbito">Perú</div>
                         <div class="pob-big" id="pobTotal">—</div>
                         <div class="pob-sub">Población total</div>
@@ -280,7 +296,7 @@
                         </div>
                     </div>
                     <div class="pob-box">
-                        <div class="pob-eyebrow">Población total · rangos INEI</div>
+                        <div class="pob-eyebrow">Población total por rangos del INEI</div>
                         <div class="pob-leyenda" id="pobLeyenda"></div>
                         <p class="pob-nota">Entre paréntesis, número de distritos en el mapa. Haz clic en un rango para resaltarlo.</p>
                     </div>
@@ -293,32 +309,26 @@
                         <button type="button" id="pobZout" aria-label="Alejar"><span class="material-icons" aria-hidden="true">remove</span></button>
                         <button type="button" id="pobZreset" aria-label="Ver todo el Perú"><span class="material-icons" aria-hidden="true">zoom_out_map</span></button>
                     </div>
-                    <div class="pob-hint">Ctrl + rueda para acercar · arrastra para mover</div>
+                    <div class="pob-hint">Ctrl + rueda para acercar; arrastra para mover</div>
                     <div class="pob-tip" id="pobTip" hidden></div>
                 </div>
             </div>
-            <p class="filter-hint">FUENTE: INEI · CENSOS NACIONALES 2025, POBLACIÓN TOTAL · LÍMITES DISTRITALES: PERU-GEOJSON</p>
+            <p class="filter-hint">Fuente: INEI, Censos Nacionales 2025 (población total). Límites distritales: peru-geojson.</p>
             <p class="pob-nota" id="pobGap"></p>
         </div>
     </section>
 
     <!-- CTA final -->
-    <section class="section">
+    <section class="section section-cta">
         <div class="container">
-            <div class="cta-band reveal">
+            <div class="cta-band">
                 <div class="cta-band-copy">
                     <h2>¿Tienes dudas sobre el registro?</h2>
-                    <p>Escríbenos si necesitas ayuda con los datos, un reporte de error o información adicional.</p>
+                    <p>El equipo de RENAMU responde consultas sobre los datos, reportes de error y pedidos de información adicional.</p>
                 </div>
                 <div class="cta-band-actions">
-                    <a href="contacto.html" class="btn btn-primary">
-                        <span class="material-icons" style="font-size:18px;" aria-hidden="true">mail</span>
-                        Contáctanos
-                    </a>
-                    <a href="datos.html#diccionario" class="btn btn-outline">
-                        <span class="material-icons" style="font-size:18px;" aria-hidden="true">menu_book</span>
-                        Ver diccionario de datos
-                    </a>
+                    <a href="contacto.html" class="btn btn-primary">Escribir al equipo<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+                    <a href="datos.html#diccionario" class="btn btn-outline">Ver diccionario de datos</a>
                 </div>
             </div>
         </div>
@@ -329,28 +339,16 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <div>
-                    <h2>INEI - RENAMU</h2>
-                    <p>
-                        Instituto Nacional de Estadística e Informática<br>
-                        Registro Nacional de Municipalidades<br>
-                        Av. General Garzón 654-658, Jesús María
-                    </p>
+                <div class="footer-brand">
+                    <span class="footer-logo"><span class="navbar-logo-icon" aria-hidden="true">INEI</span>RENAMU</span>
+                    <p>Instituto Nacional de Estadística e Informática<br>Av. General Garzón 654-658, Jesús María, Lima</p>
                 </div>
                 <div>
                     <h2>Navegación</h2>
                     <ul class="footer-links">
                         <li><a href="index.html">Inicio</a></li>
-                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="dashboard.html">Dashboard en Power BI</a></li>
                         <li><a href="datos.html">Datos</a></li>
-                        <li><a href="estadisticas.html">Estadísticas</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h2>Recursos</h2>
-                    <ul class="footer-links">
-                        <li><a href="datos.html#descargas">Descargas</a></li>
-                        <li><a href="datos.html#diccionario">Diccionario de datos</a></li>
                         <li><a href="estadisticas.html">Estadísticas</a></li>
                     </ul>
                 </div>
@@ -363,16 +361,16 @@
                     </ul>
                 </div>
             </div>
-            <nav aria-label="Información legal">
-                <ul class="footer-legal">
-                    <li><a href="privacidad.html">Política de Privacidad</a></li>
-                    <li><a href="terminos.html">Términos y Condiciones</a></li>
-                    <li><a href="cookies.html">Política de Cookies</a></li>
-                    <li><button type="button" data-abrir-cookies>Configurar cookies</button></li>
-                </ul>
-            </nav>
             <div class="footer-bottom">
-                Copyright © 2026 INEI · Registro Nacional de Municipalidades · Datos 2021–2025
+                <span>Copyright © 2026 INEI. Datos RENAMU 2021–2025.</span>
+                <nav aria-label="Información legal">
+                    <ul class="footer-legal">
+                        <li><a href="privacidad.html">Privacidad</a></li>
+                        <li><a href="terminos.html">Términos</a></li>
+                        <li><a href="cookies.html">Cookies</a></li>
+                        <li><button type="button" data-abrir-cookies>Configurar cookies</button></li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </footer>
@@ -385,6 +383,8 @@
 
     <script src="js/consent.js"></script>
     <script src="js/main.js"></script>
+    <script src="data/mapa-peru-paths.js" defer></script>
+    <script src="js/mapa-constelacion.js" defer></script>
     <script src="js/vendor/d3.v7.8.5.min.js" defer></script>
     <script src="js/vendor/topojson-client.v3.1.0.min.js" defer></script>
     <script src="data/poblacion_distritos.js" defer></script>
