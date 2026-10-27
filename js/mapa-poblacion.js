@@ -8,13 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const TOPO = window.TOPO_DIST;
     const DATA = window.POB_DIST;
     const PERU = { t: 34157732, h: 16865658, m: 17292074 };
-    // Rangos del INEI para el nivel distrital; la rampa va del celeste claro al azul marino del sitio
+    // Rangos del INEI para el nivel distrital: rampa de un solo tono (azul INEI),
+    // validada como ordinal con el skill dataviz: el paso más claro mantiene 2,1:1
+    // sobre el fondo blanco del mapa. Va del celeste (menos
+    // población) al azul institucional oscuro (más población)
     const RANGOS = [
-        { a: 14671, b: 1176422, c: '#0A2A43' },
-        { a: 6019, b: 14670, c: '#1565C0' },
-        { a: 2949, b: 6018, c: '#4A90D9' },
-        { a: 1308, b: 2948, c: '#93C2EC' },
-        { a: 148, b: 1307, c: '#D6E8F8' }
+        { a: 14671, b: 1176422, c: '#00396E' },
+        { a: 6019, b: 14670, c: '#2C55A2' },
+        { a: 2949, b: 6018, c: '#1C74C0' },
+        { a: 1308, b: 2948, c: '#4A97D6' },
+        { a: 148, b: 1307, c: '#7FB8E6' }
     ];
 
     const esc = typeof escaparHtml === 'function' ? escaparHtml : (s) => String(s);

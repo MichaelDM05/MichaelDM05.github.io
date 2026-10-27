@@ -24,23 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         links.querySelectorAll('a').forEach((a) => a.addEventListener('click', cerrar));
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrar(); });
-        window.addEventListener('resize', () => { if (window.innerWidth > 860) cerrar(); });
-    }
-
-    // Sin IntersectionObserver el contenido debe verse igual, no quedarse en opacity:0
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.12 });
-
-        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-    } else {
-        document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
+        window.addEventListener('resize', () => { if (window.innerWidth > 1080) cerrar(); });
     }
 
     // Resaltar el enlace de navegación activo (por si una página olvida la clase)

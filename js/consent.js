@@ -81,7 +81,7 @@
                     <h2 id="cookieBannerTitulo">Tu privacidad en este sitio</h2>
                     <p>
                         No usamos cookies de analítica ni de publicidad. Solo guardamos tu elección
-                        en este navegador. El reporte Power BI del Dashboard es un servicio de Microsoft
+                        en este navegador. El reporte del Dashboard en Power BI es un servicio de Microsoft
                         que puede usar sus propias cookies. Los datos que envíes por el formulario de
                         contacto se tratan según la Política de Privacidad. Más detalles en la
                         <a href="cookies.html">Política de Cookies</a> y la
@@ -151,7 +151,7 @@
 
                 <fieldset class="cookie-cat">
                     <legend>Contenido de terceros · Power BI (Microsoft)</legend>
-                    <p>El reporte incrustado en el Dashboard lo sirve Microsoft desde <code>app.powerbi.com</code> y puede instalar sus propias cookies al cargarse. Esta configuración no lo controla; consulta la <a href="cookies.html#terceros">Política de Cookies</a>.</p>
+                    <p>El reporte de Power BI incrustado en el Dashboard lo sirve Microsoft desde <code>app.powerbi.com</code> y puede instalar sus propias cookies al cargarse. Esta configuración no lo controla; consulta la <a href="cookies.html#terceros">Política de Cookies</a>.</p>
                 </fieldset>
 
                 <div class="cookie-dialog-actions">

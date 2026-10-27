@@ -156,18 +156,18 @@ const INDICADORES = {
     },
 };
 
-// Paleta categórica de tonos bien separados en matiz (azul, verde-azulado,
-// ámbar) para que se distingan entre sí incluso con daltonismo.
+// Paleta categórica validada con el skill dataviz (validate_palette.js, todos los pares,
+// protan/deutan): azul INEI, naranja y celeste de referencia del INEI sobre fondo claro.
 const SERIES_REGIMEN = [
-    { campo: 'personal_276_mar', etiqueta: 'Decreto Legislativo N° 276', corto: 'D. Leg. 276', color: '#5B9BF0' },
-    { campo: 'personal_728_mar', etiqueta: 'Decreto Legislativo N° 728', corto: 'D. Leg. 728', color: '#3CC4B0' },
-    { campo: 'personal_cas_mar', etiqueta: 'Contrato Administrativo de Servicios (CAS)', corto: 'CAS', color: '#F2B04E' },
+    { campo: 'personal_276_mar', etiqueta: 'Decreto Legislativo N° 276', corto: 'D. Leg. 276', color: '#2C55A2' },
+    { campo: 'personal_728_mar', etiqueta: 'Decreto Legislativo N° 728', corto: 'D. Leg. 728', color: '#E8692E' },
+    { campo: 'personal_cas_mar', etiqueta: 'Contrato Administrativo de Servicios (CAS)', corto: 'CAS', color: '#008FD5' },
 ];
 
 const SERIES_MAQUINARIA = [
-    { etiqueta: 'Total', corto: 'Total', color: '#A9BCD0' },
-    { etiqueta: 'Operativo', corto: 'Operativo', color: '#4FC3E8' },
-    { etiqueta: 'No operativo', corto: 'No operativo', color: '#F27C7C' },
+    { etiqueta: 'Total', corto: 'Total', color: '#2C55A2' },
+    { etiqueta: 'Operativo', corto: 'Operativo', color: '#008FD5' },
+    { etiqueta: 'No operativo', corto: 'No operativo', color: '#E8692E' },
 ];
 
 const INDICADORES_MULTIPLES = {
