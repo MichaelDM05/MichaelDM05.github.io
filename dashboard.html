@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | RENAMU - INEI</title>
+    <title>Dashboard en Power BI | RENAMU - INEI</title>
     <meta name="description" content="Panel interactivo del RENAMU: reporte Power BI y buscador de las 1 891 municipalidades del Perú por ubigeo, departamento, tipo y alcalde, 2021–2025.">
-    <meta name="theme-color" content="#0A2A43">
+    <meta name="theme-color" content="#0A2540">
     <link rel="canonical" href="https://michaeldm05.github.io/dashboard.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="RENAMU · INEI">
     <meta property="og:locale" content="es_PE">
-    <meta property="og:title" content="Dashboard | RENAMU - INEI">
+    <meta property="og:title" content="Dashboard en Power BI | RENAMU - INEI">
     <meta property="og:description" content="Reporte Power BI y buscador de las 1 891 municipalidades del Perú por ubigeo, departamento, tipo y alcalde.">
     <meta property="og:url" content="https://michaeldm05.github.io/dashboard.html">
     <meta property="og:image" content="https://michaeldm05.github.io/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Dashboard | RENAMU - INEI">
+    <meta name="twitter:title" content="Dashboard en Power BI | RENAMU - INEI">
     <meta name="twitter:image" content="https://michaeldm05.github.io/og-image.png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -27,7 +27,7 @@
         "@type": "BreadcrumbList",
         "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://michaeldm05.github.io/index.html" },
-            { "@type": "ListItem", "position": 2, "name": "Dashboard", "item": "https://michaeldm05.github.io/dashboard.html" }
+            { "@type": "ListItem", "position": 2, "name": "Dashboard en Power BI", "item": "https://michaeldm05.github.io/dashboard.html" }
         ]
     }
     </script>
@@ -40,12 +40,20 @@
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
+    <!-- Franja institucional -->
+    <div class="topbar">
+        <div class="container topbar-inner">
+            <span class="topbar-org"><span class="topbar-dot" aria-hidden="true"></span>Instituto Nacional de Estadística e Informática</span>
+            <span class="topbar-links"><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a><a href="tel:+5116520000">(01) 652-0000</a></span>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar" id="navbar" aria-label="Navegación principal">
         <div class="navbar-inner">
             <a href="index.html" class="navbar-logo">
-                <div class="navbar-logo-icon" aria-hidden="true">INEI</div>
-                RENAMU
+                <span class="navbar-logo-icon" aria-hidden="true">INEI</span>
+                <span class="navbar-logo-text"><span class="navbar-logo-name">RENAMU</span><span class="navbar-logo-sub">Registro Nacional de Municipalidades</span></span>
             </a>
             <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir menú de navegación">
                 <span class="material-icons icon-open" aria-hidden="true">menu</span>
@@ -53,10 +61,11 @@
             </button>
             <ul class="navbar-links" id="navLinks">
                 <li><a href="index.html">Inicio</a></li>
-                <li><a href="dashboard.html" class="active" aria-current="page">Dashboard</a></li>
+                <li><a href="dashboard.html" class="active" aria-current="page">Dashboard en Power BI</a></li>
                 <li><a href="datos.html">Datos</a></li>
                 <li><a href="estadisticas.html">Estadísticas</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
+                <li class="navbar-cta-item"><a href="datos.html#descargas" class="navbar-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Descargar datos</a></li>
             </ul>
         </div>
     </nav>
@@ -64,65 +73,57 @@
     <!-- Page Header -->
     <div class="page-header">
         <div class="container">
-            <h1>Dashboard</h1>
-            <p>Panel de control interactivo con indicadores municipales, 2021&#8288;–&#8288;2025</p>
+            <nav class="breadcrumb" aria-label="Ruta de navegación"><a href="index.html">Inicio</a><span aria-hidden="true">/</span><span>Dashboard en Power BI</span></nav>
+            <h1>Dashboard en Power BI</h1>
+            <p>Indicadores municipales interactivos, de 2021 a 2025. Debajo del reporte, el directorio con las 1&nbsp;891 municipalidades.</p>
+            <h2 class="sr-only">Indicadores clave</h2>
+            <div class="stats-grid header-kpis">
+                <div class="stat-item">
+                    <div class="stat-item-number" id="totalMuni">0</div>
+                    <div class="stat-item-label">municipalidades</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-number" id="totalDept">0</div>
+                    <div class="stat-item-label">departamentos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-number" id="promedioPCs">0</div>
+                    <div class="stat-item-label">PC operativas por municipalidad</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-number" id="pctPortal">0%</div>
+                    <div class="stat-item-label">con portal de transparencia</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <main id="contenido">
-    <!-- Stats -->
-    <section class="section">
-        <div class="container">
-            <h2 class="sr-only">Indicadores clave</h2>
-            <div class="stats-grid reveal">
-                <div class="stat-item">
-                    <div class="stat-item-icon" aria-hidden="true">🏛️</div>
-                    <div class="stat-item-number" id="totalMuni">0</div>
-                    <div class="stat-item-label">Municipalidades</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-item-icon" aria-hidden="true">🗺️</div>
-                    <div class="stat-item-number" id="totalDept">0</div>
-                    <div class="stat-item-label">Departamentos</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-item-icon" aria-hidden="true">💻</div>
-                    <div class="stat-item-number" id="promedioPCs">0</div>
-                    <div class="stat-item-label">PCs operativas / municipio</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-item-icon" aria-hidden="true">🔗</div>
-                    <div class="stat-item-number" id="pctPortal">0%</div>
-                    <div class="stat-item-label">Con portal de transparencia</div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Power BI -->
-    <section class="section section-light">
+    <section class="section">
         <div class="container">
-            <div class="powerbi-card tech-frame reveal">
+            <div class="powerbi-card">
                 <div class="powerbi-header">
                     <div class="powerbi-header-title">
                         <span class="powerbi-live-dot" aria-hidden="true"></span>
                         <div>
-                            <h3>RENAMU · Reporte Power BI</h3>
-                            <div class="powerbi-subtitle">ACCESO PÚBLICO · PUBLICADO EN LA WEB</div>
+                            <h3>Reporte RENAMU en Power BI</h3>
+                            <div class="powerbi-subtitle">Acceso público · publicado en la web</div>
                         </div>
                     </div>
                     <div class="powerbi-header-actions">
                         <button class="powerbi-icon-btn" title="Recargar reporte" aria-label="Recargar reporte" onclick="recargarPowerBI()">
-                            <span class="material-icons" aria-hidden="true">refresh</span>
+                            <span class="material-icons" aria-hidden="true">refresh</span><span>Recargar</span>
                         </button>
                         <button class="powerbi-icon-btn" title="Pantalla completa" aria-label="Ver en pantalla completa" onclick="pantallaCompletaPowerBI()">
-                            <span class="material-icons" aria-hidden="true">fullscreen</span>
+                            <span class="material-icons" aria-hidden="true">fullscreen</span><span>Pantalla completa</span>
                         </button>
                     </div>
                 </div>
                 <div class="powerbi-wrapper" id="powerbiWrapper">
                     <div class="powerbi-loading" id="powerbiLoading">
-                        <span>CARGANDO REPORTE</span>
+                        <span>Cargando reporte…</span>
                         <div class="powerbi-loading-bar"><span></span></div>
                     </div>
                     <iframe
@@ -147,11 +148,12 @@
     </section>
 
     <!-- Filters -->
-    <section class="section section-light" style="padding-top:0;">
+    <section class="section" id="directorio" style="padding-top:0;">
         <div class="container">
-            <h2 class="subsection-title">Busca una municipalidad</h2>
-            <p class="subsection-subtitle">Filtra el registro por año, departamento, tipo o ubigeo, o escribe un distrito, provincia o alcalde.</p>
-            <div class="filter-bar tech-frame reveal">
+            <span class="section-label">Directorio 2025</span>
+            <h2 class="subsection-title">Directorio Nacional de Municipalidades</h2>
+            <p class="subsection-subtitle">Filtra por año, departamento, tipo o ubigeo, o escribe un distrito, provincia o alcalde.</p>
+            <div class="filter-bar">
                 <div class="filter-grid">
                     <div class="filter-group">
                         <label for="filtroAnio">Año RENAMU</label>
@@ -186,15 +188,11 @@
                         </button>
                     </div>
                 </div>
-                <p class="filter-hint">CONSEJO · HAZ CLIC EN UNA CABECERA DE LA TABLA PARA ORDENARLA</p>
+                <p class="filter-hint">Haz clic en una cabecera de la tabla para ordenarla.</p>
             </div>
-        </div>
-    </section>
 
-    <!-- Table -->
-    <section class="section" style="padding-top:0;">
-        <div class="container">
-            <div class="table-container tech-frame reveal">
+            <!-- Table -->
+            <div class="table-container">
                 <div class="table-top-bar">
                     <h3>Resultados</h3>
                     <div class="table-top-bar-meta">
@@ -239,24 +237,17 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <div>
-                    <h2>INEI - RENAMU</h2>
-                    <p>Instituto Nacional de Estadística e Informática<br>Registro Nacional de Municipalidades</p>
+                <div class="footer-brand">
+                    <span class="footer-logo"><span class="navbar-logo-icon" aria-hidden="true">INEI</span>RENAMU</span>
+                    <p>Instituto Nacional de Estadística e Informática<br>Av. General Garzón 654-658, Jesús María, Lima</p>
                 </div>
                 <div>
                     <h2>Navegación</h2>
                     <ul class="footer-links">
                         <li><a href="index.html">Inicio</a></li>
-                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="dashboard.html">Dashboard en Power BI</a></li>
                         <li><a href="datos.html">Datos</a></li>
                         <li><a href="estadisticas.html">Estadísticas</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h2>Recursos</h2>
-                    <ul class="footer-links">
-                        <li><a href="datos.html#descargas">Descargas</a></li>
-                        <li><a href="datos.html#diccionario">Diccionario de datos</a></li>
                     </ul>
                 </div>
                 <div>
@@ -264,18 +255,21 @@
                     <ul class="footer-links">
                         <li><a href="contacto.html">Formulario</a></li>
                         <li><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a></li>
+                        <li><a href="tel:+5116520000">(01) 652-0000</a></li>
                     </ul>
                 </div>
             </div>
-            <nav aria-label="Información legal">
-                <ul class="footer-legal">
-                    <li><a href="privacidad.html">Política de Privacidad</a></li>
-                    <li><a href="terminos.html">Términos y Condiciones</a></li>
-                    <li><a href="cookies.html">Política de Cookies</a></li>
-                    <li><button type="button" data-abrir-cookies>Configurar cookies</button></li>
-                </ul>
-            </nav>
-            <div class="footer-bottom">Copyright © 2026 INEI · Datos RENAMU 2021–2025</div>
+            <div class="footer-bottom">
+                <span>Copyright © 2026 INEI. Datos RENAMU 2021–2025.</span>
+                <nav aria-label="Información legal">
+                    <ul class="footer-legal">
+                        <li><a href="privacidad.html">Privacidad</a></li>
+                        <li><a href="terminos.html">Términos</a></li>
+                        <li><a href="cookies.html">Cookies</a></li>
+                        <li><button type="button" data-abrir-cookies>Configurar cookies</button></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </footer>
 
