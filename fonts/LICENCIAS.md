@@ -6,12 +6,14 @@ los distribuye Google Fonts.
 
 | Fuente | Archivos | Autor / titular | Licencia |
 |---|---|---|---|
+| Archivo | `archivo-*-wght-normal.woff2` (variable 500–800, Google Fonts v25) | The Archivo Project Authors | SIL Open Font License 1.1 |
+| Inter | `inter-*-wght-normal.woff2` (variable, vía @fontsource-variable/inter 5.0.8) | The Inter Project Authors | SIL Open Font License 1.1 |
 | Space Grotesk | `spacegrotesk-*.woff2` | The Space Grotesk Project Authors | SIL Open Font License 1.1 |
 | IBM Plex Sans | `ibmplexsans-*.woff2` | IBM Corp. | SIL Open Font License 1.1 |
 | IBM Plex Mono | `ibmplexmono-*.woff2` | IBM Corp. | SIL Open Font License 1.1 |
 | Material Icons | `materialicons-*.woff2` | Google LLC | Apache License 2.0 |
 
-- Texto completo de la OFL 1.1: `OFL-SpaceGrotesk.txt` y `OFL-IBMPlex.txt` (IBM Plex reserva el nombre "Plex")
+- Texto completo de la OFL 1.1: `OFL-Archivo.txt`, `OFL-Inter.txt`, `OFL-SpaceGrotesk.txt` y `OFL-IBMPlex.txt` (IBM Plex reserva el nombre "Plex")
 - Texto completo de la Apache License 2.0: `LICENSE-MaterialIcons.txt`
 
 Las fuentes no se han modificado. La OFL permite usarlas y redistribuirlas, incluso
