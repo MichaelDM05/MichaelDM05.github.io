@@ -1,7 +1,7 @@
 // RENAMU · Cargador de datos multi-año (carga diferida)
 //
 // Cada archivo municipios_YYYY.js pesa ~6.9 MB y define una constante global
-// (municipios2021 ... municipios2025) con las 121 columnas de Módulo I y II de
+// (municipios2021 ... municipios2026) con las 121 columnas de Módulo I y II de
 // las municipalidades encuestadas ese año. Ese registro completo solo hace
 // falta para las descargas de Datos (CSV/JSON), así que sigue cargándose bajo
 // demanda tal como antes.
@@ -16,8 +16,8 @@
 // por CORS en ese caso).
 
 (function () {
-    const ANIOS = [2021, 2022, 2023, 2024, 2025];
-    const ANIO_POR_DEFECTO = 2025;
+    const ANIOS = [2021, 2022, 2023, 2024, 2025, 2026];
+    const ANIO_POR_DEFECTO = 2026;
 
     const cache = {};    // anio -> registro completo (121 campos) ya cargado
     const enVuelo = {};  // anio -> Promise en curso, para no pedir el mismo archivo dos veces
@@ -25,8 +25,8 @@
     const cacheLigero = {};
     const enVueloLigero = {};
 
-    // Los archivos de datos declaran `const municipios2025 = [...]` (o
-    // `...2025Lite` en la versión ligera). Un const de nivel superior vive en
+    // Los archivos de datos declaran `const municipios2026 = [...]` (o
+    // `...2026Lite` en la versión ligera). Un const de nivel superior vive en
     // el ámbito léxico global y NO queda colgado de window, así que hay que
     // resolver el identificador; new Function() se evalúa en el ámbito global
     // y sí lo alcanza.
