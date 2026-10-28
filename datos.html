@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; script-src 'self' 'unsafe-eval'; connect-src 'self'">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <title>Datos | RENAMU 2021–2025 - INEI</title>
-    <meta name="description" content="Descarga el registro RENAMU en CSV o JSON y consulta el diccionario de los campos publicados por el INEI, años 2021 a 2025.">
+    <title>Datos | RENAMU 2021–2026 - INEI</title>
+    <meta name="description" content="Descarga las bases del RENAMU en SPSS y CSV, los tabulados distritales y departamentales, y el diccionario oficial del INEI, años 2021 a 2026.">
     <meta name="theme-color" content="#0A2540">
     <link rel="canonical" href="https://michaeldm05.github.io/datos.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="RENAMU · INEI">
     <meta property="og:locale" content="es_PE">
-    <meta property="og:title" content="Datos | RENAMU 2021–2025 - INEI">
-    <meta property="og:description" content="Descarga el registro RENAMU en CSV, JSON o el diccionario oficial en PDF, años 2021 a 2025.">
+    <meta property="og:title" content="Datos | RENAMU 2021–2026 - INEI">
+    <meta property="og:description" content="Bases del RENAMU en SPSS y CSV, tabulados distritales y departamentales, y el diccionario oficial en PDF, años 2021 a 2026.">
     <meta property="og:url" content="https://michaeldm05.github.io/datos.html">
     <meta property="og:image" content="https://michaeldm05.github.io/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Datos | RENAMU 2021–2025 - INEI">
+    <meta name="twitter:title" content="Datos | RENAMU 2021–2026 - INEI">
     <meta name="twitter:image" content="https://michaeldm05.github.io/og-image.png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -43,7 +43,7 @@
     <div class="topbar">
         <div class="container topbar-inner">
             <span class="topbar-org"><span class="topbar-dot" aria-hidden="true"></span>Instituto Nacional de Estadística e Informática</span>
-            <span class="topbar-links"><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a><a href="tel:+5116520000">(01) 652-0000</a></span>
+            <span class="topbar-links"><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a><a href="tel:+5117434949">(01) 743-4949</a></span>
         </div>
     </div>
 
@@ -73,7 +73,7 @@
         <div class="container">
             <nav class="breadcrumb" aria-label="Ruta de navegación"><a href="index.html">Inicio</a><span aria-hidden="true">/</span><span>Datos</span></nav>
             <h1>Datos</h1>
-            <p>Descarga el registro de cualquier año de 2021 a 2025 y consulta qué significa cada campo.</p>
+            <p>Descarga el registro de cualquier año de 2021 a 2026 y consulta qué significa cada campo.</p>
         </div>
     </div>
 
@@ -89,49 +89,72 @@
                 <div class="download-bar">
                     <div class="filter-group">
                         <label for="anioDescarga">Año del registro</label>
-                    <select class="filter-select" id="anioDescarga"></select>
+                        <select class="filter-select" id="anioDescarga">
+                            <option value="2026" selected>2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                        </select>
                     </div>
                     <p class="download-note">
-                        Los archivos se generan en tu navegador a partir del registro del año elegido;
-                    la primera descarga de cada año baja unos 6,9&nbsp;MB.
+                        Archivos oficiales del INEI. Las bases se descargan tal como las publica el INEI; los tabulados,
+                        comprimidos en <code>.zip</code>.
                     </p>
                 </div>
             </div>
 
-            <div class="cards-grid">
+            <div class="cards-grid cards-grid--4">
                 <div class="card download-card">
-                    <div class="download-meta"><span class="format-chip">CSV</span><span>16 campos</span></div>
-                    <h3>Registro principal</h3>
+                    <div class="download-meta"><span class="format-chip">SPSS</span><span data-peso="spss">1,8&nbsp;MB</span></div>
+                    <h3>Base de datos en SPSS</h3>
                     <p>
-                        Las municipalidades del año <span class="anio-activo">2025</span> con los 16 campos más
-                        consultados (ubicación, autoridad, equipamiento y transparencia). Separador <code>;</code>
-                        y codificación UTF-8, listo para Excel.
+                        El Formulario 01 completo del año <span class="anio-activo">2026</span>, con todos los módulos
+                        y las etiquetas de variables y valores. Archivo <code>.sav</code> para SPSS, STATA o R.
                     </p>
-                    <button class="btn btn-primary btn-block" id="btnCsv" type="button">
+                    <a class="btn btn-primary btn-block" id="btnSpss" href="descargas/2026/renamu_2026_spss.zip" download>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> Descargar SPSS
+                    </a>
+                </div>
+                <div class="card download-card">
+                    <div class="download-meta"><span class="format-chip format-chip--dark">CSV</span><span data-peso="csv">1,5&nbsp;MB</span></div>
+                    <h3>Base de datos en CSV</h3>
+                    <p>
+                        La misma base del año <span class="anio-activo">2026</span>, una fila por municipalidad.
+                        Separador <code>;</code> y codificación UTF-8, lista para Excel.
+                    </p>
+                    <a class="btn btn-secondary btn-block" id="btnCsv" href="descargas/2026/renamu_2026_csv.zip" download>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> Descargar CSV
-                    </button>
+                    </a>
                 </div>
-                <div class="card download-card">
-                    <div class="download-meta"><span class="format-chip format-chip--dark">JSON</span><span>121 campos</span></div>
-                    <h3>Registro completo</h3>
-                    <p>
-                        Los 121 campos originales del Módulo I y II del año <span class="anio-activo">2025</span>,
-                        sin recortes, para integrarlo en tus propios scripts o aplicaciones.
-                    </p>
-                    <button class="btn btn-secondary btn-block" id="btnJson" type="button">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> Descargar JSON
-                    </button>
+                <div class="card download-card" data-tabulado="distrital">
+                    <div class="download-meta"><span class="format-chip">XLSX</span><span data-meta>15 temas</span></div>
+                    <h3>Tabulado distrital</h3>
+                    <p>Cuadros estadísticos en Excel con una fila por distrito, organizados en los temas del registro.</p>
+                    <div class="tabulado-control" data-control>
+                        <label for="temaDistrital">Tema</label>
+                        <select class="filter-select" id="temaDistrital"></select>
+                    </div>
+                    <p class="tabulado-aviso" hidden>Por ahora el tabulado solo está publicado para 2021.</p>
+                    <p class="tabulado-aviso tabulado-drive" hidden>Incluye todos los temas del año en un solo archivo .zip.</p>
+                    <a class="btn btn-secondary btn-block" href="descargas/2021/tabulados/tabulado_distrital_2021_01_equipamiento-tic.zip" download>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> <span class="btn-texto">Descargar tabulado 2021</span>
+                    </a>
                 </div>
-                <div class="card download-card">
-                    <div class="download-meta"><span class="format-chip">CSV</span><span>por departamento</span></div>
-                    <h3>Resumen por departamento</h3>
-                    <p>
-                        Una fila por departamento con municipalidades, equipos operativos, conectividad,
-                        portales de transparencia y alcaldesas del año <span class="anio-activo">2025</span>.
-                    </p>
-                    <button class="btn btn-secondary btn-block" id="btnResumen" type="button">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> Descargar resumen
-                    </button>
+                <div class="card download-card" data-tabulado="departamental">
+                    <div class="download-meta"><span class="format-chip">XLSX</span><span data-meta>15 temas</span></div>
+                    <h3>Tabulado departamental</h3>
+                    <p>Cuadros estadísticos en Excel con una fila por departamento, organizados en los temas del registro.</p>
+                    <div class="tabulado-control" data-control>
+                        <label for="temaDepartamental">Tema</label>
+                        <select class="filter-select" id="temaDepartamental"></select>
+                    </div>
+                    <p class="tabulado-aviso" hidden>Por ahora el tabulado solo está publicado para 2021.</p>
+                    <p class="tabulado-aviso tabulado-drive" hidden>Incluye todos los temas del año en un solo archivo .zip.</p>
+                    <a class="btn btn-secondary btn-block" href="descargas/2021/tabulados/tabulado_departamental_2021_01_equipamiento-tic.zip" download>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> <span class="btn-texto">Descargar tabulado 2021</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -142,31 +165,77 @@
         <div class="container">
             <div class="section-header section-header--solo">
                 <div>
-                    <span class="section-label">02 · Diccionario</span>
-                    <h2 class="section-title">Qué significa cada campo</h2>
+                    <span class="section-label">02 · Documentos</span>
+                    <h2 class="section-title">Diccionario, formularios y ficha técnica</h2>
                 </div>
             </div>
 
-            <!-- PDF oficial -->
+            <!-- PDF oficiales: diccionario, formulario y ficha técnica -->
             <div class="pdf-card">
                 <div>
                     <h3>Diccionario oficial de variables</h3>
                     <p>
                         El documento que el INEI publica junto a las bases de RENAMU: la definición de variables
-                        globales (identificación geográfica) y el detalle campo por campo del Formulario 01,
-                        Módulo I y Módulo II.
+                        globales (identificación geográfica) y el detalle campo por campo del Formulario 01.
                     </p>
                     <div class="pdf-card-actions">
-                        <a class="btn btn-primary" href="docs/renamu_diccionario_2025.pdf" download>
+                        <a class="btn btn-primary" href="docs/renamu_diccionario_2026.pdf" download>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-                            Descargar PDF 2025
+                            Descargar PDF 2026
                         </a>
                         <div class="pdf-alt-years">
                             <span>Otros años:</span>
+                            <a href="docs/renamu_diccionario_2025.pdf" download>2025</a>
                             <a href="docs/renamu_diccionario_2024.pdf" download>2024</a>
                             <a href="docs/renamu_diccionario_2023.pdf" download>2023</a>
                             <a href="docs/renamu_diccionario_2022.pdf" download>2022</a>
                             <a href="docs/renamu_diccionario_2021.pdf" download>2021</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pdf-card">
+                <div>
+                    <h3>Formulario 01</h3>
+                    <p>
+                        El cuestionario que responden las municipalidades provinciales y distritales: todas las preguntas del registro, por módulo, tal como se aplicaron cada año.
+                    </p>
+                    <div class="pdf-card-actions">
+                        <a class="btn btn-primary" href="docs/Formulario01_2026.pdf" download>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+                            Descargar PDF 2026
+                        </a>
+                        <div class="pdf-alt-years">
+                            <span>Otros años:</span>
+                            <a href="docs/Formulario01_2025.pdf" download>2025</a>
+                            <a href="docs/Formulario01_2024.pdf" download>2024</a>
+                            <a href="docs/Formulario01_2023.pdf" download>2023</a>
+                            <a href="docs/Formulario01_2022.pdf" download>2022</a>
+                            <a href="docs/Formulario01_2021.pdf" download>2021</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pdf-card">
+                <div>
+                    <h3>Ficha técnica</h3>
+                    <p>
+                        Objetivos, base legal, universo, periodo de ejecución, cobertura temática y productos de cada edición del Registro Nacional de Municipalidades.
+                    </p>
+                    <div class="pdf-card-actions">
+                        <a class="btn btn-primary" href="docs/Ficha_Tecnica_2026.pdf" download>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+                            Descargar PDF 2026
+                        </a>
+                        <div class="pdf-alt-years">
+                            <span>Otros años:</span>
+                            <a href="docs/Ficha_Tecnica_2025.pdf" download>2025</a>
+                            <a href="docs/Ficha_Tecnica_2024.pdf" download>2024</a>
+                            <a href="docs/Ficha_Tecnica_2023.pdf" download>2023</a>
+                            <a href="docs/Ficha_Tecnica_2022.pdf" download>2022</a>
+                            <a href="docs/Ficha_Tecnica_2021.pdf" download>2021</a>
                         </div>
                     </div>
                 </div>
@@ -183,27 +252,27 @@
                     <table class="dict-table">
                         <caption class="sr-only">Variables globales de identificación del RENAMU</caption>
                         <thead>
-                            <tr><th scope="col">Campo</th><th scope="col">Descripción</th><th scope="col">En las descargas</th></tr>
+                            <tr><th scope="col">Campo</th><th scope="col">Descripción</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td>Año</td><td>Año en que se ejecuta el estudio</td><td><code>anio</code></td></tr>
-                            <tr><td>idmunici</td><td>Código de la Municipalidad</td><td><code>id_municipalidad</code> (= ubigeo)</td></tr>
-                            <tr><td>ccdd</td><td>Código del Departamento</td><td><code>cod_departamento</code></td></tr>
-                            <tr><td>ccpp</td><td>Código de la Provincia</td><td><code>cod_provincia</code></td></tr>
-                            <tr><td>ccdi</td><td>Código del Distrito</td><td><code>cod_distrito</code></td></tr>
-                            <tr><td>Ubigeo</td><td>Ubigeo</td><td><code>ubigeo</code></td></tr>
-                            <tr><td>Departamento</td><td>Nombre del Departamento</td><td><code>departamento</code></td></tr>
-                            <tr><td>Provincia</td><td>Nombre de la Provincia</td><td><code>provincia</code></td></tr>
-                            <tr><td>Distrito</td><td>Nombre del Distrito</td><td><code>distrito</code></td></tr>
+                            <tr><td>Año</td><td>Año en que se ejecuta el estudio</td></tr>
+                            <tr><td>idmunici</td><td>Código de la Municipalidad</td></tr>
+                            <tr><td>ccdd</td><td>Código del Departamento</td></tr>
+                            <tr><td>ccpp</td><td>Código de la Provincia</td></tr>
+                            <tr><td>ccdi</td><td>Código del Distrito</td></tr>
+                            <tr><td>Ubigeo</td><td>Ubigeo</td></tr>
+                            <tr><td>Departamento</td><td>Nombre del Departamento</td></tr>
+                            <tr><td>Provincia</td><td>Nombre de la Provincia</td></tr>
+                            <tr><td>Distrito</td><td>Nombre del Distrito</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <p class="download-note" style="margin-top:16px;max-width:none;">
                 El PDF detalla la
-                codificación completa de <code>Tipomuni</code> (1: Provincial, 2: Distrital, 3: Centro Poblado)
-                y el resto de los 121 campos por municipalidad (Módulo I y II). El registro cubre 1&nbsp;874
-                municipalidades en 2021–2022 y 1&nbsp;891 desde 2023.
+                codificación completa de <code>Tipomuni</code> (1: Provincial, 2: Distrital, 3: Centro Poblado).
+                Las bases cubren 1&nbsp;874
+                municipalidades en 2021–2022, 1&nbsp;891 de 2023 a 2025 y 1&nbsp;892 en 2026.
             </p>
         </div>
     </section>
@@ -231,12 +300,12 @@
                     <ul class="footer-links">
                         <li><a href="contacto.html">Formulario</a></li>
                         <li><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a></li>
-                        <li><a href="tel:+5116520000">(01) 652-0000</a></li>
+                        <li><a href="tel:+5117434949">(01) 743-4949</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <span>Copyright © 2026 INEI. Datos RENAMU 2021–2025.</span>
+                <span>Copyright © 2026 INEI. Datos RENAMU 2021–2026.</span>
                 <nav aria-label="Información legal">
                     <ul class="footer-legal">
                         <li><a href="privacidad.html">Privacidad</a></li>
@@ -254,7 +323,6 @@
         <span id="toastMessage"></span>
     </div>
 
-    <script src="data/municipios.js"></script>
     <script src="js/consent.js"></script>
     <script src="js/main.js"></script>
     <script src="js/datos.js"></script>
