@@ -1,6 +1,6 @@
 // RENAMU · Estadísticas (comparativos entre años, no dependen del selector)
 
-const ANIOS_MODULOS = [2021, 2022, 2023, 2024, 2025];
+const ANIOS_MODULOS = [2021, 2022, 2023, 2024, 2025, 2026];
 const MUNICIPALIDADES = ['municipalidad', 'municipalidades'];
 
 const sumar = (campo) => (datos) => datos.reduce((s, d) => s + (Number(d[campo]) || 0), 0);
@@ -144,15 +144,45 @@ const INDICADORES = {
         valor: sumar('casos_demuna_total'),
         pie: 'Número de casos atendidos de la DEMUNA · Módulo V (P64_1_1 a P64_19_1) · RENAMU',
     },
-    // Esta pregunta sí corresponde al año de la encuesta (sin desfase).
+    // P69_2: "¿La municipalidad brindó el servicio de serenazgo al 31 de marzo?" del
+    // año de la encuesta (sin desfase). P69_1 es la misma pregunta al 31 de diciembre.
+    serenazgo: {
+        icono: 'local_police',
+        titulo: 'Perú: municipalidades que brindan el servicio de serenazgo, al 31 de marzo de 2022 - 2026',
+        badge: 'Módulo V',
+        sujeto: 'El servicio de serenazgo',
+        unidad: MUNICIPALIDADES,
+        anios: [2022, 2023, 2024, 2025, 2026],
+        valor: contar((d) => d.brinda_serenazgo_mar === 'Si'),
+        pie: 'Perú: municipalidades que brindan el servicio de serenazgo, al 31 de marzo · Módulo V (P69_2) · RENAMU',
+    },
+    // P40_1: "En el año X-1, ¿con qué frecuencia la municipalidad recogió los residuos
+    // sólidos?". Realiza el servicio = códigos 1 a 4 (diaria a una vez por semana);
+    // se excluye 5 "No realizó recojo".
+    residuos: {
+        icono: 'delete',
+        titulo: 'Municipalidades que realizan servicio de recojo de residuos sólidos, 2021 - 2025',
+        badge: 'Módulo V',
+        sujeto: 'El servicio de recojo de residuos',
+        unidad: MUNICIPALIDADES,
+        anios: [2022, 2023, 2024, 2025, 2026],
+        desfase: 1,
+        valor: contar((d) => Boolean(d.frecuencia_recojo_residuos) && d.frecuencia_recojo_residuos !== 'No realizó recojo'),
+        pie: 'Perú: municipalidades que realizan servicio de recojo de residuos sólidos · Módulo V (P40_1: 1 a 4) · RENAMU',
+    },
+    // P67: "En el año X-1, ¿cuáles fueron las campañas que realizó la municipalidad en
+    // coordinación con el Ministerio de Salud?". "Si" = marcó al menos una campaña
+    // (P67_1 a P67_11, y P67_13/P67_14 desde 2024); "No" = P67_12 "No realizó campañas".
     salud: {
         icono: 'local_hospital',
-        titulo: 'Municipalidades que administran establecimientos de salud',
+        titulo: 'Municipalidades que realizaron campañas de salud en coordinación con el Ministerio de Salud, 2021 - 2025',
         badge: 'Módulo V',
-        sujeto: 'La gestión municipal de salud',
+        sujeto: 'La realización de campañas de salud',
         unidad: MUNICIPALIDADES,
-        valor: contar((d) => d.administra_establecimientos_salud === 'Si'),
-        pie: 'Municipalidades que administran establecimientos de salud · Módulo V (P66_1_1 a P66_10_1) · RENAMU',
+        anios: [2022, 2023, 2024, 2025, 2026],
+        desfase: 1,
+        valor: contar((d) => d.realizo_campanas_salud === 'Si'),
+        pie: 'Perú: municipalidades que realizaron campañas de salud en coordinación con el Ministerio de Salud · Módulo V (P67_1 a P67_12) · RENAMU',
     },
 };
 
@@ -204,7 +234,27 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (INDICADORES_MULTIPLES[clave]) crearIndicadorMultiple(art, clave, INDICADORES_MULTIPLES[clave]);
     });
     resaltarTemaActivo();
+    activarFlechasTemas();
 });
+
+// Flechas de la barra de temas: desplazan la lista y se desactivan en los extremos
+function activarFlechasTemas() {
+    const nav = document.querySelector('.stats-nav');
+    const flechas = [...document.querySelectorAll('.stats-nav-flecha')];
+    if (!nav || !flechas.length) return;
+    const actualizar = () => {
+        const max = nav.scrollWidth - nav.clientWidth;
+        flechas.forEach((b) => {
+            b.disabled = Number(b.dataset.dir) < 0 ? nav.scrollLeft <= 1 : nav.scrollLeft >= max - 1;
+        });
+    };
+    flechas.forEach((b) => b.addEventListener('click', () => {
+        nav.scrollBy({ left: Number(b.dataset.dir) * nav.clientWidth * 0.7 });
+    }));
+    nav.addEventListener('scroll', actualizar, { passive: true });
+    window.addEventListener('resize', actualizar);
+    actualizar();
+}
 
 function resaltarTemaActivo() {
     const enlaces = [...document.querySelectorAll('.stats-nav a')];
@@ -214,7 +264,15 @@ function resaltarTemaActivo() {
             enlaces.forEach((a) => {
                 const activo = a.getAttribute('href') === '#' + e.target.id;
                 a.classList.toggle('active', activo);
-                if (activo) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+                if (activo) {
+                    a.setAttribute('aria-current', 'true');
+                    // Mantiene visible el tema activo dentro de la barra, sin mover la página
+                    const nav = a.parentElement;
+                    const izq = a.offsetLeft - nav.offsetLeft;
+                    if (izq < nav.scrollLeft || izq + a.offsetWidth > nav.scrollLeft + nav.clientWidth) {
+                        nav.scrollTo({ left: izq - 16 });
+                    }
+                } else a.removeAttribute('aria-current');
             });
         });
     }, { rootMargin: '-45% 0px -50% 0px' });

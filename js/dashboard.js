@@ -173,7 +173,7 @@ function aplicarOrden() {
     });
 }
 
-// Sin paginación: las 1 891 municipalidades filtradas se renderizan de una vez
+// Sin paginación: las 1 892 municipalidades filtradas se renderizan de una vez
 // dentro del recuadro, que se desplaza internamente (.table-scroll).
 function renderTabla() {
     const tbody = document.getElementById('tablaBody');
