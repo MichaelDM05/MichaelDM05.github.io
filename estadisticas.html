@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; script-src 'self' 'unsafe-eval'; connect-src 'self'">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <title>Estadísticas | RENAMU 2021–2025 - INEI</title>
-    <meta name="description" content="Estadísticas del RENAMU: equipamiento informático, conectividad, transparencia y autoridades municipales por departamento, 2021–2025.">
+    <title>Estadísticas | RENAMU 2021–2026 - INEI</title>
+    <meta name="description" content="Estadísticas del RENAMU: equipamiento informático, conectividad, transparencia y autoridades municipales por departamento, 2021–2026.">
     <meta name="theme-color" content="#0A2540">
     <link rel="canonical" href="https://michaeldm05.github.io/estadisticas.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="RENAMU · INEI">
     <meta property="og:locale" content="es_PE">
-    <meta property="og:title" content="Estadísticas | RENAMU 2021–2025 - INEI">
+    <meta property="og:title" content="Estadísticas | RENAMU 2021–2026 - INEI">
     <meta property="og:description" content="Equipamiento informático, conectividad, transparencia y autoridades municipales por departamento.">
     <meta property="og:url" content="https://michaeldm05.github.io/estadisticas.html">
     <meta property="og:image" content="https://michaeldm05.github.io/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Estadísticas | RENAMU 2021–2025 - INEI">
+    <meta name="twitter:title" content="Estadísticas | RENAMU 2021–2026 - INEI">
     <meta name="twitter:image" content="https://michaeldm05.github.io/og-image.png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Adelanta la descarga de la versión ligera del año por defecto: no bloquea
          el render y evita esperar a que corra el JS para empezar a pedirla. -->
-    <link rel="preload" as="script" href="data/municipios_2025_lite.js">
+    <link rel="preload" as="script" href="data/municipios_2026_lite.js">
 </head>
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -46,7 +46,7 @@
     <div class="topbar">
         <div class="container topbar-inner">
             <span class="topbar-org"><span class="topbar-dot" aria-hidden="true"></span>Instituto Nacional de Estadística e Informática</span>
-            <span class="topbar-links"><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a><a href="tel:+5116520000">(01) 652-0000</a></span>
+            <span class="topbar-links"><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a><a href="tel:+5117434949">(01) 743-4949</a></span>
         </div>
     </div>
 
@@ -76,7 +76,7 @@
         <div class="container">
             <nav class="breadcrumb" aria-label="Ruta de navegación"><a href="index.html">Inicio</a><span aria-hidden="true">/</span><span>Estadísticas</span></nav>
             <h1>Estadísticas</h1>
-            <p>Cómo cambiaron el padrón, el personal, el equipamiento y los servicios municipales entre 2021 y 2025.</p>
+            <p>Cómo cambiaron el padrón, el personal, el equipamiento y los servicios municipales entre 2021 y 2026.</p>
 
             <div class="resumen-grid" aria-label="Resumen del último año disponible">
                 <a class="resumen-tile" href="#ind-muni" data-resumen="muni">
@@ -106,16 +106,23 @@
     <main id="contenido">
     <section class="section">
         <div class="container">
-            <nav class="stats-nav" aria-label="Temas de las estadísticas">
-                <a href="#tema-padron">Padrón municipal</a>
-                <a href="#tema-personal">Recursos humanos</a>
-                <a href="#tema-equipamiento">Equipamiento y TIC</a>
-                <a href="#tema-gestion">Gestión y competencias</a>
-                <a href="#tema-servicios">Servicios sociales</a>
-            </nav>
+            <div class="stats-nav-wrap">
+                <button class="stats-nav-flecha" type="button" data-dir="-1" aria-label="Ver temas anteriores"><span class="material-icons" aria-hidden="true">chevron_left</span></button>
+                <nav class="stats-nav" aria-label="Temas de las estadísticas">
+                    <a href="#tema-padron">Número de Municipalidades</a>
+                    <a href="#tema-personal">Recursos humanos</a>
+                    <a href="#tema-equipamiento">Equipamiento y TIC</a>
+                    <a href="#tema-gestion">Competencias y Funciones de la Municipalidad</a>
+                    <a href="#tema-saneamiento">Saneamiento ambiental</a>
+                    <a href="#tema-servicios">Servicios Públicos Sociales</a>
+                    <a href="#tema-salud">Salud</a>
+                    <a href="#tema-seguridad">Seguridad ciudadana</a>
+                </nav>
+                <button class="stats-nav-flecha" type="button" data-dir="1" aria-label="Ver temas siguientes"><span class="material-icons" aria-hidden="true">chevron_right</span></button>
+            </div>
 
             <section class="stats-tema" id="tema-padron" aria-labelledby="tema-padron-titulo">
-                <h2 class="stats-tema-title" id="tema-padron-titulo"><span>Módulo I</span>Padrón municipal</h2>
+                <h2 class="stats-tema-title" id="tema-padron-titulo"><span>Módulo I</span>Número de Municipalidades</h2>
                 <article class="serie-card" id="ind-muni" data-indicador="muni"></article>
             </section>
 
@@ -136,7 +143,7 @@
             </section>
 
             <section class="stats-tema" id="tema-gestion" aria-labelledby="tema-gestion-titulo">
-                <h2 class="stats-tema-title" id="tema-gestion-titulo"><span>Módulo IV</span>Gestión y competencias</h2>
+                <h2 class="stats-tema-title" id="tema-gestion-titulo"><span>Módulo IV</span>Competencias y Funciones de la Municipalidad</h2>
                 <article class="serie-card" id="ind-instrumentos" data-indicador="instrumentos"></article>
                 <article class="serie-card" id="ind-tupa" data-indicador="tupa"></article>
                 <article class="serie-card" id="ind-adminTributaria" data-indicador="adminTributaria"></article>
@@ -144,13 +151,27 @@
                 <article class="serie-card" id="ind-licencias" data-indicador="licencias"></article>
             </section>
 
+            <section class="stats-tema" id="tema-saneamiento" aria-labelledby="tema-saneamiento-titulo">
+                <h2 class="stats-tema-title" id="tema-saneamiento-titulo"><span>Módulo V</span>Saneamiento ambiental</h2>
+                <article class="serie-card" id="ind-residuos" data-indicador="residuos"></article>
+            </section>
+
             <section class="stats-tema" id="tema-servicios" aria-labelledby="tema-servicios-titulo">
-                <h2 class="stats-tema-title" id="tema-servicios-titulo"><span>Módulo V</span>Servicios sociales</h2>
+                <h2 class="stats-tema-title" id="tema-servicios-titulo"><span>Módulo V</span>Servicios Públicos Sociales</h2>
                 <article class="serie-card" id="ind-demuna" data-indicador="demuna"></article>
+            </section>
+
+            <section class="stats-tema" id="tema-salud" aria-labelledby="tema-salud-titulo">
+                <h2 class="stats-tema-title" id="tema-salud-titulo"><span>Módulo V</span>Salud</h2>
                 <article class="serie-card" id="ind-salud" data-indicador="salud"></article>
             </section>
 
-            <p class="filter-hint">Fuente: INEI, RENAMU, módulos I a V (datos generales, equipamiento y TIC, recursos humanos, competencias y servicios públicos).</p>
+            <section class="stats-tema" id="tema-seguridad" aria-labelledby="tema-seguridad-titulo">
+                <h2 class="stats-tema-title" id="tema-seguridad-titulo"><span>Módulo V</span>Seguridad ciudadana</h2>
+                <article class="serie-card" id="ind-serenazgo" data-indicador="serenazgo"></article>
+            </section>
+
+            <p class="filter-hint">Fuente: INEI, RENAMU, módulos I a V (datos generales, equipamiento y TIC, recursos humanos, competencias, saneamiento ambiental, servicios públicos, salud y seguridad ciudadana).</p>
         </div>
     </section>
     </main>
@@ -177,12 +198,12 @@
                     <ul class="footer-links">
                         <li><a href="contacto.html">Formulario</a></li>
                         <li><a href="mailto:renamu@inei.gob.pe">renamu@inei.gob.pe</a></li>
-                        <li><a href="tel:+5116520000">(01) 652-0000</a></li>
+                        <li><a href="tel:+5117434949">(01) 743-4949</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <span>Copyright © 2026 INEI. Datos RENAMU 2021–2025.</span>
+                <span>Copyright © 2026 INEI. Datos RENAMU 2021–2026.</span>
                 <nav aria-label="Información legal">
                     <ul class="footer-legal">
                         <li><a href="privacidad.html">Privacidad</a></li>

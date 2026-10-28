@@ -2,7 +2,7 @@
 
 Sitio estático que publica el **Registro Nacional de Municipalidades (RENAMU)** del INEI:
 el reporte Power BI, un buscador del registro, estadísticas agregadas y las descargas
-de los datos. Cubre los levantamientos **2021 a 2025** (Módulo I — datos generales y
+de los datos. Cubre los levantamientos **2021 a 2026** (Módulo I — datos generales y
 Módulo II — equipamiento y TIC).
 
 ## Estructura
@@ -12,7 +12,7 @@ RENAMU_web/
 ├── index.html            Portada
 ├── dashboard.html        Reporte Power BI + buscador con filtros y tabla (sin paginar)
 ├── estadisticas.html     Agregados por departamento, tipo, conectividad y autoridades
-├── datos.html            Descargas (CSV/JSON/PDF) y diccionario de campos
+├── datos.html            Descargas (SPSS, CSV, tabulados, PDF) y diccionario de campos
 ├── contacto.html         Formulario (se envía a Google Apps Script)
 ├── 404.html              Página de error personalizada (la usa GitHub Pages automáticamente)
 ├── css/style.css         Toda la hoja de estilos del sitio
@@ -20,17 +20,23 @@ RENAMU_web/
 │   ├── main.js           Navbar, menú móvil, animación de entrada, toast y utilidades
 │   ├── dashboard.js      Filtros, orden y render de la tabla de municipalidades
 │   ├── estadisticas.js   Cálculo y render de los gráficos
-│   ├── datos.js          Generación de los archivos CSV/JSON en el navegador
+│   ├── datos.js          Enlaces de descarga según el año y el tema elegidos
 │   ├── mapa-poblacion.js Mapa de población por distrito de la portada (Censos 2025)
 │   └── vendor/           d3 7.8.5 y topojson-client 3.1.0 (locales: la CSP no admite CDN)
 ├── data/
 │   ├── municipios.js         Cargador: descarga el año pedido bajo demanda
 │   ├── municipios_YYYY.js    Un archivo por año (~6,9 MB, 121 campos por municipalidad)
 │   └── poblacion_distritos.js Límites distritales (TopoJSON) y población del Censo 2025
+├── descargas/
+│   ├── AAAA/renamu_AAAA_spss.zip   Base oficial en SPSS (.sav) por año, 2021–2026
+│   ├── AAAA/renamu_AAAA_csv.zip    Base oficial en CSV por año, 2021–2026
+│   └── 2021/tabulados/             Un .zip por tema y nivel (distrital o departamental)
 ├── docs/
-│   └── renamu_diccionario_YYYY.pdf   Diccionario oficial de variables del INEI (2022-2025)
-├── favicon.svg           Ícono del sitio (marca INEI/RENAMU)
-├── apple-touch-icon.png  Ícono para agregar el sitio a la pantalla de inicio (iOS)
+│   ├── renamu_diccionario_YYYY.pdf   Diccionario oficial de variables del INEI (2021-2026)
+│   ├── Formulario01_YYYY.pdf         Formulario 01 de cada año (2021-2026)
+│   └── Ficha_Tecnica_YYYY.pdf        Ficha técnica de cada año (2021-2026)
+├── favicon.svg           Ícono del sitio: silueta del Perú (de data/mapa-peru-paths.js)
+├── apple-touch-icon.png  Ícono para la pantalla de inicio (iOS), misma silueta en 180×180
 ├── og-image.png          Imagen de vista previa al compartir el sitio (Open Graph/Twitter Card)
 ├── robots.txt            Permite el rastreo completo y apunta al sitemap
 ├── sitemap.xml           Listado de páginas para buscadores
@@ -45,7 +51,7 @@ el HTML**. `data/municipios.js` expone `window.RENAMU` y descarga sólo el año 
 página necesita, inyectando su `<script>` la primera vez que se pide:
 
 ```js
-window.RENAMU.anios          // [2021, 2022, 2023, 2024, 2025]
+window.RENAMU.anios          // [2021, 2022, 2023, 2024, 2025, 2026]
 window.RENAMU.anioActual     // año activo
 window.RENAMU.datos()        // registros ya cargados del año activo
 window.RENAMU.setAnio(2023)  // cambia de año -> Promise con los datos
@@ -69,6 +75,7 @@ con `new Function(...)`.
 | 2023 | 1,891 |
 | 2024 | 1,891 |
 | 2025 | 1,891 |
+| 2026 | 1,892 |
 
 25 departamentos y 196 provincias; 121 campos por municipalidad.
 
@@ -86,8 +93,8 @@ En VS Code, `.vscode/launch.json` incluye una configuración que abre `index.htm
 ## Diccionario de datos (PDF)
 
 `datos.html#diccionario` enlaza el diccionario oficial de variables que el INEI publica
-junto a cada base de RENAMU (`docs/renamu_diccionario_YYYY.pdf`, años 2022-2025; no existe
-uno para 2021). Son enlaces `<a download>` a archivos estáticos, sin generación en el
+junto a cada base de RENAMU (`docs/renamu_diccionario_YYYY.pdf`, años 2021-2026). Son
+enlaces `<a download>` a archivos estáticos, sin generación en el
 navegador ni dependencias externas.
 
 La misma página muestra en HTML la tabla "Variables globales de identificación" que abre
