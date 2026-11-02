@@ -596,7 +596,6 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     gap: 8px 16px;
 }
 
-.table-top-bar h3 { font-family: var(--font-body); font-size: 1.05rem; font-weight: 400; letter-spacing: -0.03em; color: var(--ink); }
 .table-count { font-family: var(--font-body); font-size: 0.78rem; color: var(--ink-soft); }
 
 .table-scroll { overflow-x: auto; max-height: 520px; overflow-y: auto; }
@@ -2121,8 +2120,11 @@ body { padding-top: 0; font-feature-settings: normal; }
 .hero-actions { gap: 12px 14px; padding-top: 4px; }
 
 /* El mapa con sus municipalidades se conserva: solo cambian las tarjetas */
-.hero-map .map-callout rect { fill: rgba(7, 27, 48, 0.88); stroke: rgba(143, 203, 240, 0.5); }
-.hero-map .pin-value { font-family: var(--font-display); font-weight: 700; }
+.hero-map .map-callout rect { fill: rgba(7, 27, 48, 0.9); stroke: rgba(143, 203, 240, 0.35); }
+.hero-map .callout-dot { fill: #FFE2A3; }
+.hero-map .pin-label { font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; fill: var(--celeste); }
+.hero-map .pin-value { font-family: var(--font-display); font-size: 19px; font-weight: 700; letter-spacing: -0.02em; fill: var(--white); }
+.hero-map .pin-unit { font-family: var(--font-body); font-size: 12px; font-weight: 400; letter-spacing: 0; fill: var(--on-navy); }
 .hero-map .map-stat rect { fill: var(--white); stroke: none; }
 .hero-map .map-stat line { stroke: var(--line); }
 .hero-map .map-stat-number { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.03em; fill: var(--brand); }
@@ -2159,6 +2161,8 @@ body { padding-top: 0; font-feature-settings: normal; }
 .section-subtitle,
 .subsection-subtitle { font-size: 1.125rem; font-weight: 400; line-height: 1.6; color: var(--ink-2); }
 .subsection-subtitle { margin-bottom: 28px; }
+#ficha .section-subtitle,
+.texto-justificado { text-align: justify; }
 
 @media (max-width: 768px) {
     .section { padding: 72px 0; }
@@ -2314,7 +2318,6 @@ textarea.form-control { padding: 12px 14px; }
 /* ---------- Tablas ---------- */
 .table-container { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); }
 .table-top-bar { background: var(--white); padding: 18px 22px; }
-.table-top-bar h3 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
 .table-count { font-size: 0.875rem; }
 .data-table thead th {
     background: var(--surface);
