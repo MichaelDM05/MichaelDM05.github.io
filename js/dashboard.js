@@ -9,6 +9,18 @@ function ubigeoPadded(d) {
     return String(d.ubigeo).padStart(6, '0');
 }
 
+// La Municipalidad Metropolitana de Lima (150101) figura en el registro como
+// provincial (tipo 1); en el directorio se muestra y filtra como "Metropolitana".
+const UBIGEO_METROPOLITANA = '150101';
+
+// Código del filtro Tipo: 'M' (Metropolitana), '1' (Provincial) o '2' (Distrital)
+function tipoDe(d) {
+    return ubigeoPadded(d) === UBIGEO_METROPOLITANA ? 'M' : String(d.tipo_municipalidad);
+}
+
+const ETIQUETA_TIPO = { M: 'Metropolitana', 1: 'Provincial', 2: 'Distrital' };
+const ORDEN_TIPO = { M: 0, 1: 1, 2: 2 };
+
 // El Callao se agrupa dentro de Lima: el Perú se cuenta con 24 departamentos.
 function departamentoDe(d) {
     return d.departamento === 'CALLAO' ? 'LIMA' : d.departamento;
@@ -90,18 +102,20 @@ function poblarStats() {
     };
 
     if (!total) {
-        ['totalMuni', 'totalDept', 'promedioPCs', 'pctPortal'].forEach((id) => set(id, '—'));
+        ['totalMuni', 'totalDept', 'totalProvConst', 'promedioPCs', 'pctPortal'].forEach((id) => set(id, '—'));
         return;
     }
 
     set('totalMuni', numeroPE(total));
+    // departamentoDe() suma el Callao a Lima; la Provincia Constitucional se cuenta aparte
     set('totalDept', new Set(datos.map(departamentoDe)).size);
+    set('totalProvConst', datos.some((d) => d.departamento === 'CALLAO') ? 1 : 0);
 
     const totalPCs = datos.reduce((s, d) => s + (Number(d.pc_total_operativas) || 0), 0);
     set('promedioPCs', decimalPE(totalPCs / total, 1));
 
     const conPortal = datos.filter((d) => d.tiene_portal_transparencia === 'Si').length;
-    set('pctPortal', Math.round((conPortal / total) * 100) + '%');
+    set('pctPortal', decimalPE((conPortal / total) * 100, 1) + '%');
 }
 
 function poblarFiltroDepartamento() {
@@ -133,7 +147,7 @@ function aplicarFiltros() {
 
     datosFiltrados = datos.filter((d) => {
         if (depto && departamentoDe(d) !== depto) return false;
-        if (tipo && String(d.tipo_municipalidad) !== tipo) return false;
+        if (tipo && tipoDe(d) !== tipo) return false;
         if (ubigeo && !ubigeoPadded(d).startsWith(ubigeo)) return false;
         if (busqueda) {
             const texto = `${d.distrito} ${d.provincia} ${d.departamento} ${d.nombre_alcalde || ''}`.toLowerCase();
@@ -157,10 +171,15 @@ function aplicarOrden() {
     const campo = orden.campo;
     const dir = orden.asc ? 1 : -1;
     const numerico = campo === 'ubigeo' || campo === 'tipo_municipalidad';
+    const valor = (d) => {
+        if (campo === 'departamento') return departamentoDe(d);
+        if (campo === 'tipo_municipalidad') return ORDEN_TIPO[tipoDe(d)];
+        return d[campo];
+    };
 
     datosFiltrados.sort((a, b) => {
-        const va = campo === 'departamento' ? departamentoDe(a) : a[campo];
-        const vb = campo === 'departamento' ? departamentoDe(b) : b[campo];
+        const va = valor(a);
+        const vb = valor(b);
         if (numerico) return ((Number(va) || 0) - (Number(vb) || 0)) * dir;
         return String(va ?? '').localeCompare(String(vb ?? ''), 'es') * dir;
     });
@@ -192,8 +211,9 @@ function renderTabla() {
     }
 
     tbody.innerHTML = datosFiltrados.map((d) => {
-        const esProvincial = Number(d.tipo_municipalidad) === 1;
-        const tipo = d.informante_etiqueta || (esProvincial ? 'Provincial' : 'Distrital');
+        const codigoTipo = tipoDe(d);
+        const esProvincial = codigoTipo !== '2';
+        const tipo = ETIQUETA_TIPO[codigoTipo] || d.informante_etiqueta;
         return `
         <tr>
             <td class="mono">${escaparHtml(ubigeoPadded(d))}</td>

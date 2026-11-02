@@ -75,16 +75,20 @@
         <div class="container">
             <nav class="breadcrumb" aria-label="Ruta de navegación"><a href="index.html">Inicio</a><span aria-hidden="true">/</span><span>Dashboard en Power BI</span></nav>
             <h1>Dashboard en Power BI</h1>
-            <p>Indicadores municipales interactivos, de 2021 a 2026. Debajo del reporte, el directorio con las 1&nbsp;892 municipalidades.</p>
+            <p>Indicadores municipales interactivos del RENAMU 2021 al 2026. En la parte inferior se encuentra el directorio con las 1&nbsp;892 municipalidades.</p>
             <h2 class="sr-only">Indicadores clave</h2>
             <div class="stats-grid header-kpis">
                 <div class="stat-item">
                     <div class="stat-item-number" id="totalMuni">0</div>
-                    <div class="stat-item-label">municipalidades</div>
+                    <div class="stat-item-label">Municipalidades provinciales y distritales</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-item-number" id="totalDept">0</div>
-                    <div class="stat-item-label">departamentos</div>
+                    <div class="stat-item-label">Departamentos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item-number" id="totalProvConst">0</div>
+                    <div class="stat-item-label">Provincia Constitucional</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-item-number" id="promedioPCs">0</div>
@@ -92,7 +96,7 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-item-number" id="pctPortal">0%</div>
-                    <div class="stat-item-label">con portal de transparencia</div>
+                    <div class="stat-item-label">Municipalidades tienen portal de transparencia</div>
                 </div>
             </div>
         </div>
@@ -151,8 +155,8 @@
     <section class="section" id="directorio" style="padding-top:0;">
         <div class="container">
             <span class="section-label">Directorio 2026</span>
-            <h2 class="subsection-title">Directorio Nacional de Municipalidades Provinciales y Distritales</h2>
-            <p class="subsection-subtitle">Filtra por año, departamento, tipo o ubigeo, o escribe un distrito, provincia o alcalde.</p>
+            <h2 class="subsection-title">Municipalidades Provinciales y Distritales</h2>
+            <p class="subsection-subtitle">Filtra por Renamu, departamento, tipo o ubigeo, o escribe un distrito, provincia o alcalde.</p>
             <div class="filter-bar">
                 <div class="filter-grid">
                     <div class="filter-group">
@@ -169,6 +173,7 @@
                         <label for="filtroTipo">Tipo</label>
                         <select class="filter-select" id="filtroTipo">
                             <option value="">Todos</option>
+                            <option value="M">Metropolitana</option>
                             <option value="1">Provincial</option>
                             <option value="2">Distrital</option>
                         </select>
@@ -201,6 +206,10 @@
                         </span>
                         <span class="table-count" id="resultadosCount" aria-live="polite"></span>
                     </div>
+                    <a class="btn btn-outline btn-sm" href="https://cdn.www.gob.pe/uploads/document/file/4147047/3908763-directorio-nacional-de-municipalidades-provinciales-y-distritales-octubre-2026.xlsx?v=1792100251" download rel="noopener" title="Directorio Nacional de Municipalidades Provinciales y Distritales, octubre 2026 (gob.pe)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+                        Descargar directorio (Excel)
+                    </a>
                 </div>
                 <div class="table-scroll">
                     <table class="data-table">
