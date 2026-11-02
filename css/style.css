@@ -2299,6 +2299,27 @@ body { padding-top: 0; font-feature-settings: normal; }
 .pob-zoom button { border-radius: var(--radius-sm); background: var(--white); }
 .pob-tip { border-radius: 12px; }
 .pob-tip strong, .pob-tip-tot { font-family: var(--font-display); }
+
+/* Réplica del tablero del INEI (Censos 2025) */
+.pob-ctl-lbl { display: block; font-size: 0.875rem; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+.pob-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: var(--radius-sm); background: var(--chip); }
+.pob-seg button { min-height: 38px; border: 0; border-radius: calc(var(--radius-sm) - 2px); background: transparent; color: var(--ink-2); font: inherit; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
+.pob-seg button:hover { color: var(--brand); }
+.pob-seg button[aria-pressed="true"] { background: var(--brand); color: var(--white); }
+.pob-seg button:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.pob-d--dep { stroke-width: 1.1; }
+.pob-rot { pointer-events: none; transition: opacity 0.2s; }
+.pob-rot.out { opacity: 0.2; }
+.pob-rot text { font-family: var(--font-body); font-weight: 700; letter-spacing: 0.02em; fill: #1F2D3A; stroke: rgba(255, 255, 255, 0.85); paint-order: stroke; stroke-linejoin: round; }
+.pob-nota--pie { margin-top: 2px; }
+.pob-rot--claro text { fill: var(--white); stroke: rgba(0, 32, 64, 0.75); }
+.pob-rot line { stroke: #1F2D3A; stroke-width: 0.8; vector-effect: non-scaling-stroke; }
+.pob-tip { background: #1B2533; border: 1px solid #C9A227; }
+.pob-tip-tot { margin: 6px 0 4px; padding: 6px 10px; border: 0; border-radius: 6px; background: rgba(255, 209, 92, 0.12); color: #FFD15C; font-size: 1.35rem; font-weight: 700; }
+.pob-tip-tot small { display: block; font-size: 0.75rem; font-weight: 600; color: #FFD15C; }
+.pob-tip-sec { margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255, 255, 255, 0.14); font-size: 0.75rem; font-weight: 600; color: var(--on-brand); }
+.pob-tip-h { color: #7FB8E6 !important; }
+.pob-tip-m { color: #6FD6A8 !important; }
 @media (max-width: 900px) {
     .pob-layout { grid-template-columns: 1fr; }
     .pob-mapa { min-height: 440px; }

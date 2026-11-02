@@ -397,9 +397,9 @@
             <div class="section-header">
                 <div>
                     <span class="section-label">04 · Censos Nacionales 2025</span>
-                    <h2 class="section-title">Población por distrito</h2>
+                    <h2 class="section-title">Población total</h2>
                 </div>
-                <p class="section-subtitle">Elige un departamento, busca un distrito o haz clic en el mapa para ver su ficha.</p>
+                <p class="section-subtitle">Cambia entre la vista departamental y la distrital, elige un departamento, busca un distrito o haz clic en el mapa para ver su ficha.</p>
             </div>
             <div class="pob-layout">
                 <aside class="pob-panel">
@@ -414,6 +414,13 @@
                     </div>
                     <div class="pob-box pob-ctl">
                         <div>
+                            <span class="pob-ctl-lbl" id="pobNivelLbl">División territorial</span>
+                            <div class="pob-seg" role="group" aria-labelledby="pobNivelLbl">
+                                <button type="button" data-nivel="dep" aria-pressed="true">Departamental</button>
+                                <button type="button" data-nivel="dist" aria-pressed="false">Distrital</button>
+                            </div>
+                        </div>
+                        <div>
                             <label for="pobDep">Departamento</label>
                             <select id="pobDep"><option value="">Todo el Perú</option></select>
                         </div>
@@ -426,12 +433,12 @@
                     <div class="pob-box">
                         <div class="pob-eyebrow">Población total por rangos del INEI</div>
                         <div class="pob-leyenda" id="pobLeyenda"></div>
-                        <p class="pob-nota">Entre paréntesis, número de distritos en el mapa. Haz clic en un rango para resaltarlo.</p>
+                        <p class="pob-nota" id="pobLeyNota"></p>
                     </div>
-                    <div class="pob-box pob-ficha" id="pobFicha"><p class="pob-vacio">Pasa el cursor o haz clic sobre un distrito para ver su ficha.</p></div>
+                    <div class="pob-box pob-ficha" id="pobFicha"></div>
                 </aside>
                 <div class="pob-mapa" id="pobMapa">
-                    <svg role="img" aria-label="Mapa de población por distrito del Perú"></svg>
+                    <svg role="img" aria-label="Mapa de población total del Perú por departamento y por distrito"></svg>
                     <div class="pob-zoom">
                         <button type="button" id="pobZin" aria-label="Acercar"><span class="material-icons" aria-hidden="true">add</span></button>
                         <button type="button" id="pobZout" aria-label="Alejar"><span class="material-icons" aria-hidden="true">remove</span></button>
@@ -442,6 +449,9 @@
                 </div>
             </div>
             <p class="filter-hint">Fuente: INEI, Censos Nacionales 2025 (población total). Límites distritales: peru-geojson.</p>
+            <p class="pob-nota pob-nota--pie">¹ Comprende los 43 distritos de la provincia de Lima.</p>
+            <p class="pob-nota pob-nota--pie">² Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>
+            <p class="pob-nota pob-nota--pie">La densidad se calcula con la superficie de los distritos (población entre densidad distrital).</p>
             <p class="pob-nota" id="pobGap"></p>
         </div>
     </section>
