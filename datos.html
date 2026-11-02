@@ -73,7 +73,7 @@
         <div class="container">
             <nav class="breadcrumb" aria-label="Ruta de navegación"><a href="index.html">Inicio</a><span aria-hidden="true">/</span><span>Datos</span></nav>
             <h1>Datos</h1>
-            <p>Descarga el registro de cualquier año de 2021 a 2026 y consulta qué significa cada campo.</p>
+            <p class="texto-justificado">Accede y descarga las bases de datos del Registro Nacional de Municipalidades (RENAMU) 2021 al 2026, disponibles en diferentes formatos, y consulta los documentos técnicos que orientan su uso e interpretación.</p>
         </div>
     </div>
 
@@ -109,9 +109,9 @@
                 <div class="card download-card">
                     <div class="download-meta"><span class="format-chip">SPSS</span><span data-peso="spss">1,8&nbsp;MB</span></div>
                     <h3>Base de datos en SPSS</h3>
-                    <p>
-                        El Formulario 01 completo del año <span class="anio-activo">2026</span>, con todos los módulos
-                        y las etiquetas de variables y valores. Archivo <code>.sav</code> para SPSS, STATA o R.
+                    <p class="texto-justificado">
+                        Datos del Formulario 01 organizados en una sola Base que comprende las 1&nbsp;892 municipalidades.
+                        Incluye el diccionario de variables y valores. Archivo <code>.sav</code> para SPSS, STATA o R.
                     </p>
                     <a class="btn btn-primary btn-block" id="btnSpss" href="descargas/2026/renamu_2026_spss.zip" download>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> Descargar SPSS
@@ -120,9 +120,9 @@
                 <div class="card download-card">
                     <div class="download-meta"><span class="format-chip format-chip--dark">CSV</span><span data-peso="csv">1,5&nbsp;MB</span></div>
                     <h3>Base de datos en CSV</h3>
-                    <p>
-                        La misma base del año <span class="anio-activo">2026</span>, una fila por municipalidad.
-                        Separador <code>;</code> y codificación UTF-8, lista para Excel.
+                    <p class="texto-justificado">
+                        Datos del Formulario 01, donde cada fila muestra los datos por municipalidad.
+                        Separador <code>;</code> y codificación UTF-8, lista para su procesamiento en Excel.
                     </p>
                     <a class="btn btn-secondary btn-block" id="btnCsv" href="descargas/2026/renamu_2026_csv.zip" download>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> Descargar CSV
@@ -130,28 +130,28 @@
                 </div>
                 <div class="card download-card" data-tabulado="distrital">
                     <div class="download-meta"><span class="format-chip">XLSX</span><span data-meta>15 temas</span></div>
-                    <h3>Tabulado distrital</h3>
-                    <p>Cuadros estadísticos en Excel con una fila por distrito, organizados en los temas del registro.</p>
+                    <h3>Tabulados distritales</h3>
+                    <p class="texto-justificado">91 cuadros estadísticos en Excel que comprende las 1&nbsp;892 municipalidades provinciales y distritales, organizados por temas.</p>
                     <div class="tabulado-control" data-control>
                         <label for="temaDistrital">Tema</label>
                         <select class="filter-select" id="temaDistrital"></select>
                     </div>
                     <p class="tabulado-aviso" hidden>Por ahora el tabulado solo está publicado para 2021.</p>
-                    <p class="tabulado-aviso tabulado-drive" hidden>Incluye todos los temas del año en un solo archivo .zip.</p>
+                    <p class="tabulado-aviso tabulado-drive" hidden>Incluye todos los temas del Formulario 01 en un solo archivo .zip.</p>
                     <a class="btn btn-secondary btn-block" href="descargas/2021/tabulados/tabulado_distrital_2021_01_equipamiento-tic.zip" download>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> <span class="btn-texto">Descargar tabulado 2021</span>
                     </a>
                 </div>
                 <div class="card download-card" data-tabulado="departamental">
                     <div class="download-meta"><span class="format-chip">XLSX</span><span data-meta>15 temas</span></div>
-                    <h3>Tabulado departamental</h3>
-                    <p>Cuadros estadísticos en Excel con una fila por departamento, organizados en los temas del registro.</p>
+                    <h3>Tabulados departamentales</h3>
+                    <p class="texto-justificado">91 cuadros estadísticos en Excel que comprende los 24 departamentos y la Provincia Constitucional del Callao, organizados por temas.</p>
                     <div class="tabulado-control" data-control>
                         <label for="temaDepartamental">Tema</label>
                         <select class="filter-select" id="temaDepartamental"></select>
                     </div>
                     <p class="tabulado-aviso" hidden>Por ahora el tabulado solo está publicado para 2021.</p>
-                    <p class="tabulado-aviso tabulado-drive" hidden>Incluye todos los temas del año en un solo archivo .zip.</p>
+                    <p class="tabulado-aviso tabulado-drive" hidden>Incluye todos los temas del Formulario 01 en un solo archivo .zip.</p>
                     <a class="btn btn-secondary btn-block" href="descargas/2021/tabulados/tabulado_departamental_2021_01_equipamiento-tic.zip" download>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> <span class="btn-texto">Descargar tabulado 2021</span>
                     </a>
@@ -173,10 +173,10 @@
             <!-- PDF oficiales: diccionario, formulario y ficha técnica -->
             <div class="pdf-card">
                 <div>
-                    <h3>Diccionario oficial de variables</h3>
-                    <p>
-                        El documento que el INEI publica junto a las bases de RENAMU: la definición de variables
-                        globales (identificación geográfica) y el detalle campo por campo del Formulario 01.
+                    <h3>Diccionario de variables</h3>
+                    <p class="texto-justificado">
+                        Documento Técnico que contiene la descripción detallada y estandarizada de las variables que
+                        conforman las bases de datos del formulario F01 del RENAMU.
                     </p>
                     <div class="pdf-card-actions">
                         <a class="btn btn-primary" href="docs/renamu_diccionario_2026.pdf" download>
@@ -198,8 +198,8 @@
             <div class="pdf-card">
                 <div>
                     <h3>Formulario 01</h3>
-                    <p>
-                        El cuestionario que responden las municipalidades provinciales y distritales: todas las preguntas del registro, por módulo, tal como se aplicaron cada año.
+                    <p class="texto-justificado">
+                        Instrumento de recolección de datos, mediante el cual el Instituto Nacional de Estadística e Informática (INEI) recopila información sobre la organización, los recursos, los servicios públicos y la gestión de las municipalidades provinciales y distritales del país.
                     </p>
                     <div class="pdf-card-actions">
                         <a class="btn btn-primary" href="docs/Formulario01_2026.pdf" download>
@@ -221,8 +221,8 @@
             <div class="pdf-card">
                 <div>
                     <h3>Ficha técnica</h3>
-                    <p>
-                        Objetivos, base legal, universo, periodo de ejecución, cobertura temática y productos de cada edición del Registro Nacional de Municipalidades.
+                    <p class="texto-justificado">
+                        Documento que describe, de manera ordenada y resumida, las principales características metodológicas, operativas y técnicas del RENAMU que ejecuta anualmente el Instituto Nacional de Estadística e Informática (INEI).
                     </p>
                     <div class="pdf-card-actions">
                         <a class="btn btn-primary" href="docs/Ficha_Tecnica_2026.pdf" download>
@@ -244,8 +244,8 @@
             <!-- Variables globales -->
             <h3 class="dict-subheading">Variables de identificación</h3>
             <p class="dict-subnote">
-                Las nueve columnas que abren el diccionario oficial: identifican de forma única cada
-                municipalidad y su ubicación geográfica, y son las mismas en todos los años del registro.
+                Las primeras nueve columnas del Diccionario de Variables identifican de forma única cada
+                municipalidad y su ubicación geográfica, son las mismas en todos los años del Registro.
             </p>
             <div class="table-container" style="margin-bottom:32px;">
                 <div class="table-scroll" style="max-height:none;">
