@@ -337,7 +337,6 @@ function armarTarjeta(art, clave, cfg, etiquetas, accionExtra) {
                 <div class="serie-chart" data-rol="grafico">
                     <p class="chart-state"><span class="table-state-spinner" aria-hidden="true"></span>Calculando…</p>
                 </div>
-                <p class="serie-foot">${escaparHtml(cfg.pie)} ${rango}</p>
             </div>
             <aside class="serie-insight" aria-live="polite">
                 <p class="serie-insight-eyebrow">Lectura rápida</p>
