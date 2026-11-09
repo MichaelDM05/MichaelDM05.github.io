@@ -6,9 +6,9 @@
 //     vuelve a pedir cuando cambia VERSION o pasan DIAS_VALIDEZ días.
 //   - Cualquier botón o enlace con [data-abrir-cookies] reabre la configuración.
 //
-// Qué NO hace: el sitio no carga hoy analítica ni publicidad, así que no hay nada
-// que bloquear. Si en el futuro se agrega una herramienta de ese tipo, debe
-// incluirse bloqueada así y este archivo la activará solo con consentimiento:
+// Analítica: el contador de visitas GoatCounter (sin cookies) va bloqueado en cada
+// página y este archivo lo activa solo con consentimiento. Cualquier otra
+// herramienta de ese tipo debe incluirse igual:
 //
 //   <script type="text/plain" data-consent="analitica" data-src="https://..."></script>
 //
@@ -20,7 +20,7 @@
 
 (function () {
     const CLAVE = 'renamu_consentimiento';
-    const VERSION = 1;
+    const VERSION = 2;
     const DIAS_VALIDEZ = 365;
     const CATEGORIAS_OPCIONALES = ['analitica'];
 
@@ -60,6 +60,10 @@
         document.querySelectorAll('script[type="text/plain"][data-consent]').forEach((bloqueado) => {
             if (!estado.categorias[bloqueado.dataset.consent]) return;
             const script = document.createElement('script');
+            // Conserva los data-* de configuración de la herramienta (p. ej. data-goatcounter)
+            Object.keys(bloqueado.dataset).forEach((k) => {
+                if (k !== 'consent' && k !== 'src') script.dataset[k] = bloqueado.dataset[k];
+            });
             if (bloqueado.dataset.src) script.src = bloqueado.dataset.src;
             else script.textContent = bloqueado.textContent;
             bloqueado.replaceWith(script);
@@ -81,7 +85,8 @@
                     <h2 id="cookieBannerTitulo">Tu privacidad en este sitio</h2>
                     <p>
                         No usamos cookies de analítica ni de publicidad. Solo guardamos tu elección
-                        en este navegador. El reporte del Dashboard en Power BI es un servicio de Microsoft
+                        en este navegador. Si aceptas, contaremos tu visita con GoatCounter, sin cookies
+                        y sin identificarte. El reporte del Dashboard en Power BI es un servicio de Microsoft
                         que puede usar sus propias cookies. Los datos que envíes por el formulario de
                         contacto se tratan según la Política de Privacidad. Más detalles en la
                         <a href="cookies.html">Política de Cookies</a> y la
@@ -146,7 +151,7 @@
                         <input type="checkbox" name="analitica" aria-describedby="cookieDescAnalitica">
                         <span>Permitir</span>
                     </label>
-                    <p id="cookieDescAnalitica">Actualmente el sitio no utiliza ninguna herramienta de analítica. Si se incorpora alguna, solo se activará si marcas esta opción.</p>
+                    <p id="cookieDescAnalitica">Cuenta las visitas al sitio con GoatCounter, sin cookies y sin identificarte: página vista, sitio de procedencia, navegador y país aproximado. Solo se activa si marcas esta opción.</p>
                 </fieldset>
 
                 <fieldset class="cookie-cat">

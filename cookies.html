@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://michellalex.goatcounter.com; font-src 'self'; connect-src 'self' https://michellalex.goatcounter.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Política de Cookies | RENAMU</title>
     <meta name="description" content="Qué cookies y almacenamiento local usa el sitio del RENAMU, qué servicios de terceros intervienen y cómo cambiar tu elección.">
@@ -75,7 +75,7 @@
 
                 <h2 id="propias">2. Qué usa este sitio</h2>
                 <p>
-                    Este sitio <strong>no instala cookies propias</strong> y <strong>no usa analítica, publicidad
+                    Este sitio <strong>no instala cookies propias</strong> y <strong>no usa publicidad
                     ni píxeles de seguimiento</strong>. Solo guarda tu elección sobre cookies:
                 </p>
                 <div class="legal-table-wrap">
@@ -102,8 +102,9 @@
                     </table>
                 </div>
                 <p>
-                    La categoría opcional <strong>Analítica y medición</strong> existe en la configuración, pero hoy
-                    no hay ninguna herramienta asociada. Si se incorpora una, solo se activará si la aceptas.
+                    La categoría opcional <strong>Analítica y medición</strong> activa GoatCounter, un contador de
+                    visitas que no instala cookies ni te identifica. Solo se activa si lo aceptas, y puedes retirar
+                    tu aceptación en cualquier momento desde la configuración de cookies.
                 </p>
 
                 <h2 id="terceros">3. Servicios de terceros</h2>
@@ -208,6 +209,7 @@
         </div>
     </footer>
 
+    <script type="text/plain" data-consent="analitica" data-src="js/vendor/goatcounter.js" data-goatcounter="https://michellalex.goatcounter.com/count"></script>
     <script src="js/consent.js"></script>
     <script src="js/main.js"></script>
 </body>
