@@ -53,7 +53,27 @@ function debounce(fn, ms) {
     return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
 }
 
+// Directorio Nacional (cuadros en Excel, ZIP de gob.pe) por año del registro.
+// Los años sin enlace ocultan el botón de descarga.
+const DIRECTORIO_POR_ANIO = {
+    2026: 'https://cdn.www.gob.pe/uploads/document/file/9915971/8058591-cuadros-excel-directorio-nacional-de-gobiernos-regionales-municipalidades-provinciales-distritales-y-de-centros-poblados-2026.zip?v=1778013297',
+    2025: 'https://cdn.www.gob.pe/uploads/document/file/7999764/6722617-directorio-nacional-de-gobiernos-regionales-municipalidades-provinciales-distritales-y-de-centros-poblados-2025-cuadros-en-excel.zip?v=1745955638',
+    2024: 'https://cdn.www.gob.pe/uploads/document/file/6407384/5612942-directorio-nacional-de-gobiernos-regionales-municipalidades-provinciales-distritales-y-de-centros-poblados-2024-cuadros-en-excel.zip?v=1732225977',
+    2023: 'https://cdn.www.gob.pe/uploads/document/file/5376604/4274193-directorio-nacional-de-municipalidades-provinciales-distritales-y-de-centros-poblados-2023-cuadros-en-excel.zip?v=1699290628',
+};
+
+function actualizarDescargaDirectorio(anio) {
+    const enlace = document.getElementById('descargaDirectorio');
+    if (!enlace) return;
+    const url = DIRECTORIO_POR_ANIO[anio];
+    enlace.hidden = !url;
+    if (!url) return;
+    enlace.href = url;
+    enlace.title = `Cuadros Excel del Directorio Nacional de Gobiernos Regionales, Municipalidades Provinciales, Distritales y de Centros Poblados ${anio} (ZIP)`;
+}
+
 function cambiarAnio(anio) {
+    actualizarDescargaDirectorio(anio);
     mostrarCargando();
     window.RENAMU.setAnioLigero(anio)
         .then(() => {
@@ -66,7 +86,7 @@ function cambiarAnio(anio) {
 
 function mostrarCargando() {
     document.getElementById('tablaBody').innerHTML = `
-        <tr><td colspan="8" class="table-state">
+        <tr><td colspan="9" class="table-state">
             <span class="table-state-spinner" aria-hidden="true"></span>
             Cargando el registro del año ${escaparHtml(window.RENAMU.anioActual)}…
         </td></tr>`;
@@ -76,7 +96,7 @@ function mostrarCargando() {
 
 function mostrarErrorCarga(err) {
     document.getElementById('tablaBody').innerHTML = `
-        <tr><td colspan="8" class="table-state">
+        <tr><td colspan="9" class="table-state">
             <span class="material-icons table-state-icon" aria-hidden="true">error_outline</span>
             No se pudieron cargar los datos del año ${escaparHtml(window.RENAMU.anioActual)}.
             <small>${escaparHtml(err && err.message)}</small>
@@ -203,7 +223,7 @@ function renderTabla() {
 
     if (total === 0) {
         tbody.innerHTML = `
-            <tr><td colspan="8" class="table-state">
+            <tr><td colspan="9" class="table-state">
                 <span class="material-icons table-state-icon" aria-hidden="true">search_off</span>
                 No se encontraron municipalidades con esos filtros.
             </td></tr>`;
@@ -223,6 +243,7 @@ function renderTabla() {
             <td><span class="pill ${esProvincial ? 'pill-blue' : 'pill-soft'}">${escaparHtml(tipo)}</span></td>
             <td>${escaparHtml(tituloCaso(d.nombre_alcalde)) || '—'}</td>
             <td>${escaparHtml(d.sexo_alcalde) || '—'}</td>
+            <td class="mono">${escaparHtml(d.telefono_alcalde) || '—'}</td>
             <td class="mono">${escaparHtml((d.correo_municipalidad || '').toLowerCase()) || '—'}</td>
         </tr>`;
     }).join('');
