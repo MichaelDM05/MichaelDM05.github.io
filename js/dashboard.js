@@ -53,40 +53,119 @@ function debounce(fn, ms) {
     return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
 }
 
-// Directorio Nacional (cuadros en Excel, ZIP de gob.pe) por año del registro.
-// Los años sin enlace ocultan el botón de descarga.
+// Directorio de municipalidades por año del registro: 2021-2025 es el Excel
+// "Directorio F01" alojado en el sitio; 2026, el ZIP de cuadros Excel de gob.pe.
+// Los años sin archivo ocultan el botón de descarga.
 const DIRECTORIO_POR_ANIO = {
-    2026: 'https://cdn.www.gob.pe/uploads/document/file/9915971/8058591-cuadros-excel-directorio-nacional-de-gobiernos-regionales-municipalidades-provinciales-distritales-y-de-centros-poblados-2026.zip?v=1778013297',
-    2025: 'https://cdn.www.gob.pe/uploads/document/file/7999764/6722617-directorio-nacional-de-gobiernos-regionales-municipalidades-provinciales-distritales-y-de-centros-poblados-2025-cuadros-en-excel.zip?v=1745955638',
-    2024: 'https://cdn.www.gob.pe/uploads/document/file/6407384/5612942-directorio-nacional-de-gobiernos-regionales-municipalidades-provinciales-distritales-y-de-centros-poblados-2024-cuadros-en-excel.zip?v=1732225977',
-    2023: 'https://cdn.www.gob.pe/uploads/document/file/5376604/4274193-directorio-nacional-de-municipalidades-provinciales-distritales-y-de-centros-poblados-2023-cuadros-en-excel.zip?v=1699290628',
+    2026: {
+        url: 'https://cdn.www.gob.pe/uploads/document/file/9915971/8058591-cuadros-excel-directorio-nacional-de-gobiernos-regionales-municipalidades-provinciales-distritales-y-de-centros-poblados-2026.zip?v=1778013297',
+        titulo: 'Cuadros Excel del Directorio Nacional de Gobiernos Regionales, Municipalidades Provinciales, Distritales y de Centros Poblados 2026 (ZIP)',
+    },
 };
+[2021, 2022, 2023, 2024, 2025].forEach((a) => {
+    DIRECTORIO_POR_ANIO[a] = {
+        url: `descargas/directorio/directorio_f01_${a}.xlsx`,
+        nombre: `Directorio F01. Municipalidades Provinciales y Distritales - ${a}.xlsx`,
+        titulo: `Directorio F01. Municipalidades Provinciales y Distritales - ${a} (Excel)`,
+    };
+});
 
 function actualizarDescargaDirectorio(anio) {
     const enlace = document.getElementById('descargaDirectorio');
     if (!enlace) return;
-    const url = DIRECTORIO_POR_ANIO[anio];
-    enlace.hidden = !url;
-    if (!url) return;
-    enlace.href = url;
-    enlace.title = `Cuadros Excel del Directorio Nacional de Gobiernos Regionales, Municipalidades Provinciales, Distritales y de Centros Poblados ${anio} (ZIP)`;
+    const archivo = DIRECTORIO_POR_ANIO[anio];
+    enlace.hidden = !archivo;
+    if (!archivo) return;
+    enlace.href = archivo.url;
+    enlace.title = archivo.titulo;
+    // Nombre sugerido al guardar (solo aplica a archivos del propio sitio)
+    if (archivo.nombre) enlace.setAttribute('download', archivo.nombre);
+    else enlace.setAttribute('download', '');
 }
 
+// Directorio F01 (2021-2025): data/directorio_AAAA.js deja en
+// window.RENAMU_DIRECTORIO[anio] = { fecha, nota, campos, filas }. Se carga una vez
+// por año; los años sin archivo resuelven null y usan los datos del RENAMU.
+const ANIOS_DIRECTORIO = [2021, 2022, 2023, 2024, 2025];
+const directorioPromesas = {};
+
+function cargarDirectorio(anio) {
+    anio = Number(anio);
+    if (!ANIOS_DIRECTORIO.includes(anio)) return Promise.resolve(null);
+    if (!directorioPromesas[anio]) {
+        directorioPromesas[anio] = new Promise((resolve) => {
+            const s = document.createElement('script');
+            s.src = `data/directorio_${anio}.js`;
+            s.onload = () => resolve((window.RENAMU_DIRECTORIO || {})[anio] || null);
+            s.onerror = () => { delete directorioPromesas[anio]; resolve(null); };
+            document.head.appendChild(s);
+        });
+    }
+    return directorioPromesas[anio];
+}
+
+// Filas del cuadro: registro RENAMU del año + columnas del directorio por ubigeo
+let filasBase = [];
+
+function construirFilas(datos, dir) {
+    const porUbigeo = new Map();
+    if (dir) {
+        const c = dir.campos;
+        dir.filas.forEach((f) => {
+            const o = {};
+            c.forEach((k, i) => { o[k] = f[i]; });
+            porUbigeo.set(o.ubigeo, o);
+        });
+    }
+    return datos.map((d) => {
+        const x = porUbigeo.get(ubigeoPadded(d));
+        if (!x) {
+            return Object.assign({}, d, {
+                telefonos: d.telefono_alcalde == null ? null : String(d.telefono_alcalde),
+                correo: d.correo_municipalidad,
+            });
+        }
+        return Object.assign({}, d, {
+            nombre_alcalde: x.alcalde || d.nombre_alcalde,
+            sexo_alcalde: x.sexo || d.sexo_alcalde,
+            direccion: x.direccion,
+            codigo_ciudad: x.codigo_ciudad,
+            telefonos: x.telefonos,
+            correo: x.correo,
+        });
+    });
+}
+
+function mostrarNotaDirectorio(dir) {
+    const nota = document.getElementById('directorioNota');
+    if (!nota) return;
+    nota.hidden = !dir;
+    nota.textContent = dir
+        ? `${dir.nota || `Directorio actualizado al ${dir.fecha}.`} Fuente: INEI, Directorio F01 de Municipalidades Provinciales y Distritales ${dir.anio}.`
+        : '';
+}
+
+let cargaVigente = 0;
+
 function cambiarAnio(anio) {
+    const turno = ++cargaVigente;
     actualizarDescargaDirectorio(anio);
     mostrarCargando();
-    window.RENAMU.setAnioLigero(anio)
-        .then(() => {
+    Promise.all([window.RENAMU.setAnioLigero(anio), cargarDirectorio(anio)])
+        .then(([, dir]) => {
+            if (turno !== cargaVigente) return;
+            filasBase = construirFilas(window.RENAMU.datosLigeros(), dir);
+            mostrarNotaDirectorio(dir);
             poblarStats();
             poblarFiltroDepartamento();
             aplicarFiltros();
         })
-        .catch((err) => mostrarErrorCarga(err));
+        .catch((err) => { if (turno === cargaVigente) mostrarErrorCarga(err); });
 }
 
 function mostrarCargando() {
     document.getElementById('tablaBody').innerHTML = `
-        <tr><td colspan="9" class="table-state">
+        <tr><td colspan="11" class="table-state">
             <span class="table-state-spinner" aria-hidden="true"></span>
             Cargando el registro del año ${escaparHtml(window.RENAMU.anioActual)}…
         </td></tr>`;
@@ -96,7 +175,7 @@ function mostrarCargando() {
 
 function mostrarErrorCarga(err) {
     document.getElementById('tablaBody').innerHTML = `
-        <tr><td colspan="9" class="table-state">
+        <tr><td colspan="11" class="table-state">
             <span class="material-icons table-state-icon" aria-hidden="true">error_outline</span>
             No se pudieron cargar los datos del año ${escaparHtml(window.RENAMU.anioActual)}.
             <small>${escaparHtml(err && err.message)}</small>
@@ -159,7 +238,7 @@ function limpiarFiltros() {
 }
 
 function aplicarFiltros() {
-    const datos = window.RENAMU.datosLigeros();
+    const datos = filasBase;
     const depto = document.getElementById('filtroDepto').value;
     const tipo = document.getElementById('filtroTipo').value;
     const ubigeo = document.getElementById('filtroUbigeo').value.trim().replace(/\s+/g, '');
@@ -223,7 +302,7 @@ function renderTabla() {
 
     if (total === 0) {
         tbody.innerHTML = `
-            <tr><td colspan="9" class="table-state">
+            <tr><td colspan="11" class="table-state">
                 <span class="material-icons table-state-icon" aria-hidden="true">search_off</span>
                 No se encontraron municipalidades con esos filtros.
             </td></tr>`;
@@ -243,8 +322,10 @@ function renderTabla() {
             <td><span class="pill ${esProvincial ? 'pill-blue' : 'pill-soft'}">${escaparHtml(tipo)}</span></td>
             <td>${escaparHtml(tituloCaso(d.nombre_alcalde)) || '—'}</td>
             <td>${escaparHtml(d.sexo_alcalde) || '—'}</td>
-            <td class="mono">${escaparHtml(d.telefono_alcalde) || '—'}</td>
-            <td class="mono">${escaparHtml((d.correo_municipalidad || '').toLowerCase()) || '—'}</td>
+            <td>${escaparHtml(d.direccion) || '—'}</td>
+            <td class="mono">${escaparHtml(d.codigo_ciudad) || '—'}</td>
+            <td class="mono">${escaparHtml(d.telefonos) || '—'}</td>
+            <td class="mono">${escaparHtml((d.correo || '').toLowerCase()) || '—'}</td>
         </tr>`;
     }).join('');
 }
