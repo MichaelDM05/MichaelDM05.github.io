@@ -13,7 +13,7 @@ const contar = (condicion) => (datos) => datos.filter(condicion).length;
 const INDICADORES = {
     muni: {
         icono: 'account_balance',
-        titulo: 'Municipalidades registradas por año',
+        titulo: 'Municipalidades registradas',
         badge: 'Serie homologada',
         sujeto: 'El padrón',
         unidad: MUNICIPALIDADES,
@@ -22,7 +22,7 @@ const INDICADORES = {
     },
     personal: {
         icono: 'groups',
-        titulo: 'Personal municipal por año (al 31 de marzo)',
+        titulo: 'Personal municipal (al 31 de marzo)',
         badge: 'Módulo III',
         sujeto: 'El personal municipal',
         unidad: ['trabajador', 'trabajadores'],
@@ -31,7 +31,7 @@ const INDICADORES = {
     },
     locacion: {
         icono: 'receipt_long',
-        titulo: 'Personal de Locación de Servicios por año',
+        titulo: 'Personal de Locación de Servicios',
         badge: 'Módulo III',
         sujeto: 'El personal por locación',
         unidad: ['persona', 'personas'],
@@ -42,7 +42,7 @@ const INDICADORES = {
     // vacío en vez de 0, pero sumar() lo trata igual (Number(null)||0 = 0).
     discapacidad: {
         icono: 'accessible',
-        titulo: 'Personal con discapacidad por año',
+        titulo: 'Personal con discapacidad',
         badge: 'Módulo III',
         sujeto: 'El personal con discapacidad',
         unidad: ['trabajador', 'trabajadores'],
@@ -53,7 +53,7 @@ const INDICADORES = {
         icono: 'computer',
         titulo: 'Computadoras operativas de las municipalidades',
         badge: 'Módulo II',
-        sujeto: 'El parque de computadoras',
+        sujeto: 'La cantidad de computadoras operativas',
         unidad: ['computadora', 'computadoras'],
         anios: ANIOS_MODULOS,
         valor: sumar('pc_total_operativas'),
@@ -84,7 +84,7 @@ const INDICADORES = {
     // Al menos uno de los 16 instrumentos (P23_1 a P23_16; cada uno 1="Sí"/2="No").
     instrumentos: {
         icono: 'location_city',
-        titulo: 'Municipalidades con instrumentos de gestión urbana y/o rural',
+        titulo: 'Instrumentos de gestión y desarrollo urbano y/o rural',
         badge: 'Módulo IV',
         sujeto: 'El uso de instrumentos de gestión',
         unidad: MUNICIPALIDADES,
@@ -148,7 +148,7 @@ const INDICADORES = {
     // año de la encuesta (sin desfase). P69_1 es la misma pregunta al 31 de diciembre.
     serenazgo: {
         icono: 'local_police',
-        titulo: 'Perú: municipalidades que brindan el servicio de serenazgo, al 31 de marzo de 2022 - 2026',
+        titulo: 'Municipalidades que brindan el servicio de serenazgo',
         badge: 'Módulo V',
         sujeto: 'El servicio de serenazgo',
         unidad: MUNICIPALIDADES,
@@ -161,7 +161,7 @@ const INDICADORES = {
     // se excluye 5 "No realizó recojo".
     residuos: {
         icono: 'delete',
-        titulo: 'Municipalidades que realizan servicio de recojo de residuos sólidos, 2021 - 2025',
+        titulo: 'Municipalidades que realizan servicio de recojo de residuos sólidos',
         badge: 'Módulo V',
         sujeto: 'El servicio de recojo de residuos',
         unidad: MUNICIPALIDADES,
@@ -175,7 +175,7 @@ const INDICADORES = {
     // (P67_1 a P67_11, y P67_13/P67_14 desde 2024); "No" = P67_12 "No realizó campañas".
     salud: {
         icono: 'local_hospital',
-        titulo: 'Municipalidades que realizaron campañas de salud en coordinación con el Ministerio de Salud, 2021 - 2025',
+        titulo: 'Municipalidades que realizaron campañas de salud en coordinación con el MINSA',
         badge: 'Módulo V',
         sujeto: 'La realización de campañas de salud',
         unidad: MUNICIPALIDADES,
@@ -203,7 +203,7 @@ const SERIES_MAQUINARIA = [
 const INDICADORES_MULTIPLES = {
     regimen: {
         icono: 'work',
-        titulo: 'Personal municipal por régimen laboral y año',
+        titulo: 'Personal municipal por régimen laboral',
         badge: 'Módulo III',
         pie: 'Personal al 31 de marzo por régimen laboral (Módulo III, P19M) · RENAMU',
         calcular: (listas) => SERIES_REGIMEN.map((s) => ({ ...s, valores: listas.map(sumar(s.campo)) })),
@@ -211,7 +211,7 @@ const INDICADORES_MULTIPLES = {
     },
     maquinaria: {
         icono: 'agriculture',
-        titulo: 'Municipalidades que tienen maquinaria pesada',
+        titulo: 'Maquinaria pesada municipal',
         badge: 'Módulo II',
         anios: ANIOS_MODULOS,
         pie: 'Perú: municipalidades que tienen maquinaria pesada · Módulo II (P11B) · RENAMU',
@@ -224,6 +224,21 @@ const INDICADORES_MULTIPLES = {
                 .map((valores, i) => ({ ...SERIES_MAQUINARIA[i], valores }));
         },
         resumen: resumenMaquinaria,
+    },
+    vehiculos: {
+        icono: 'local_shipping',
+        titulo: 'Vehículos y equipos municipal',
+        badge: 'Módulo II',
+        anios: ANIOS_MODULOS,
+        pie: 'Perú: vehículos y equipos de las municipalidades · Módulo II (P11A_1 a P11A_10) · RENAMU',
+        porcentaje: true,
+        calcular: (listas) => {
+            const totales = listas.map(sumar('vehiculos_total'));
+            const operativos = listas.map(sumar('vehiculos_operativos'));
+            return [totales, operativos, totales.map((t, i) => t - operativos[i])]
+                .map((valores, i) => ({ ...SERIES_MAQUINARIA[i], valores }));
+        },
+        resumen: (series, etiquetas) => resumenBienes(series, etiquetas, (p) => `El ${p} de los vehículos y equipos está operativo`, 'operativos'),
     },
 };
 
@@ -702,6 +717,11 @@ function resumenRegimen(series, etiquetas) {
 }
 
 function resumenMaquinaria(series, etiquetas) {
+    return resumenBienes(series, etiquetas, (p) => `El ${p} de la maquinaria está operativa`);
+}
+
+// Resumen común de bienes (Total / Operativo / No operativo)
+function resumenBienes(series, etiquetas, tituloLectura, adjetivo = 'operativas') {
     const n = etiquetas.length - 1;
     const a = etiquetas[0], b = etiquetas[n];
     const [total, operativo, noOperativo] = series;
@@ -715,8 +735,8 @@ function resumenMaquinaria(series, etiquetas) {
             { etiqueta: `No operativo · ${b}`, valor: numeroPE(noOperativo.valores[n]), detalle: `${porcentaje(100 - operatividad(n))} del total` },
         ],
         lectura: {
-            titulo: `El ${porcentaje(operatividad(n))} de la maquinaria está operativa`,
-            texto: `En ${b} estaban operativas ${numeroPE(operativo.valores[n])} de un total de ${numeroPE(total.valores[n])}. ` +
+            titulo: tituloLectura(porcentaje(operatividad(n))),
+            texto: `En ${b} estaban ${adjetivo} ${numeroPE(operativo.valores[n])} de un total de ${numeroPE(total.valores[n])}. ` +
                 `En ${a} la proporción era ${porcentaje(operatividad(0))}.`,
             metricaEtiqueta: `Cambio en operatividad ${a}–${b}`,
             metrica: conSigno(diferencia, (v) => decimalPE(Math.round(v * 10) / 10, 1) + ' pp'),
