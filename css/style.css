@@ -2732,3 +2732,108 @@ textarea.form-control { padding: 12px 14px; }
     .stats-nav-wrap .stats-nav { margin: 0; padding-left: 4px; padding-right: 4px; }
     .stats-nav-flecha { width: 36px; height: 36px; }
 }
+
+/* ============================================================
+   Video tutorial (js/tutorial.js): ventana y sugerencia flotante
+   ============================================================ */
+.tutorial-dialog {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(960px, calc(100vw - 32px));
+    height: fit-content;
+    max-height: calc(100vh - 32px);
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: var(--navy-field);
+    color: var(--white);
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+}
+.tutorial-dialog::backdrop { background: rgba(6, 18, 32, 0.78); }
+.tutorial-dialog-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px 14px 22px;
+}
+.tutorial-dialog-head h2 { font-size: 1rem; font-weight: 600; margin: 0; color: var(--white); }
+.tutorial-cerrar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    cursor: pointer;
+}
+.tutorial-cerrar:hover,
+.tutorial-cerrar:focus-visible { background: rgba(255, 255, 255, 0.2); }
+.tutorial-video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: calc(100vh - 110px);
+    background: #000;
+}
+
+.tutorial-sugerencia {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 2900;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    width: min(340px, calc(100vw - 32px));
+    padding: 18px 40px 18px 18px;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    border-top: 3px solid var(--brand);
+    border-radius: 6px;
+    box-shadow: 0 24px 48px -20px rgba(15, 42, 68, 0.35);
+    animation: tutorial-entrar 0.35s ease-out;
+}
+.tutorial-sugerencia strong { display: block; font-size: 0.95rem; margin-bottom: 4px; }
+.tutorial-sugerencia p { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.45; margin: 0 0 12px; }
+.tutorial-sugerencia-icono {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: var(--white);
+}
+.tutorial-sugerencia-x {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+}
+.tutorial-sugerencia-x:hover,
+.tutorial-sugerencia-x:focus-visible { background: var(--line); color: var(--ink); }
+@keyframes tutorial-entrar {
+    from { transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .tutorial-sugerencia { animation: none; }
+}
